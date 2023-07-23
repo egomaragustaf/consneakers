@@ -1,5 +1,6 @@
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -9,14 +10,7 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export async function loader() {
-  const products = [
-    {
-      id: 1,
-      name: "Converse Run Star Hike Hi Black White",
-      price: 1_299_000,
-      createdAt: new Date(),
-    },
-  ];
+  const products = await prisma.product.findMany();
 
   return json({ products });
 }

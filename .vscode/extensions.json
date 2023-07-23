@@ -1,3 +1,7 @@
 {
-  "recommendations": ["codeforge.remix-forge", "amimaro.remix-run-snippets"]
+  "recommendations": [
+    "codeforge.remix-forge",
+    "amimaro.remix-run-snippets",
+    "prisma.prisma"
+  ]
 }
