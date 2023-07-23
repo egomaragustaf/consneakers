@@ -6,6 +6,8 @@ import type { ActionArgs } from "@remix-run/node";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
 
+import { prisma } from "~/db.server";
+
 const schema = zfd.formData({
   name: zfd.text(),
   price: zfd.numeric(z.number().min(0).max(100_000_000)),
@@ -21,7 +23,7 @@ export default function FormRoute() {
   });
 
   return (
-    <Form method="post" {...form.props}>
+    <Form method="POST" {...form.props}>
       <h1>Add New Product</h1>
 
       <div>
@@ -36,7 +38,7 @@ export default function FormRoute() {
         <p>{fields.price.error}</p>
       </div>
 
-      <button>Add</button>
+      <button type="submit">Add</button>
     </Form>
   );
 }
@@ -45,12 +47,17 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const submission = parse(formData, { schema });
 
-  console.log(submission);
-
   if (!submission.value || submission.intent !== "submit") {
     return json(submission, { status: 400 });
   }
 
-  // Do something with the data
+  const newProduct = await prisma.product.create({
+    data: submission.value,
+  });
+
+  if (!newProduct) {
+    return json(submission, { status: 500 });
+  }
+
   return json(submission);
 }

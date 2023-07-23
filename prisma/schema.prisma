@@ -17,6 +17,8 @@ model Product {
   name  String
   price Int // Ex: Rp 1,100,000
 
+  description String? @db.Text
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
