@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@conform-to/react':
+    specifier: 0.7.4
+    version: 0.7.4(react@18.2.0)
+  '@conform-to/zod':
+    specifier: 0.7.4
+    version: 0.7.4(@conform-to/dom@0.7.4)(zod@3.21.4)
   '@prisma/client':
     specifier: 5.0.0
     version: 5.0.0(prisma@5.0.0)
@@ -32,6 +38,12 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  zod:
+    specifier: 3.21.4
+    version: 3.21.4
+  zod-form-data:
+    specifier: 2.0.1
+    version: 2.0.1(zod@3.21.4)
 
 devDependencies:
   '@remix-run/dev':
@@ -1372,6 +1384,29 @@ packages:
       '@babel/helper-validator-identifier': 7.22.5
       to-fast-properties: 2.0.0
     dev: true
+
+  /@conform-to/dom@0.7.4:
+    resolution: {integrity: sha512-Cct89jWhJA+hfCth+9mphnwBVmFRx5caHtQp+0f+iK/UQKYgYMaK15JqtfNV8aHHXlrpWcSJ99x6iUgwYVQaLA==}
+    dev: false
+
+  /@conform-to/react@0.7.4(react@18.2.0):
+    resolution: {integrity: sha512-r3HNOIW3GBBjHWIvqoalKxAoTtQFiphVClYtdLBblEgxnStRjEaIkEP+JfktlEulYiVqL+935e9CV7U2v/Uxzw==}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      '@conform-to/dom': 0.7.4
+      react: 18.2.0
+    dev: false
+
+  /@conform-to/zod@0.7.4(@conform-to/dom@0.7.4)(zod@3.21.4):
+    resolution: {integrity: sha512-CFdbx/5rreymbBjSfmO9p0QBQ2toGXyTGuV3Cmam1eX/XGSSQyUU4fT0NNoutQ/CHIMeqKRVc5bzv7f46XbspQ==}
+    peerDependencies:
+      '@conform-to/dom': 0.7.4
+      zod: ^3.21.0
+    dependencies:
+      '@conform-to/dom': 0.7.4
+      zod: 3.21.4
+    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -8276,6 +8311,18 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod-form-data@2.0.1(zod@3.21.4):
+    resolution: {integrity: sha512-4jcsj3vFyFGINLLHEmehfOPKdcw+HqV65RwsV2IdyLHp9wpvGJRVXWg1yY8sq0ASEbQfTVBRtI7LcDGv3Qpj8g==}
+    peerDependencies:
+      zod: ^3.11.x
+    dependencies:
+      zod: 3.21.4
+    dev: false
+
+  /zod@3.21.4:
+    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
