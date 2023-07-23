@@ -11,6 +11,7 @@ import { prisma } from "~/db.server";
 const schema = zfd.formData({
   name: zfd.text(),
   price: zfd.numeric(z.number().min(0).max(100_000_000)),
+  description: zfd.text(),
 });
 
 export default function FormRoute() {
@@ -36,6 +37,12 @@ export default function FormRoute() {
         <label htmlFor="price">Product price:</label>
         <input {...conform.input(fields.price, { type: "number" })} />
         <p>{fields.price.error}</p>
+      </div>
+
+      <div>
+        <label htmlFor="description">Product description:</label>
+        <input {...conform.input(fields.description)} />
+        <p>{fields.description.error}</p>
       </div>
 
       <button type="submit">Add</button>
