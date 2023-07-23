@@ -8,7 +8,8 @@
     "db:gen": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@conform-to/react": "0.7.4",
