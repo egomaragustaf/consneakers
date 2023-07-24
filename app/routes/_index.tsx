@@ -22,7 +22,18 @@ export default function Index() {
     <main>
       <h1>Consneakers</h1>
 
-      <pre>{JSON.stringify(products, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
+      <div className="grid grid-cols-5 gap-2">
+        {products.map((product) => {
+          return (
+            <ul key={product.id}>
+              <li>{product.name}</li>
+              <li>{product.description}</li>
+              <li>{product.price}</li>
+            </ul>
+          );
+        })}
+      </div>
     </main>
   );
 }
