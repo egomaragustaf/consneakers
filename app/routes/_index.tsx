@@ -1,5 +1,6 @@
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { Card } from "~/components/ui/card";
 import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {
@@ -23,17 +24,19 @@ export default function Index() {
       <h1>Consneakers</h1>
 
       {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-      <div className="grid grid-cols-5 gap-2">
+      <ul className="flex">
         {products.map((product) => {
           return (
-            <ul key={product.id}>
-              <li>{product.name}</li>
-              <li>{product.description}</li>
-              <li>{product.price}</li>
-            </ul>
+            <li key={product.id}>
+              <Card>
+                <h1>{product.name}</h1>
+                <p>{product.description}</p>
+                <p>{product.price}</p>
+              </Card>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </main>
   );
 }
