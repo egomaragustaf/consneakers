@@ -24,14 +24,14 @@ export default function Index() {
       <h1>Consneakers</h1>
 
       {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-      <ul className="flex">
+      <ul className="flex gap-1">
         {products.map((product) => {
           return (
             <li key={product.id}>
               <Card>
                 <h1>{product.name}</h1>
                 <p>{product.description}</p>
-                <p>{product.price}</p>
+                <p>Rp {product.price.toLocaleString("id-ID")}</p>
               </Card>
             </li>
           );
