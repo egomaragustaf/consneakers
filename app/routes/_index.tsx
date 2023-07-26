@@ -1,6 +1,6 @@
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Card } from "~/components/ui/card";
+import { ProductCard } from "~/components/shared/product-card";
 import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {
@@ -28,11 +28,7 @@ export default function Index() {
         {products.map((product) => {
           return (
             <li key={product.id}>
-              <Card>
-                <h1>{product.name}</h1>
-                <p>{product.description}</p>
-                <p>Rp {product.price.toLocaleString("id-ID")}</p>
-              </Card>
+              <ProductCard product={product as any} />
             </li>
           );
         })}
