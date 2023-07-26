@@ -24,7 +24,7 @@ export default function Index() {
       <h1>Consneakers</h1>
 
       {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-      <ul className="flex gap-1">
+      <ul className="flex gap-2">
         {products.map((product) => {
           return (
             <li key={product.id}>
