@@ -24,24 +24,41 @@ export default function FormRoute() {
   });
 
   return (
-    <Form method="POST" {...form.props}>
+    <Form
+      method="POST"
+      {...form.props}
+      className="text-slate-700 text-lg block max-w-md rounded-lg bg-white p-6">
       <h1>Add New Product</h1>
 
       <div>
-        <label htmlFor="name">Product name:</label>
-        <input {...conform.input(fields.name)} />
+        <label htmlFor="name" className="mb-2">
+          Product name:
+        </label>
+        <input
+          {...conform.input(fields.name)}
+          id="name"
+          className="w-full px-2 py-1 block rounded-md border-gray-300 border"
+        />
         <p>{fields.name.error}</p>
       </div>
 
       <div>
         <label htmlFor="price">Product price:</label>
-        <input {...conform.input(fields.price, { type: "number" })} />
+        <input
+          {...conform.input(fields.price, { type: "number" })}
+          id="price"
+          className="w-full px-2 py-1 block rounded-md border-gray-300 border"
+        />
         <p>{fields.price.error}</p>
       </div>
 
       <div>
         <label htmlFor="description">Product description:</label>
-        <input {...conform.input(fields.description)} />
+        <input
+          {...conform.input(fields.description)}
+          id="description"
+          className="w-full px-2 py-1 block rounded-md border-gray-300 border"
+        />
         <p>{fields.description.error}</p>
       </div>
 

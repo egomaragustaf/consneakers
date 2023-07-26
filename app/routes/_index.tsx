@@ -22,11 +22,11 @@ export default function Index() {
 
   return (
     <Layout>
-      <main>
+      <main className="w-full gap-8 justify-center items-center">
         <h1>Consneakers</h1>
 
         {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-        <ul className="flex gap-2">
+        <ul className="flex gap-2 flex-wrap">
           {products.map((product) => {
             return (
               <li key={product.id}>
