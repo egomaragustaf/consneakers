@@ -8,6 +8,7 @@ import { zfd } from "zod-form-data";
 
 import { prisma } from "~/db.server";
 import { Layout } from "~/components/layout/layout";
+import { slugify } from "~/utils/slugify";
 
 const schema = zfd.formData({
   name: zfd.text(),
@@ -78,8 +79,10 @@ export async function action({ request }: ActionArgs) {
     return json(submission, { status: 400 });
   }
 
+  const slug = slugify(submission.value.name);
+
   const newProduct = await prisma.product.create({
-    data: submission.value,
+    data: { ...submission.value, slug },
   });
 
   if (!newProduct) {
