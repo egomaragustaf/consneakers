@@ -1,13 +1,14 @@
-import { json, type V2_MetaFunction } from "@remix-run/node";
+import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Layout } from "~/components/layout/layout";
-// import { ProductCard } from "~/components/shared/product-card";
+
 import { prisma } from "~/db.server";
+import { Layout } from "~/components/layout/layout";
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "Consneakers" },
-    { name: "description", content: "Welcome to Consneakers!" },
+    { title: "Products Action" },
+    { name: "description", content: "Products Action Page" },
   ];
 };
 
@@ -41,9 +42,18 @@ export default function ProductAction() {
                   <td>{product.name}</td>
                   <td>{product.description}</td>
                   <td>{product.price}</td>
-                  <td>
+                  <td className="flex gap-2">
                     <button>Edit</button>
-                    <button type="submit">Delete</button>
+
+                    <form method="post">
+                      <button
+                        type="submit"
+                        name="delete"
+                        value={product.id}
+                        className="bg-rose-400">
+                        Delete
+                      </button>
+                    </form>
                   </td>
                 </tr>
               );
@@ -53,4 +63,26 @@ export default function ProductAction() {
       </main>
     </Layout>
   );
+}
+
+export async function action({ request }: ActionArgs) {
+  const formData = await request.formData();
+  const deleteProductId = formData.get("delete");
+
+  if (formData.has("delete")) {
+    try {
+      const productId: any = deleteProductId;
+
+      await prisma.product.delete({
+        where: { id: productId },
+      });
+
+      return redirect("/admin/products/action");
+    } catch (error) {
+      console.error("Error deleting product");
+      return json({ error: "Failed to delete the product" }, { status: 500 });
+    }
+  }
+
+  return json({ error: "Invalid request" }, { status: 400 });
 }
