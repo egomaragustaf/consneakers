@@ -1,10 +1,19 @@
+import { Link } from "@remix-run/react";
+
 export function Navigation() {
   return (
     <header className="z-10 flex w-full items-center justify-center border-t-2">
       <nav className="w-full max-w-sm">
         <ul className="flex justify-between gap-0 p-2">
-          <li>Home</li>
-          <li>Add Porduct</li>
+          <li>
+            <Link to={`/`}>Home</Link>
+          </li>
+          <li>
+            <Link to={`/`}>About</Link>
+          </li>
+          <li>
+            <Link to={`/admin/products/new`}>Add Poduct</Link>
+          </li>
         </ul>
       </nav>
     </header>
