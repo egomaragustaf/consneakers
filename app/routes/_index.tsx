@@ -22,22 +22,27 @@ export default function Index() {
 
   return (
     <Layout>
-      <main className="w-full gap-8 justify-center items-center">
-        <h1>Consneakers</h1>
+      <div className="max-w-6xl flex flex-col gap-8">
+        <header className="space-y-2">
+          <h1 className="text-4xl">Consneakers</h1>
+          <p>It’s Converse for Comfort.</p>
+        </header>
 
         {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-        <ul className="flex gap-2 flex-wrap">
-          {products.map((product) => {
-            return (
-              <li key={product.id}>
-                <Link to={`/products/${product.slug}`}>
-                  <ProductCard product={product as any} />
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </main>
+        <div className="w-full flex justify-center items-center">
+          <ul className="grid grid-cols-5 gap-4">
+            {products.map((product) => {
+              return (
+                <li key={product.id}>
+                  <Link to={`/products/${product.slug}`}>
+                    <ProductCard product={product as any} />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
     </Layout>
   );
 }
