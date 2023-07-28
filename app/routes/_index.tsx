@@ -22,14 +22,14 @@ export default function Index() {
 
   return (
     <Layout>
-      <div className="max-w-6xl flex flex-col gap-8">
+      <main className="w-full flex flex-col gap-8 justify-center items-center">
         <header className="space-y-2">
-          <h1 className="text-4xl">Consneakers</h1>
+          <h1 className="text-2xl">Consneakers</h1>
           <p>It’s Converse for Comfort.</p>
         </header>
 
         {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full max-w-6xl flex justify-center items-center">
           <ul className="grid grid-cols-5 gap-4">
             {products.map((product) => {
               return (
@@ -42,7 +42,7 @@ export default function Index() {
             })}
           </ul>
         </div>
-      </div>
+      </main>
     </Layout>
   );
 }
