@@ -12,7 +12,7 @@ export function Navigation() {
             <Link to={`/`}>About</Link>
           </li>
           <li>
-            <Link to={`/admin/products/new`}>Add Poduct</Link>
+            <Link to={`/admin/products`}>Admin Page</Link>
           </li>
         </ul>
       </nav>

@@ -1,6 +1,6 @@
 import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 import { prisma } from "~/db.server";
 import { Layout } from "~/components/layout/layout";
@@ -23,8 +23,11 @@ export default function ProductActionRoute() {
 
   return (
     <Layout>
-      <main className="w-full gap-8 justify-center items-center">
-        <h1>Products Action Page</h1>
+      <main className="w-full flex flex-col gap-8 justify-center items-center">
+        <header className="space-y-2">
+          <h1 className="text-2xl">Product Action</h1>
+          <p>this is admin page to manage product</p>
+        </header>
 
         <table>
           <thead>
@@ -60,6 +63,9 @@ export default function ProductActionRoute() {
             })}
           </tbody>
         </table>
+        <Link to="/admin/products/new">
+          <button className="bg-green-400 p-2">Add New Product</button>
+        </Link>
       </main>
     </Layout>
   );
