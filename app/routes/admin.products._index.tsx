@@ -1,6 +1,6 @@
 import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 
 import { prisma } from "~/db.server";
 import { Layout } from "~/components/layout/layout";
@@ -48,7 +48,7 @@ export default function ProductActionRoute() {
                   <td className="flex gap-2">
                     <button>Edit</button>
 
-                    <form method="post">
+                    <Form method="POST">
                       <button
                         type="submit"
                         name="delete"
@@ -56,7 +56,7 @@ export default function ProductActionRoute() {
                         className="bg-rose-400">
                         Delete
                       </button>
-                    </form>
+                    </Form>
                   </td>
                 </tr>
               );

@@ -1,7 +1,7 @@
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
 import { Form, useActionData } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -105,5 +105,5 @@ export async function action({ request }: ActionArgs) {
     return json(submission, { status: 500 });
   }
 
-  return json(submission);
+  return redirect(`/admin/products`);
 }
