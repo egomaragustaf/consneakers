@@ -1,5 +1,5 @@
 import { json, type V2_MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { Layout } from "~/components/layout/layout";
 import { ProductCard } from "~/components/shared/product-card";
 import { prisma } from "~/db.server";
@@ -30,7 +30,9 @@ export default function Index() {
           {products.map((product) => {
             return (
               <li key={product.id}>
-                <ProductCard product={product as any} />
+                <Link to={`/products/${product.slug}`}>
+                  <ProductCard product={product as any} />
+                </Link>
               </li>
             );
           })}

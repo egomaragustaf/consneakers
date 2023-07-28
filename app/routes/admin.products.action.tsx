@@ -18,7 +18,7 @@ export async function loader() {
   return json({ products });
 }
 
-export default function ProductAction() {
+export default function ProductActionRoute() {
   const { products } = useLoaderData<typeof loader>();
 
   return (
