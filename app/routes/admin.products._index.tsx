@@ -46,7 +46,9 @@ export default function ProductActionRoute() {
                   <td>{product.description}</td>
                   <td>{product.price}</td>
                   <td className="flex gap-2">
-                    <button>Edit</button>
+                    <Link to={`/admin/products/edit/${product.slug}`}>
+                      Edit
+                    </Link>
 
                     <Form method="POST">
                       <button
@@ -63,7 +65,7 @@ export default function ProductActionRoute() {
             })}
           </tbody>
         </table>
-        <Link to="/admin/products/new">
+        <Link to={`/admin/products/new`}>
           <button className="bg-green-400 p-2">Add New Product</button>
         </Link>
       </main>
@@ -83,7 +85,7 @@ export async function action({ request }: ActionArgs) {
         where: { id: productId },
       });
 
-      return redirect("/admin/products/action");
+      return redirect("/admin/products/");
     } catch (error) {
       console.error("Error deleting product");
       return json({ error: "Failed to delete the product" }, { status: 500 });
