@@ -11,13 +11,13 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
-    include: { cartItems: true },
+    include: { cartItems: { include: { product: true } } },
   });
 
   if (!existingCart) {
     const newCart = await prisma.cart.create({
       data: { userId: userSession.id },
-      include: { cartItems: true },
+      include: { cartItems: { include: { product: true } } },
     });
     return json({ cart: newCart });
   }
