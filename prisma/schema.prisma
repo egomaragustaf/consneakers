@@ -14,7 +14,7 @@ datasource db {
 model Product {
   id String @id @default(cuid())
 
-  slug  String // Ex: converse-run-star-hike-hi-black-white
+  slug  String @unique // Ex: converse-run-star-hike-hi-black-white
   name  String // Ex: Converse Run Star Hike Hi Black White
   price Int // Ex: Rp 1,100,000
 

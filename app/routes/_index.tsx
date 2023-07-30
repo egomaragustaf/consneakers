@@ -13,7 +13,7 @@ export const meta: V2_MetaFunction = () => {
 
 export async function loader() {
   const products = await prisma.product.findMany({
-    take: 10
+    take: 10,
   });
 
   return json({ products });
@@ -36,7 +36,7 @@ export default function Index() {
             {products.map((product) => {
               return (
                 <li key={product.id}>
-                  <Link to={`/product/${product.slug}`}>
+                  <Link to={`/products/${product.slug}`}>
                     <ProductCard product={product as any} />
                   </Link>
                 </li>

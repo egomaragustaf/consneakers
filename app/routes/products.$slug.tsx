@@ -15,7 +15,7 @@ export async function loader({ params }: LoaderArgs) {
     return json({ product: null });
   }
 
-  const product = await prisma.product.findMany({
+  const product = await prisma.product.findUnique({
     where: {
       slug: params.slug,
     },
