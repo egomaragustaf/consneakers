@@ -34,7 +34,7 @@ export default function Index() {
             {products.map((product) => {
               return (
                 <li key={product.id}>
-                  <Link to={`/products/${product.slug}`}>
+                  <Link to={`/product/${product.slug}`}>
                     <ProductCard product={product as any} />
                   </Link>
                 </li>
