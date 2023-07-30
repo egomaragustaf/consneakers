@@ -11,9 +11,6 @@ export function Navigation() {
           <li>
             <Link to={`/`}>About</Link>
           </li>
-          <li>
-            <Link to={`/admin/products`}>Admin Page</Link>
-          </li>
         </ul>
       </nav>
     </header>

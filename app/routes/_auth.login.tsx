@@ -1,14 +1,20 @@
+import type { LoaderArgs, ActionArgs } from "@remix-run/node";
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
 import { Form, useActionData } from "@remix-run/react";
 import { json } from "@remix-run/node";
-import type { ActionArgs } from "@remix-run/node";
 import { z } from "zod";
-import { prisma } from "~/db.server";
+import { authenticator } from "~/services";
 
 const schema = z.object({
   username: z.string(),
 });
+
+export const loader = async ({ request }: LoaderArgs) => {
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: "/dashboard",
+  });
+};
 
 export default function FormRoute() {
   const lastSubmission = useActionData<typeof action>();
@@ -33,19 +39,17 @@ export default function FormRoute() {
 }
 
 export async function action({ request }: ActionArgs) {
-  const formData = await request.formData();
+  const clonedRequest = request.clone();
+
+  const formData = await clonedRequest.formData();
   const submission = parse(formData, { schema });
 
   if (!submission.value || submission.intent !== "submit") {
     return json(submission, { status: 400 });
   }
 
-  const user = await prisma.user.findFirst({
-    where: { username: submission.value.username },
+  return authenticator.authenticate("user-pass", request, {
+    successRedirect: "/dashboard",
+    failureRedirect: "/login",
   });
-
-  console.log({ user });
-
-  // Do something with the data
-  return json(submission);
 }

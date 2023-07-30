@@ -41,6 +41,12 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  remix-auth:
+    specifier: 3.5.0
+    version: 3.5.0(@remix-run/react@1.19.1)(@remix-run/server-runtime@1.19.1)
+  remix-auth-form:
+    specifier: 1.3.0
+    version: 1.3.0(@remix-run/server-runtime@1.19.1)(remix-auth@3.5.0)
   zod:
     specifier: 3.21.4
     version: 3.21.4
@@ -3047,6 +3053,7 @@ packages:
 
   /bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
+    requiresBuild: true
     dependencies:
       file-uri-to-path: 1.0.0
     dev: true
@@ -4695,6 +4702,7 @@ packages:
 
   /file-uri-to-path@1.0.0:
     resolution: {integrity: sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -6401,6 +6409,7 @@ packages:
 
   /node-addon-api@1.7.2:
     resolution: {integrity: sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -7293,6 +7302,27 @@ packages:
       mdast-util-to-hast: 11.3.0
       unified: 10.1.2
     dev: true
+
+  /remix-auth-form@1.3.0(@remix-run/server-runtime@1.19.1)(remix-auth@3.5.0):
+    resolution: {integrity: sha512-m+pwFJM61+qGPIvROHmN7LANJMbpL2QgYen/wY8wnJfwwannWt2+7zEoGWF7NbxMnoxCib75EGlPZpyyvwtBXQ==}
+    peerDependencies:
+      '@remix-run/server-runtime': ^1.0.0
+      remix-auth: ^3.4.0
+    dependencies:
+      '@remix-run/server-runtime': 1.19.1
+      remix-auth: 3.5.0(@remix-run/react@1.19.1)(@remix-run/server-runtime@1.19.1)
+    dev: false
+
+  /remix-auth@3.5.0(@remix-run/react@1.19.1)(@remix-run/server-runtime@1.19.1):
+    resolution: {integrity: sha512-+0kFPhqNPQ4mjhDXViY5mG4jvWHWMsG1IXFiCj3T58BKQGynonk93vTFZ5/CCDzGFBjTsRpcA+mXCUW5LY8MdQ==}
+    peerDependencies:
+      '@remix-run/react': ^1.0.0
+      '@remix-run/server-runtime': ^1.0.0
+    dependencies:
+      '@remix-run/react': 1.19.1(react-dom@18.2.0)(react@18.2.0)
+      '@remix-run/server-runtime': 1.19.1
+      uuid: 8.3.2
+    dev: false
 
   /require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
@@ -8273,6 +8303,11 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
     dev: true
+
+  /uuid@8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+    dev: false
 
   /uvu@0.5.6:
     resolution: {integrity: sha512-+g8ENReyr8YsOc6fv/NVJs2vFdHBnBNdfE49rshrTzDWOlUx4Gq7KOS2GD8eqhy2j+Ejq29+SbKH8yjkAqXqoA==}
