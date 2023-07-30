@@ -12,7 +12,9 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export async function loader() {
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({
+    take: 10
+  });
 
   return json({ products });
 }

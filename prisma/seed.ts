@@ -1,13 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 
+import dataProducts from "~/data/products.json";
+import { slugify } from "~/utils";
+
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.product.create({
-    data: {
-      name: "Converse Run Star Hike Hi Black White",
-      price: 1_299_000,
-    },
+  const newProducts = dataProducts.map((product) => {
+    return {
+      slug: slugify(product.name),
+      name: product.name,
+      price: product.price,
+      description: product.description,
+    };
+  });
+
+  await prisma.product.createMany({
+    data: newProducts,
   });
 }
 

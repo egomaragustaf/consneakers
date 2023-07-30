@@ -11,7 +11,15 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export async function loader({ params }: LoaderArgs) {
-  const product = await prisma.product.findMany();
+  if (!params.slug) {
+    return json({ product: null });
+  }
+
+  const product = await prisma.product.findMany({
+    where: {
+      slug: params.slug,
+    },
+  });
 
   return json({ product });
 }
