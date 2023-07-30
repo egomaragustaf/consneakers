@@ -11,6 +11,21 @@ datasource db {
   relationMode = "prisma"
 }
 
+model User {
+  id String @id @default(cuid())
+
+  email    String @unique
+  name     String
+  username String @unique
+
+  // password: later when ready
+
+  carts Cart[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Product {
   id String @id @default(cuid())
 
@@ -18,8 +33,43 @@ model Product {
   name  String // Ex: Converse Run Star Hike Hi Black White
   price Int // Ex: Rp 1,100,000
 
+  imageURL String? @db.Text
+
   description String? @db.Text
+
+  cartItems CartItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Cart {
+  id String @id @default(cuid())
+
+  // Define the one-to-many relationship between Cart and CartItem
+  cartItems CartItem[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model CartItem {
+  id String @id @default(cuid())
+
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cartId])
+  @@index([productId])
 }

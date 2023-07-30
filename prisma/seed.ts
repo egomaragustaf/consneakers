@@ -6,6 +6,20 @@ import { slugify } from "~/utils";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.user.deleteMany();
+
+  const newUser = await prisma.user.create({
+    data: {
+      email: "admin@consneakers.com",
+      username: "admin",
+      name: "Admin",
+    },
+  });
+  if (!newUser) return null;
+  console.log(`User "${newUser.username}" created`);
+
+  await prisma.product.deleteMany();
+
   const newProducts = dataProducts.map((product) => {
     return {
       slug: slugify(product.name),
