@@ -93,7 +93,7 @@ export default function EditProductRoute() {
                   {...conform.input(fields.description)}
                   id="description"
                   className="w-full px-2 py-1 rounded-md border-gray-300 border"
-                  defaultValue={product.description}
+                  defaultValue={product.description || ""}
                 />
                 <p>{fields.description.error}</p>
               </div>
