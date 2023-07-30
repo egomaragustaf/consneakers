@@ -1,7 +1,7 @@
 import { parse } from "@conform-to/react";
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 
 import { authenticator } from "~/services/auth.server";
 import { Layout } from "~/components";
@@ -30,6 +30,8 @@ export async function loader({ params }: LoaderArgs) {
 
 export default function ProductSlugRoute() {
   const { product } = useLoaderData<typeof loader>();
+  const { state } = useNavigation();
+  const busy = state === "submitting";
 
   if (!product) {
     return (
@@ -45,7 +47,9 @@ export default function ProductSlugRoute() {
         <pre>{JSON.stringify(product, null, 2)}</pre>
         <Form method="post">
           <input hidden name="id" defaultValue={product.id} />
-          <button type="submit">+ Keranjang</button>
+          <button type="submit" disabled={busy}>
+            {busy ? "Menunggu..." : "+ Keranjang"}
+          </button>
         </Form>
       </main>
     </Layout>
