@@ -29,6 +29,10 @@ export default function ProductActionRoute() {
           <p>this is admin page to manage product</p>
         </header>
 
+        <Link to={`/admin/products/new`}>
+          <button className="bg-green-400 p-2">Add New Product</button>
+        </Link>
+
         <table>
           <thead>
             <tr>
@@ -47,7 +51,7 @@ export default function ProductActionRoute() {
                   <td>{product.price}</td>
                   <td className="flex gap-2">
                     <Link to={`/admin/products/edit/${product.slug}`}>
-                      Edit
+                      <button className="bg-indigo-500">Edit</button>
                     </Link>
 
                     <Form method="POST">
@@ -65,9 +69,6 @@ export default function ProductActionRoute() {
             })}
           </tbody>
         </table>
-        <Link to={`/admin/products/new`}>
-          <button className="bg-green-400 p-2">Add New Product</button>
-        </Link>
       </main>
     </Layout>
   );
