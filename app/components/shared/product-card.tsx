@@ -10,6 +10,8 @@ import {
 
 interface Props {
   product: Product & {
+    slug: string;
+    imageURL: string;
     name: string;
     price: number;
     description: string;
@@ -20,7 +22,7 @@ export function ProductCard({ product }: Props) {
   return (
     <Card>
       <CardHeader>
-        <img src="https://via.placeholder.com/192x192" alt="dummy" />
+        <img src={product.imageURL} alt={product.slug} />
       </CardHeader>
       <CardTitle>{product.name}</CardTitle>
       <CardDescription>{product.description}</CardDescription>
