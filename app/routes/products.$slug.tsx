@@ -43,14 +43,25 @@ export default function ProductSlugRoute() {
 
   return (
     <Layout>
-      <main className="w-full flex flex-col gap-8 justify-center items-center">
-        <pre>{JSON.stringify(product, null, 2)}</pre>
-        <Form method="post">
-          <input hidden name="id" defaultValue={product.id} />
-          <button type="submit" disabled={busy}>
-            {busy ? "Menunggu..." : "+ Keranjang"}
-          </button>
-        </Form>
+      <main className="w-full flex gap-8 justify-center items-start">
+        <img
+          src={product.imageURL || ""}
+          alt={product.slug}
+          className="max-w-lg"
+        />
+
+        <div>
+          <h1>{product.name}</h1>
+          <p>{product.description}</p>
+          <h2>Rp {product.price.toLocaleString("id-ID")}</h2>
+
+          <Form method="post">
+            <input hidden name="id" defaultValue={product.id} />
+            <button type="submit" disabled={busy}>
+              {busy ? "Menunggu..." : "+ Keranjang"}
+            </button>
+          </Form>
+        </div>
       </main>
     </Layout>
   );
