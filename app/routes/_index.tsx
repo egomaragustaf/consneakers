@@ -13,36 +13,73 @@ export const meta: V2_MetaFunction = () => {
 
 export async function loader() {
   const products = await prisma.product.findMany({
-    take: 10,
+    take: 15,
   });
 
-  return json({ products });
+  const popularProducts = await prisma.product.findMany({
+    take: 8,
+  });
+
+  return json({ products, popularProducts });
 }
 
 export default function Index() {
+  return (
+    <Layout>
+      <LandingPopularProduct />
+      <LandingAllProduct />
+    </Layout>
+  );
+}
+
+export function LandingPopularProduct() {
+  const { popularProducts } = useLoaderData<typeof loader>();
+
+  return (
+    <main className="w-full flex flex-col gap-8 justify-center items-center">
+      <header className="w-full max-w-7xl">
+        <h1 className="text-2xl font-bold">Popular Products</h1>
+      </header>
+
+      <section className="w-full max-w-7xl flex justify-center items-center">
+        <ul className="flex gap-4">
+          {popularProducts.map((product) => {
+            return (
+              <li key={product.id}>
+                <Link to={`/products/${product.slug}`}>
+                  <ProductCard product={product as any} />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    </main>
+  );
+}
+
+export function LandingAllProduct() {
   const { products } = useLoaderData<typeof loader>();
 
   return (
-    <Layout>
-      <main className="w-full flex flex-col gap-8 justify-center items-center">
-        <header className="w-full max-w-7xl">
-          <h1 className="text-2xl font-bold">All Product</h1>
-        </header>
+    <main className="w-full flex flex-col gap-8 justify-center items-center">
+      <header className="w-full max-w-7xl">
+        <h1 className="text-2xl font-bold">All Product</h1>
+      </header>
 
-        <section className="w-full max-w-7xl flex justify-center items-center">
-          <ul className="grid grid-cols-5 gap-4">
-            {products.map((product) => {
-              return (
-                <li key={product.id}>
-                  <Link to={`/products/${product.slug}`}>
-                    <ProductCard product={product as any} />
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      </main>
-    </Layout>
+      <section className="w-full max-w-7xl flex justify-center items-center">
+        <ul className="grid grid-cols-5 gap-4">
+          {products.map((product) => {
+            return (
+              <li key={product.id}>
+                <Link to={`/products/${product.slug}`}>
+                  <ProductCard product={product as any} />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    </main>
   );
 }
