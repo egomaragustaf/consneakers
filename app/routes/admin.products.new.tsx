@@ -21,6 +21,7 @@ const schema = zfd.formData({
   name: zfd.text(),
   price: zfd.numeric(z.number().min(0).max(100_000_000)),
   description: zfd.text(),
+  imageURL: zfd.text(),
 });
 
 export default function FormRoute() {
@@ -72,6 +73,17 @@ export default function FormRoute() {
               {...conform.input(fields.description)}
               id="description"
               className="w-full px-2 py-1 rounded-md border-gray-300 border"
+            />
+            <p>{fields.description.error}</p>
+          </div>
+
+          <div>
+            <label htmlFor="imageURL">Add Image:</label>
+            <input
+              {...conform.input(fields.imageURL)}
+              id="imageURL"
+              className="w-full px-2 py-1 rounded-md border-gray-300 border"
+              accept="image/png, image/jpeg"
             />
             <p>{fields.description.error}</p>
           </div>
