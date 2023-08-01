@@ -2,11 +2,12 @@ import type { Product } from "@prisma/client";
 
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "~/components";
 
 interface Props {
   product: Product & {
@@ -24,9 +25,11 @@ export function ProductCard({ product }: Props) {
       <CardHeader>
         <img src={product.imageURL} alt={product.slug} />
       </CardHeader>
-      <CardTitle>{product.name}</CardTitle>
-      <CardDescription>{product.description}</CardDescription>
-      <CardFooter>Rp {product.price.toLocaleString("id-ID")}</CardFooter>
+      <CardContent>
+        <CardTitle>{product.name}</CardTitle>
+        <CardDescription>{product.description}</CardDescription>
+        <CardFooter>Rp {product.price.toLocaleString("id-ID")}</CardFooter>
+      </CardContent>
     </Card>
   );
 }

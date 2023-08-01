@@ -1,7 +1,7 @@
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Layout } from "~/components/layout/layout";
-import { ProductCard } from "~/components/shared/product-card";
+import { ProductCard } from "~/components";
 import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {
@@ -25,13 +25,11 @@ export default function Index() {
   return (
     <Layout>
       <main className="w-full flex flex-col gap-8 justify-center items-center">
-        <header className="space-y-2">
-          <h1 className="text-2xl">Consneakers</h1>
-          <p>It’s Converse for Comfort.</p>
+        <header className="w-full max-w-7xl">
+          <h1 className="text-2xl font-bold">All Product</h1>
         </header>
 
-        {/* <pre>{JSON.stringify(products, null, 2)}</pre> */}
-        <div className="w-full max-w-6xl flex justify-center items-center">
+        <section className="w-full max-w-7xl flex justify-center items-center">
           <ul className="grid grid-cols-5 gap-4">
             {products.map((product) => {
               return (
@@ -43,7 +41,7 @@ export default function Index() {
               );
             })}
           </ul>
-        </div>
+        </section>
       </main>
     </Layout>
   );

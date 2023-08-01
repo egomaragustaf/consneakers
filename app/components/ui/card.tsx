@@ -6,7 +6,7 @@ const Card = React.forwardRef<
 >((props, ref) => (
   <div
     ref={ref}
-    className="w-48 h-full flex flex-col bg-white hover:bg-slate-50 border border-gray-200 rounded-lg shadow"
+    className="w-60 h-full flex flex-col bg-white hover:bg-slate-50 border border-gray-200 rounded-lg shadow"
     {...props}
   />
 ));
@@ -17,6 +17,14 @@ const CardHeader = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >((props, ref) => <div ref={ref} className="w-full mb-4" {...props} />);
 CardHeader.displayName = "CardHeader";
+
+const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className="flex flex-col gap-1 h-full p-2" {...props} />
+));
+CardContent.displayName = "CardContent";
 
 const CardTitle = React.forwardRef<
   HTMLDivElement,
@@ -33,13 +41,26 @@ CardTitle.displayName = "CardTitle";
 const CardDescription = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->((props, ref) => <div ref={ref} className="text-base" {...props} />);
+>((props, ref) => <div ref={ref} className="text-sm" {...props} />);
 CardDescription.displayName = "CardDescription";
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->((props, ref) => <div ref={ref} className="font-bold mt-auto" {...props} />);
+>((props, ref) => (
+  <div
+    ref={ref}
+    className="font-bold text-lg text-rose-700 mt-auto"
+    {...props}
+  />
+));
 CardFooter.displayName = "CardFooter";
 
-export { Card, CardHeader, CardTitle, CardDescription, CardFooter };
+export {
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+};
