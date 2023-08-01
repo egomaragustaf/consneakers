@@ -13,11 +13,11 @@ export const meta: V2_MetaFunction = () => {
 
 export async function loader() {
   const products = await prisma.product.findMany({
-    take: 15,
+    take: 10,
   });
 
   const popularProducts = await prisma.product.findMany({
-    take: 8,
+    take: 4,
   });
 
   return json({ products, popularProducts });
@@ -42,7 +42,7 @@ export function LandingPopularProduct() {
       </header>
 
       <section className="w-full max-w-7xl flex justify-center items-center">
-        <ul className="flex gap-4">
+        <ul className="flex gap-8">
           {popularProducts.map((product) => {
             return (
               <li key={product.id}>
