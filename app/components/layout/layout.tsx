@@ -7,7 +7,7 @@ interface Props {
 
 export function Layout({ children }: Props) {
   return (
-    <div className="px-4 flex flex-col w-full gap-8">
+    <div className="flex flex-col w-full gap-8">
       <Navigation />
       <main>{children}</main>
       <Footer />
