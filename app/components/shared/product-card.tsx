@@ -23,7 +23,11 @@ export function ProductCard({ product }: Props) {
   return (
     <Card>
       <CardHeader>
-        <img src={product.imageURL} alt={product.slug} />
+        <img
+          src={product.imageURL}
+          alt={product.slug}
+          className="rounded-t-lg"
+        />
       </CardHeader>
       <CardContent>
         <CardTitle>{product.name}</CardTitle>

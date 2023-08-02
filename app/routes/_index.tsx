@@ -42,7 +42,7 @@ export function LandingPopularProduct() {
       </header>
 
       <section className="w-full max-w-7xl flex justify-center items-center">
-        <ul className="flex gap-8">
+        <ul className="grid grid-cols-4 gap-12">
           {popularProducts.map((product) => {
             return (
               <li key={product.id}>
