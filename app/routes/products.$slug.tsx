@@ -4,8 +4,8 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 
 import { authenticator } from "~/services/auth.server";
-import { Layout } from "~/components";
 import { prisma } from "~/db.server";
+import { Layout, Button } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -30,8 +30,8 @@ export async function loader({ params }: LoaderArgs) {
 
 export default function ProductSlugRoute() {
   const { product } = useLoaderData<typeof loader>();
-  const { state } = useNavigation();
-  const busy = state === "submitting";
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
   if (!product) {
     return (
@@ -43,25 +43,37 @@ export default function ProductSlugRoute() {
 
   return (
     <Layout>
-      <main className="w-full flex gap-8 justify-center items-start">
-        <img
-          src={product.imageURL || ""}
-          alt={product.slug}
-          className="max-w-lg"
-        />
+      <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
+        <article className="flex gap-8 w-full max-w-4xl">
+          <img
+            src={product.imageURL || ""}
+            alt={product.slug}
+            className="max-w-md rounded-md border border-slate-200"
+          />
 
-        <div>
-          <h1>{product.name}</h1>
-          <p>{product.description}</p>
-          <h2>Rp {product.price.toLocaleString("id-ID")}</h2>
+          <div className="flex flex-col flex-grow gap-4 w-1/3">
+            <header className="text-2xl font-bold">
+              <h1>{product.name}</h1>
+            </header>
+            <section className="flex flex-col gap-2">
+              <h2 className="text-xl font-bold text-rose-700">
+                Rp {product.price.toLocaleString("id-ID")}
+              </h2>
+              <p>Desciption: {product.description}</p>
+              <span>Color:</span>
+              <span>Size:</span>
+            </section>
 
-          <Form method="post">
-            <input hidden name="id" defaultValue={product.id} />
-            <button type="submit" disabled={busy}>
-              {busy ? "Menunggu..." : "+ Keranjang"}
-            </button>
-          </Form>
-        </div>
+            <Form
+              method="post"
+              className="flex justify-center items-center mt-10">
+              <input hidden name="id" defaultValue={product.id} />
+              <Button type="submit" disabled={isSubmitting} className="w-full">
+                {isSubmitting ? "Menunggu..." : "+ Keranjang"}
+              </Button>
+            </Form>
+          </div>
+        </article>
       </main>
     </Layout>
   );
