@@ -3,12 +3,16 @@ import { SearchForm } from "~/components";
 
 export function Navigation() {
   return (
-    <header className="z-10 flex w-full items-center justify-between gap-6 px-20 bg-zinc-800 text-white">
-      <div>
-        <Link to={`/`}>
-          <span>CONSNEAKERS</span>
-        </Link>
-      </div>
+    <header className="z-10 fixed flex w-full items-center justify-between gap-6 px-20 bg-zinc-800 text-white">
+      <Link to={`/`}>
+        <span>
+          <img
+            src="/images/logo-consneakers.png"
+            alt="logo-consneakers"
+            className="w-16"
+          />
+        </span>
+      </Link>
 
       <div className="w-full py-4 flex flex-col gap-2">
         <SearchForm />
