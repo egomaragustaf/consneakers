@@ -1,7 +1,7 @@
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Layout } from "~/components/layout/layout";
-import { ProductCard } from "~/components";
+import { BannerCarousel, ProductCard } from "~/components";
 import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {
@@ -36,9 +36,7 @@ export default function Index() {
 export function LandingHero() {
   return (
     <article className="w-full flex flex-col gap-4 justify-center items-center">
-      <section>
-        <img src="/images/banner-1.png" alt="banner-1" className="rounded-lg" />
-      </section>
+      <BannerCarousel />
     </article>
   );
 }
