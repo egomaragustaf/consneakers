@@ -35,7 +35,7 @@ export default function Index() {
 
 export function LandingHero() {
   return (
-    <article className="w-full flex flex-col gap-8 justify-center items-center">
+    <article className="w-full flex flex-col gap-4 justify-center items-center">
       <section>
         <img src="/images/banner-1.png" alt="banner-1" className="rounded-lg" />
       </section>
@@ -47,7 +47,7 @@ export function LandingPopularProduct() {
   const { popularProducts } = useLoaderData<typeof loader>();
 
   return (
-    <article className="w-full flex flex-col gap-8 justify-center items-center">
+    <article className="w-full flex flex-col gap-4 justify-center items-center">
       <header className="w-full max-w-7xl">
         <h1 className="text-2xl font-bold">Popular Products</h1>
       </header>
@@ -73,7 +73,7 @@ export function LandingAllProduct() {
   const { products } = useLoaderData<typeof loader>();
 
   return (
-    <article className="w-full flex flex-col gap-8 justify-center items-center">
+    <article className="w-full flex flex-col gap-4 justify-center items-center">
       <header className="w-full max-w-7xl">
         <h1 className="text-2xl font-bold">All Product</h1>
       </header>
