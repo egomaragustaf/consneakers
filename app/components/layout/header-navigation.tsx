@@ -3,13 +3,13 @@ import { SearchForm } from "~/components";
 
 export function Navigation() {
   return (
-    <header className="z-10 fixed flex w-full items-center justify-between gap-6 px-20 bg-zinc-800 text-white">
+    <header className="z-10 fixed flex w-full items-center justify-between gap-6 px-4 md:px-20 bg-zinc-800 text-white">
       <Link to={`/`}>
         <span>
           <img
             src="/images/logo-consneakers.png"
             alt="logo-consneakers"
-            className="w-16"
+            className="w-12 md:w-16"
           />
         </span>
       </Link>
@@ -28,7 +28,7 @@ export function Navigation() {
         </nav>
       </div>
 
-      <div>
+      <div className="text-sm">
         <Link to={`/dashboard`}>
           <span>Login</span>
         </Link>

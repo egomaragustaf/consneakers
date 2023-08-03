@@ -37,7 +37,7 @@ export function BannerCarousel() {
   };
 
   return (
-    <div className="max-w-7xl h-[354px] w-full m-auto relative group">
+    <div className="max-w-7xl md:h-[354px] h-44 w-full m-auto relative group">
       <div
         style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
         className="w-full h-full rounded-2xl bg-center bg-cover duration-500"></div>
