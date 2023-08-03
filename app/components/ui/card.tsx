@@ -6,7 +6,7 @@ const Card = React.forwardRef<
 >((props, ref) => (
   <div
     ref={ref}
-    className="w-60 h-full flex flex-col bg-white hover:bg-slate-100 border border-gray-200 rounded-lg shadow"
+    className="w-40 md:w-60 h-full flex flex-col bg-white hover:bg-slate-100 border border-gray-200 rounded-lg shadow"
     {...props}
   />
 ));
