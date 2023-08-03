@@ -13,6 +13,9 @@ export function BannerCarousel() {
     {
       url: "/images/banner-3.png",
     },
+    {
+      url: "/images/banner-4.png",
+    },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
