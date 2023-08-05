@@ -1,8 +1,8 @@
 import { json, type LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
-import { authenticator } from "~/services";
 
+import { authenticator } from "~/services";
 import {
   Layout,
   Table,
@@ -18,6 +18,7 @@ interface Product {
   id: string;
   name: string;
   price: number;
+  description: string | null;
   imageURL: string | null;
 }
 
@@ -88,6 +89,7 @@ export default function Route() {
                   <TableRow>
                     <TableHead className="w-[100px]">Image</TableHead>
                     <TableHead>Name</TableHead>
+                    <TableHead>Description</TableHead>
                     <TableHead className="text-right">Price</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -101,6 +103,7 @@ export default function Route() {
                         />
                       </TableCell>
                       <TableCell>{cartItem.product.name}</TableCell>
+                      <TableCell>{cartItem.product.description}</TableCell>
                       <TableCell className="text-right">
                         {cartItem.product.price}
                       </TableCell>
