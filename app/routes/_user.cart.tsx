@@ -1,6 +1,7 @@
 import { json, type LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
+import { MdOutlineDelete } from "react-icons/md";
 
 import { authenticator } from "~/services";
 import {
@@ -113,9 +114,12 @@ export default function Route() {
                           cartItem.product.price * cartItem.quantity
                         ).toLocaleString("id-ID")}
                       </TableCell>
-                      <TableCell className="flex gap-2">
+                      <TableCell className="flex justify-center items-center gap-2">
                         <Button>-</Button>
                         <Button>+</Button>
+                        <Button variant={"destructive"}>
+                          <MdOutlineDelete className="text-lg"></MdOutlineDelete>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
