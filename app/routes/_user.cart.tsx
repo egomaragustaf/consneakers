@@ -4,10 +4,10 @@ import { prisma } from "~/db.server";
 
 import { authenticator } from "~/services";
 import {
+  Button,
   Layout,
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -84,15 +84,16 @@ export default function Route() {
 
             <section className="flex flex-col gap-2">
               <Table>
-                <TableCaption>A list of your recent invoices.</TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[100px]">Image</TableHead>
                     <TableHead>Name</TableHead>
-                    <TableHead>Description</TableHead>
+                    <TableHead>Quantity</TableHead>
                     <TableHead className="text-right">Price</TableHead>
+                    <TableHead>Action</TableHead>
                   </TableRow>
                 </TableHeader>
+
                 <TableBody>
                   {cart.cartItems.map((cartItem) => (
                     <TableRow key={cartItem.id}>
@@ -103,14 +104,36 @@ export default function Route() {
                         />
                       </TableCell>
                       <TableCell>{cartItem.product.name}</TableCell>
-                      <TableCell>{cartItem.product.description}</TableCell>
+                      <TableCell className="text-center">
+                        {cartItem.quantity}
+                      </TableCell>
                       <TableCell className="text-right">
-                        Rp {cartItem.product.price.toLocaleString("id-ID")}
+                        Rp{" "}
+                        {(
+                          cartItem.product.price * cartItem.quantity
+                        ).toLocaleString("id-ID")}
+                      </TableCell>
+                      <TableCell className="flex gap-2">
+                        <Button>-</Button>
+                        <Button>+</Button>
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
+
+                <TableBody className="text-xl">
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell>Total Price</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell className="text-right text-rose-700 font-bold">
+                      Rp {cart.totalPrice.toLocaleString("id-ID")}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
               </Table>
+
+              <Button>CHECKOUT</Button>
             </section>
           </div>
         </article>
