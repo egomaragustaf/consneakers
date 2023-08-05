@@ -1,13 +1,24 @@
 import { json, type LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { Layout } from "~/components";
 import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
+
+import {
+  Layout,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components";
 
 interface Product {
   id: string;
   name: string;
   price: number;
+  imageURL: string | null;
 }
 
 interface CartItem {
@@ -69,15 +80,34 @@ export default function Route() {
             <header className="text-2xl font-bold">
               <section className="flex flex-col gap-2"></section>
             </header>
+
             <section className="flex flex-col gap-2">
-              {cart.cartItems.map((cartItem) => (
-                <ul key={cartItem.id}>
-                  <li>Product name: {cartItem.product.name}</li>
-                  <li>Quantity: {cartItem.quantity}</li>
-                  <li>Price: {cartItem.product.price * cartItem.quantity}</li>
-                  <li>Total price: {cart.totalPrice}</li>
-                </ul>
-              ))}
+              <Table>
+                <TableCaption>A list of your recent invoices.</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[100px]">Image</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead className="text-right">Price</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {cart.cartItems.map((cartItem) => (
+                    <TableRow key={cartItem.id}>
+                      <TableCell className="font-medium">
+                        <img
+                          src={cartItem.product.imageURL || ""}
+                          alt={cartItem.product.name}
+                        />
+                      </TableCell>
+                      <TableCell>{cartItem.product.name}</TableCell>
+                      <TableCell className="text-right">
+                        {cartItem.product.price}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </section>
           </div>
         </article>
