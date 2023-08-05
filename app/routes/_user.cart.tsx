@@ -105,7 +105,7 @@ export default function Route() {
                       <TableCell>{cartItem.product.name}</TableCell>
                       <TableCell>{cartItem.product.description}</TableCell>
                       <TableCell className="text-right">
-                        {cartItem.product.price}
+                        Rp {cartItem.product.price.toLocaleString("id-ID")}
                       </TableCell>
                     </TableRow>
                   ))}
