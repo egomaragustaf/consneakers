@@ -43,7 +43,7 @@ export default function ProductSlugRoute() {
 
   return (
     <Layout>
-      <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
+      <main className="w-full max-w-7xl flex gap-8 justify-center items-start mt-32 md:mt-40">
         <article className="flex gap-8 w-full max-w-4xl">
           <img
             src={product.imageURL || ""}
@@ -59,9 +59,10 @@ export default function ProductSlugRoute() {
               <h2 className="text-xl font-bold text-rose-700">
                 Rp {product.price.toLocaleString("id-ID")}
               </h2>
-              <p>Desciption: {product.description}</p>
-              <span>Color:</span>
-              <span>Size:</span>
+              <p>{product.description}</p>
+              <span className="font-semibold">
+                Sold Quantity: {product.soldQuantity}
+              </span>
             </section>
 
             <Form

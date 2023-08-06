@@ -15,6 +15,7 @@ interface Props {
     imageURL: string;
     name: string;
     price: number;
+    soldQuantity: number;
     description: string;
   };
 }
