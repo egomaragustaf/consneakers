@@ -35,7 +35,7 @@ export default function Index() {
 
 export function LandingHero() {
   return (
-    <article className="w-full flex flex-col gap-4 justify-center items-center">
+    <article className="w-full flex flex-col gap-4 justify-center items-center mt-32 md:mt-40">
       <BannerCarousel />
     </article>
   );
