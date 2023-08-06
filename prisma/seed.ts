@@ -20,6 +20,10 @@ async function main() {
 
   await prisma.product.deleteMany();
 
+  await prisma.cart.deleteMany()
+  
+  await prisma.cartItem.deleteMany()
+
   const newProducts = dataProducts.map((product) => {
     return {
       slug: slugify(product.name),
@@ -27,12 +31,14 @@ async function main() {
       price: product.price,
       description: product.description,
       imageURL: product.imageURL,
+      soldQuantity: product.soldQuantity || 0,
     };
   });
 
   await prisma.product.createMany({
     data: newProducts,
   });
+  console.log(`New products created`)
 }
 
 main()
