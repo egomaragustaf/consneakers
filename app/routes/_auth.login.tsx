@@ -57,7 +57,7 @@ export default function FormRoute() {
           <img
             src="/images/login.png"
             alt="login"
-            className="max-w-xl rounded-lg"
+            className="max-w-xl rounded-md"
           />
         </section>
       </div>
