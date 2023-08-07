@@ -1,7 +1,10 @@
 import { Link } from "@remix-run/react";
 import { SearchForm } from "~/components";
+import { useRootLoaderData } from "~/hooks";
 
 export function Navigation() {
+  const { userSession } = useRootLoaderData();
+
   return (
     <header className="z-10 fixed flex w-full items-center justify-between gap-6 px-4 md:px-20 bg-zinc-800 text-white">
       <Link to={`/`}>
@@ -29,9 +32,17 @@ export function Navigation() {
       </div>
 
       <div className="text-sm">
-        <Link to={`/dashboard`}>
-          <span>Login</span>
-        </Link>
+        {!userSession && (
+          <Link to={`/login`}>
+            <span>Login</span>
+          </Link>
+        )}
+
+        {userSession && (
+          <Link to={`/logout`}>
+            <span>Logout</span>
+          </Link>
+        )}
       </div>
     </header>
   );

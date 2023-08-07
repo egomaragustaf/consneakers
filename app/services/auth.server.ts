@@ -3,9 +3,9 @@ import { FormStrategy } from "remix-auth-form";
 import { prisma } from "~/db.server";
 import { sessionStorage } from "~/services/session.server";
 
-type UserSession = {
-  id: string;
-};
+export interface UserSession {
+  id?: string
+}
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
