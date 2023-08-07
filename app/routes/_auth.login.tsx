@@ -29,7 +29,7 @@ export default function FormRoute() {
 
   return (
     <Layout>
-      <div className="w-full grid flex-col items-center justify-center max-w-none grid-cols-2 mt-32 md:mt-40">
+      <div className="w-full md:grid flex flex-col-reverse md:flex-col items-center justify-center max-w-none grid-cols-2 mt-32 md:mt-40">
         <section className="space-y-6 mx-auto flex w-full max-w-md flex-col p-8">
           <Form id="user-auth-form" method="POST" {...form.props}>
             <div className="flex flex-col gap-4">
@@ -57,7 +57,7 @@ export default function FormRoute() {
           <img
             src="/images/login.png"
             alt="login"
-            className="max-w-xl rounded-md"
+            className="w-72 md:w-full md:max-w-xl rounded-md"
           />
         </section>
       </div>
