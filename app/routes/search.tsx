@@ -44,19 +44,23 @@ export default function Route() {
       <div className="w-full flex flex-col gap-4 justify-center items-center mt-32 md:mt-40">
         {!query && (
           <section>
-            <p>Enter your search keyword above</p>
+            <h2 className="text-2xl font-bold">
+              Please, enter your search keyword above!
+            </h2>
           </section>
         )}
 
         {count <= 0 && query && (
           <section>
-            <p>No result found for keyword "{query}"</p>
+            <h2 className="text-2xl font-bold">
+              No result found for keyword "{query}"
+            </h2>
           </section>
         )}
 
         {products.length > 0 && (
           <section className="space-y-2">
-            <h2 className="text-zinc-800">Products</h2>
+            <h1 className="text-2xl font-bold">Products</h1>
             <p className="text-muted-foreground">
               Found {products.length} with keyword "{query}"
             </p>
