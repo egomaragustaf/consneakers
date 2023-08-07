@@ -1,4 +1,5 @@
 import { useSearchParams } from "@remix-run/react";
+import { FaSearch } from "react-icons/fa";
 import { Input } from "~/components";
 
 interface Props {
@@ -16,8 +17,8 @@ export function SearchForm({
 
   return (
     <form method="GET" action={action} className="w-full">
-      <fieldset className="relative flex items-center gap-1">
-        <label htmlFor="search" hidden />
+      <fieldset className="group relative flex items-center gap-1">
+        <label htmlFor="search" />
         <Input
           id="search"
           type="search"
@@ -25,8 +26,11 @@ export function SearchForm({
           placeholder={placeholder}
           defaultValue={query}
           autoComplete="off"
-          className="max-w-3xl bg-zinc-700 focus:bg-zinc-100 transition duration-100 text-black"
+          className="block px-3 ps-12 w-full max-w-3xl bg-zinc-700 focus:bg-zinc-100 transition duration-100 text-black"
         />
+        <span className="pointer-events-none absolute flex ps-3">
+          <FaSearch className="h-6 w-6 text-muted-foreground group-focus-within:text-rose-700" />
+        </span>
       </fieldset>
     </form>
   );
