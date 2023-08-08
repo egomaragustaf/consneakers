@@ -46,7 +46,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   if (!existingCart) {
     const newCart = await prisma.cart.create({
-      data: { userId: userSession.id },
+      data: { userId: userSession.id || "" },
       include: { cartItems: { include: { product: true } } },
     });
     return json({ cart: newCart });

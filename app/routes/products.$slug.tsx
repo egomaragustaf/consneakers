@@ -5,7 +5,7 @@ import { Form, useLoaderData, useNavigation } from "@remix-run/react";
 
 import { authenticator } from "~/services/auth.server";
 import { prisma } from "~/db.server";
-import { Layout, Button } from "~/components";
+import { Layout, ButtonLoading } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -69,9 +69,13 @@ export default function ProductSlugRoute() {
               method="post"
               className="flex justify-center items-center mt-10">
               <input hidden name="id" defaultValue={product.id} />
-              <Button type="submit" disabled={isSubmitting} className="w-full">
-                {isSubmitting ? "Menunggu..." : "+ Keranjang"}
-              </Button>
+              <ButtonLoading
+                type="submit"
+                isSubmitting={isSubmitting}
+                submittingText="Adding to Cart..."
+                className="w-full">
+                + Add to Cart
+              </ButtonLoading>
             </Form>
           </div>
         </article>
@@ -100,7 +104,7 @@ export const action = async ({ request }: ActionArgs) => {
   if (!existingCart) {
     await prisma.cart.create({
       data: {
-        userId: userSession.id,
+        userId: userSession.id || "",
         cartItems: { create: productToAdd },
       },
     });
