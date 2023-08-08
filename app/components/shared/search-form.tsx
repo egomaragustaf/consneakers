@@ -29,7 +29,7 @@ export function SearchForm({
           className="block px-3 ps-12 w-full max-w-3xl bg-zinc-700 focus:bg-zinc-100 transition duration-100 text-black"
         />
         <span className="pointer-events-none absolute flex ps-3">
-          <FaSearch className="h-6 w-6 text-muted-foreground group-focus-within:text-rose-700" />
+          <FaSearch className="h-6 w-6 text-muted-foreground group-focus-within:text-primary" />
         </span>
       </fieldset>
     </form>

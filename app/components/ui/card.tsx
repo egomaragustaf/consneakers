@@ -50,7 +50,7 @@ const CardFooter = React.forwardRef<
 >((props, ref) => (
   <div
     ref={ref}
-    className="font-bold text-lg text-rose-700 mt-auto"
+    className="font-bold text-lg text-primary mt-auto"
     {...props}
   />
 ));
