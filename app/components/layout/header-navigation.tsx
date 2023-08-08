@@ -33,15 +33,28 @@ export function Navigation() {
 
       <div className="text-sm">
         {!userSession && (
-          <Link to={`/login`}>
-            <span>Login</span>
-          </Link>
+          <div className="flex justify-center items-center gap-4">
+            <Link to={`/login`}>
+              <span>Login</span>
+            </Link>
+            <Link to={`/register`}>
+              <span>Register</span>
+            </Link>
+          </div>
         )}
 
         {userSession && (
-          <Link to={`/logout`}>
-            <span>Logout</span>
-          </Link>
+          <div className="flex justify-center items-center gap-4">
+            <Link to={`/logout`}>
+              <span>Logout</span>
+            </Link>
+            <Link to={`/dashboard`}>
+              <span>Dashboard</span>
+            </Link>
+            <Link to={`/cart`}>
+              <span>Cart</span>
+            </Link>
+          </div>
         )}
       </div>
     </header>

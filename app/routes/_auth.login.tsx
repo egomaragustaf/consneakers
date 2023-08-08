@@ -1,7 +1,7 @@
 import type { LoaderArgs, ActionArgs } from "@remix-run/node";
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 
@@ -31,6 +31,13 @@ export default function FormRoute() {
     <Layout>
       <div className="w-full md:grid flex flex-col-reverse md:flex-col items-center justify-center max-w-none grid-cols-2 mt-32 md:mt-40">
         <section className="space-y-6 mx-auto flex w-full max-w-md flex-col p-8">
+          <h1>Login</h1>
+          <p className="inline-flex flex-wrap gap-1 text-muted-foreground">
+            <span>New customers?</span>
+            <Link to={`/register`} className="hover-opacity font-bold">
+              Sign Up
+            </Link>
+          </p>
           <Form id="user-auth-form" method="POST" {...form.props}>
             <div className="flex flex-col gap-4">
               <div className="space-y-2">
