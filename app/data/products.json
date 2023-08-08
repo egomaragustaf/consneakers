@@ -2,74 +2,85 @@
   {
     "name": "Converse CT 70s Ox Black Egret",
     "price": 999000,
-    "description": "Black Egret",
-    "soldQuantity": 5,
+    "description": "Black egret",
+    "soldQuantity": 15,
     "imageURL": "https://ucarecdn.com/ba9550ad-7732-4562-9e0e-0d7bcd7ed575/"
   },
   {
     "name": "Converse Chuck 70 Ox Sage",
     "price": 649000,
     "description": "Chuck ox sage",
-    "imageURL": "https://ucarecdn.com/b9b73afb-e384-46f3-b058-c4ac8b9aa014/"
+    "soldQuantity": 20,
+    "imageURL": "https://ucarecdn.com/2280c999-d0fc-41eb-9783-18061ef49ce9/"
   },
   {
     "name": "Converse Cons Louie Lopez Pro Mid Leather Black",
     "price": 749000,
-    "description": "Louie Lopez Leather Black",
-    "imageURL": "https://ucarecdn.com/86233efd-738e-4bfa-8c43-89346f855e35/"
+    "description": "Louie lopez leather black",
+    "soldQuantity": 35,
+    "imageURL": "https://ucarecdn.com/1587eacc-5a77-41c8-a744-aef0a5b4e123/"
   },
   {
     "name": "Converse Chuck 70 Ox Enamel Red",
     "price": 499000,
     "description": "Chuck enamel red",
-    "imageURL": "https://ucarecdn.com/3f0e8d2b-928d-487f-9277-b3448cf40e93/"
+    "soldQuantity": 22,
+    "imageURL": "https://ucarecdn.com/c654cd94-90e4-41ab-90a1-7ddf497119ac/"
   },
   {
     "name": "Converse Chuck Taylor All Star Malden Street Mid White",
     "price": 549000,
     "description": "Convere mid white",
-    "imageURL": "https://ucarecdn.com/62d8a5ab-dab4-46b1-91d2-a5cfe033a030/"
+    "soldQuantity": 15,
+    "imageURL": "https://ucarecdn.com/848bd9a0-ccff-4bb5-acb9-9229b7f15a1a/"
   },
   {
     "name": "Converse Chuck Taylor All Star Hi Denim Egret",
     "price": 649000,
     "description": "Converse denim",
-    "imageURL": "https://ucarecdn.com/725d8062-4612-4699-ad8d-eec40cbad1c9/"
+    "soldQuantity": 34,
+    "imageURL": "https://ucarecdn.com/662c0827-5d60-4d2d-9bfa-f8b0a79bb861/"
   },
   {
     "name": "Converse Chuck 70 Ox Dark Beetroot",
     "price": 599000,
     "description": "Converse dark beetroot",
-    "imageURL": "https://ucarecdn.com/9513c3b0-7e8e-4af9-a5d5-43dfa0f33aab/"
+    "soldQuantity": 28,
+    "imageURL": "https://ucarecdn.com/fec0d499-248b-403c-89d4-178e46dd24d5/"
   },
   {
     "name": "Converse Chuck 70 Ox Desert Cargo",
     "price": 599000,
     "description": "Converse desert cargo",
-    "imageURL": "https://ucarecdn.com/42bef446-2b25-46d7-9c28-6caeeb11c1ca/"
+    "soldQuantity": 33,
+    "imageURL": "https://ucarecdn.com/d380ef3e-3051-40fe-9d4f-6aa3136e0c69/"
   },
   {
     "name": "Converse Chuck 70 Ox Muted Hues Midnight Clover",
     "price": 599000,
     "description": "Converse midnight clover",
-    "imageURL": "https://ucarecdn.com/2039999f-e31d-4b00-81db-93f6652399e7/"
+    "soldQuantity": 30,
+    "imageURL": "https://ucarecdn.com/ed4ea5f3-9d47-4242-832a-c379a58ce374/"
   },
   {
     "name": "Converse Chuck 70 Hi Spray Paint",
     "price": 799000,
     "description": "Converse spray paint",
-    "imageURL": "https://ucarecdn.com/9e63a823-f798-44ec-ae34-e846ee797c1b/"
+    "soldQuantity": 33,
+    "imageURL": "https://ucarecdn.com/3493d946-2949-4367-88bc-d1d213f987a3/"
   },
   {
     "name": "Converse Cons Louie Lopez Pro Mid Leather White",
     "price": 649000,
     "description": "Converse white",
-    "imageURL": "https://ucarecdn.com/7372446e-cd45-4834-aaa8-e643064ecd72/"
+    "soldQuantity": 10,
+    "imageURL": "https://ucarecdn.com/1e86b271-61a0-43f3-a58f-27c1035dac8a/"
   },
   {
     "name": "Converse Chuck 70 Ox Iron Grey",
     "price": 649000,
-    "description": "converse grey",
-    "imageURL": "https://ucarecdn.com/0a2cd5a6-95d4-4b62-ab95-58638bc333e7/"
+    "description": "Converse grey",
+    "soldQuantity": 5,
+    "imageURL": "https://ucarecdn.com/d05fd280-2e88-4613-af0d-2dd44289ac6f/"
   }
 ]
