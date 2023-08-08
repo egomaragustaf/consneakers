@@ -1,6 +1,8 @@
 import { Link } from "@remix-run/react";
-import { SearchForm } from "~/components";
+
+import { Avatar, AvatarImage, SearchForm } from "~/components";
 import { useRootLoaderData } from "~/hooks";
+import { createAvatarImageURL } from "~/utils";
 
 export function Navigation() {
   const { userSession } = useRootLoaderData();
@@ -33,7 +35,7 @@ export function Navigation() {
 
       <div className="text-sm">
         {!userSession && (
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-center items-center gap-8">
             <Link to={`/login`}>
               <span>Login</span>
             </Link>
@@ -44,16 +46,25 @@ export function Navigation() {
         )}
 
         {userSession && (
-          <div className="flex justify-center items-center gap-4">
-            <Link to={`/logout`}>
-              <span>Logout</span>
-            </Link>
+          <div className="flex justify-center items-center gap-8">
             <Link to={`/dashboard`}>
               <span>Dashboard</span>
             </Link>
             <Link to={`/cart`}>
               <span>Cart</span>
             </Link>
+            <Link to={`/logout`}>
+              <span>Logout</span>
+            </Link>
+            <Avatar>
+              <Link to={`/profile`}>
+                <AvatarImage
+                  className="w-8"
+                  src={createAvatarImageURL(userSession.id)}
+                  alt={userSession.id}
+                />
+              </Link>
+            </Avatar>
           </div>
         )}
       </div>
