@@ -5,7 +5,17 @@ import { MdOutlineDelete } from "react-icons/md";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 import { authenticator } from "~/services";
-import { Button, Layout, Separator } from "~/components";
+import {
+  Button,
+  Layout,
+  Separator,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components";
 
 interface Product {
   id: string;
@@ -69,56 +79,79 @@ export default function Route() {
   return (
     <Layout>
       <main className="w-full max-w-7xl flex gap-8 justify-center items-start mt-32 md:mt-40">
-        <article className="flex gap-8 w-full max-w-4xl">
-          <div className="flex flex-col flex-grow gap-4 w-1/3">
+        <article className="flex gap-16 w-full max-w-5xl">
+          <section className="flex flex-col gap-4 w-1/2 max-w-3xl">
             <header className="text-2xl font-bold">
-              <section className="flex flex-col gap-2"></section>
+              <h1>My Cart</h1>
             </header>
 
-            <section className="flex flex-col gap-4">
-              {cart.cartItems.map((cartItem) => (
-                <div key={cartItem.id} className="flex flex-col">
-                  <div className="flex">
-                    <img
-                      src={cartItem.product.imageURL || ""}
-                      alt={cartItem.product.name}
-                      className="w-24 rounded border-primary"
-                    />
-                    <Separator orientation="vertical" className="mx-2" />
+            {cart.cartItems.map((cartItem) => (
+              <div key={cartItem.id} className="flex flex-col">
+                <div className="flex">
+                  <img
+                    src={cartItem.product.imageURL || ""}
+                    alt={cartItem.product.name}
+                    className="w-24 rounded border-primary"
+                  />
+                  <Separator orientation="vertical" className="mx-2" />
 
-                    <div className="flex flex-col items-start justify-center">
-                      <h2>{cartItem.product.name}</h2>
-                      <p>Rp {cartItem.product.price.toLocaleString("id-ID")}</p>
-                      <h3 className="text-xl font-semibold text-primary">
-                        Rp{" "}
-                        {(
-                          cartItem.product.price * cartItem.quantity
-                        ).toLocaleString("id-ID")}
-                      </h3>
-                    </div>
-
-                    <div>
-                      <Button variant={"outline"}>
-                        <AiOutlineMinus className="text-lg" />
-                      </Button>
-                      <span>{cartItem.quantity}</span>
-                      <Button variant={"outline"}>
-                        <AiOutlinePlus className="text-lg" />
-                      </Button>
-                      <Button variant={"destructive"}>
-                        <MdOutlineDelete className="text-lg"></MdOutlineDelete>
-                      </Button>
-                    </div>
+                  <div className="flex flex-col items-start justify-center">
+                    <h2>{cartItem.product.name}</h2>
+                    <p>Rp {cartItem.product.price.toLocaleString("id-ID")}</p>
+                    <h3 className="text-xl font-semibold text-primary">
+                      Rp{" "}
+                      {(
+                        cartItem.product.price * cartItem.quantity
+                      ).toLocaleString("id-ID")}
+                    </h3>
                   </div>
-                  <Separator className="my-4" />
                 </div>
-              ))}
 
-              <div>Rp {cart.totalPrice.toLocaleString("id-ID")}</div>
+                <div className="flex items-center justify-between">
+                  <span>Available Stock:</span>
+                  <div className="flex gap-4 items-center">
+                    <Button variant={"outline"}>
+                      <AiOutlineMinus className="text-sm" />
+                    </Button>
+                    <span>{cartItem.quantity}</span>
+                    <Button variant={"outline"}>
+                      <AiOutlinePlus className="text-sm" />
+                    </Button>
+                    <Button variant={"destructive"}>
+                      <MdOutlineDelete className="text-sm"></MdOutlineDelete>
+                    </Button>
+                  </div>
+                </div>
+                <Separator className="my-4" />
+              </div>
+            ))}
+          </section>
 
-              <Button>CHECKOUT</Button>
-            </section>
-          </div>
+          <section className="flex flex-col gap-4 w-1/2 max-w-3xl">
+            <header className="text-2xl font-bold">
+              <h1>Cart Subtotal</h1>
+            </header>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Total Product:</TableHead>
+                  <TableHead>Total Discount:</TableHead>
+                  <TableHead>Total Price:</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>0</TableCell>
+                  <TableCell>0%</TableCell>
+                  <TableCell className="text-lg font-semibold text-primary">
+                    Rp {cart.totalPrice.toLocaleString("id-ID")}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+
+            <Button>CHECKOUT</Button>
+          </section>
         </article>
       </main>
     </Layout>
