@@ -2,18 +2,10 @@ import { json, type LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
 import { MdOutlineDelete } from "react-icons/md";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 import { authenticator } from "~/services";
-import {
-  Button,
-  Layout,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components";
+import { Button, Layout, Separator } from "~/components";
 
 interface Product {
   id: string;
@@ -83,59 +75,46 @@ export default function Route() {
               <section className="flex flex-col gap-2"></section>
             </header>
 
-            <section className="flex flex-col gap-2">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">Image</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Quantity</TableHead>
-                    <TableHead className="text-right">Price</TableHead>
-                    <TableHead>Action</TableHead>
-                  </TableRow>
-                </TableHeader>
+            <section className="flex flex-col gap-4">
+              {cart.cartItems.map((cartItem) => (
+                <div key={cartItem.id} className="flex flex-col">
+                  <div className="flex">
+                    <img
+                      src={cartItem.product.imageURL || ""}
+                      alt={cartItem.product.name}
+                      className="w-24 rounded border-primary"
+                    />
+                    <Separator orientation="vertical" className="mx-2" />
 
-                <TableBody>
-                  {cart.cartItems.map((cartItem) => (
-                    <TableRow key={cartItem.id}>
-                      <TableCell className="font-medium">
-                        <img
-                          src={cartItem.product.imageURL || ""}
-                          alt={cartItem.product.name}
-                        />
-                      </TableCell>
-                      <TableCell>{cartItem.product.name}</TableCell>
-                      <TableCell className="text-center">
-                        {cartItem.quantity}
-                      </TableCell>
-                      <TableCell className="text-right">
+                    <div className="flex flex-col items-start justify-center">
+                      <h2>{cartItem.product.name}</h2>
+                      <p>Rp {cartItem.product.price.toLocaleString("id-ID")}</p>
+                      <h3 className="text-xl font-semibold text-primary">
                         Rp{" "}
                         {(
                           cartItem.product.price * cartItem.quantity
                         ).toLocaleString("id-ID")}
-                      </TableCell>
-                      <TableCell className="flex justify-center items-center gap-2">
-                        <Button>-</Button>
-                        <Button>+</Button>
-                        <Button variant={"destructive"}>
-                          <MdOutlineDelete className="text-lg"></MdOutlineDelete>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+                      </h3>
+                    </div>
 
-                <TableBody className="text-xl">
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell>Total Price</TableCell>
-                    <TableCell></TableCell>
-                    <TableCell className="text-right text-rose-700 font-bold">
-                      Rp {cart.totalPrice.toLocaleString("id-ID")}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+                    <div>
+                      <Button variant={"outline"}>
+                        <AiOutlineMinus className="text-lg" />
+                      </Button>
+                      <span>{cartItem.quantity}</span>
+                      <Button variant={"outline"}>
+                        <AiOutlinePlus className="text-lg" />
+                      </Button>
+                      <Button variant={"destructive"}>
+                        <MdOutlineDelete className="text-lg"></MdOutlineDelete>
+                      </Button>
+                    </div>
+                  </div>
+                  <Separator className="my-4" />
+                </div>
+              ))}
+
+              <div>Rp {cart.totalPrice.toLocaleString("id-ID")}</div>
 
               <Button>CHECKOUT</Button>
             </section>
