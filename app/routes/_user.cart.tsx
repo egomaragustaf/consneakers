@@ -131,6 +131,7 @@ export default function Route() {
             <header className="text-2xl font-bold">
               <h1>Cart Subtotal</h1>
             </header>
+
             <Table>
               <TableHeader>
                 <TableRow>
@@ -141,7 +142,12 @@ export default function Route() {
               </TableHeader>
               <TableBody>
                 <TableRow>
-                  <TableCell>0</TableCell>
+                  <TableCell>
+                    {cart.cartItems.reduce(
+                      (total, cartItem) => total + cartItem.quantity,
+                      0
+                    )}
+                  </TableCell>
                   <TableCell>0%</TableCell>
                   <TableCell className="text-lg font-semibold text-primary">
                     Rp {cart.totalPrice.toLocaleString("id-ID")}
