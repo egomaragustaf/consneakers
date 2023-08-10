@@ -28,7 +28,7 @@ export const mutation = {
         if (!user) {
           return {
             error: {
-              usernmae: `User ${username} is not found or registered yet, check again or create an account`,
+              username: `Sorry, user ${username} is not found or registered yet, check again or create an account!`,
               password: "",
             },
           }

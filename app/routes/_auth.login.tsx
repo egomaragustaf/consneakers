@@ -53,7 +53,7 @@ export default function FormRoute() {
                   required
                   className="border border-zinc-300"
                 />
-                <p>{username.error}</p>
+                <p className="text-primary">{username.error}</p>
               </div>
 
               <div className="space-y-2">
@@ -62,11 +62,11 @@ export default function FormRoute() {
                   {...conform.input(password)}
                   id={password.id}
                   name="password"
-                  placeholder="password"
+                  placeholder="enter password"
                   required
                   className="border border-zinc-300"
                 />
-                <p>{password.error}</p>
+                <p className="text-primary">{password.error}</p>
               </div>
 
               <input hidden name="redirectTo" />
