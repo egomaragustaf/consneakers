@@ -13,7 +13,7 @@ function calculateCartItem({
   return { product, quantity, min: 0, max: 0 };
 }
 
-export function CartItem({
+export function CartListItem({
   cart,
   cartItem,
   product,
@@ -33,7 +33,7 @@ export function CartItem({
   let cartItemDeleting = false;
 
   if (cartItemFetcher.submission) {
-    const values = Object.fromEntries(cartItemFetcher.submission.formData);
+    const values = Object(cartItemFetcher.submission.formData);
     if (values._action === "update-item-in-cart") {
       cartItemQuantity = Number(values.quantity);
     }

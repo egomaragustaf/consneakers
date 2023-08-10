@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 
 import dataProducts from "~/data/products.json";
@@ -8,11 +9,18 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.user.deleteMany();
 
+  const hash =  bcrypt.hashSync("adminadmin", 10);
+  
   const newUser = await prisma.user.create({
     data: {
       email: "admin@consneakers.com",
       username: "admin",
       name: "Admin",
+      password: {
+        create: {
+          hash
+        },
+      },
     },
   });
   if (!newUser) return null;

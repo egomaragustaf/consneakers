@@ -5,11 +5,13 @@ import { Form, Link, useActionData } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 
+import { model } from "~/models";
 import { authenticator } from "~/services";
 import { Button, Input, Layout } from "~/components";
 
 const schema = z.object({
   username: z.string(),
+  password: z.string(),
 });
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -20,7 +22,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function FormRoute() {
   const lastSubmission = useActionData<typeof action>();
-  const [form, { username }] = useForm({
+  const [form, { username, password }] = useForm({
     lastSubmission,
     onValidate({ formData }) {
       return parse(formData, { schema });
@@ -41,10 +43,10 @@ export default function FormRoute() {
           <Form id="user-auth-form" method="POST" {...form.props}>
             <div className="flex flex-col gap-4">
               <div className="space-y-2">
-                <label htmlFor="username">Username</label>
+                <label htmlFor={username.id}>Username</label>
                 <Input
                   {...conform.input(username)}
-                  id="username"
+                  id={username.id}
                   name="username"
                   placeholder="username"
                   autoCorrect="off"
@@ -52,6 +54,19 @@ export default function FormRoute() {
                   className="border border-zinc-300"
                 />
                 <p>{username.error}</p>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor={password.id}>Password</label>
+                <Input
+                  {...conform.input(password)}
+                  id={password.id}
+                  name="password"
+                  placeholder="password"
+                  required
+                  className="border border-zinc-300"
+                />
+                <p>{password.error}</p>
               </div>
 
               <input hidden name="redirectTo" />
@@ -80,6 +95,11 @@ export async function action({ request }: ActionArgs) {
 
   if (!submission.value || submission.intent !== "submit") {
     return json(submission, { status: 400 });
+  }
+
+  const result = await model.user.mutation.login(submission.value);
+  if (result.error) {
+    return json({ ...submission, error: result.error });
   }
 
   return authenticator.authenticate("user-pass", request, {
