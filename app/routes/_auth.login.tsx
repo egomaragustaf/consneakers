@@ -7,7 +7,7 @@ import { z } from "zod";
 
 import { model } from "~/models";
 import { authenticator } from "~/services";
-import { ButtonLoading, Input, Layout } from "~/components";
+import { ButtonLoading, Input, InputPassword, Layout } from "~/components";
 
 const schema = z.object({
   username: z.string(),
@@ -63,7 +63,7 @@ export default function FormRoute() {
 
               <div className="space-y-2">
                 <label htmlFor={password.id}>Password</label>
-                <Input
+                <InputPassword
                   {...conform.input(password)}
                   id={password.id}
                   name="password"

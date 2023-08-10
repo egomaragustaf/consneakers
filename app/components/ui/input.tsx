@@ -1,5 +1,8 @@
 import * as React from "react";
+import { useState } from "react";
 import { cn } from "~/utils";
+import { Button } from "~/components";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -21,4 +24,41 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = "Input";
 
-export { Input };
+function InputPassword({
+  type = "password",
+  placeholder = "Enter password",
+  className,
+  ...props
+}: InputProps) {
+  const [isShown, setIsShown] = useState<boolean>(false);
+
+  function handleClick() {
+    setIsShown(!isShown);
+  }
+
+  return (
+    <div className={cn("relative", className)}>
+      <Input
+        data-component="input-password"
+        type={isShown ? "text" : "password"}
+        placeholder={placeholder}
+        {...props}
+      />
+      <Button
+        size="sm"
+        type="button"
+        variant="secondary"
+        onClick={handleClick}
+        className="absolute inset-y-0 right-0 my-0.5 me-1 flex w-20 gap-2">
+        {isShown ? (
+          <FaEye className="h-4 w-4" />
+        ) : (
+          <FaEyeSlash className="h-4 w-4" />
+        )}
+        <span>{isShown ? "Hide" : "Show"}</span>
+      </Button>
+    </div>
+  );
+}
+
+export { Input, InputPassword };
