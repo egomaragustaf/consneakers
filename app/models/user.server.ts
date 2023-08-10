@@ -46,7 +46,7 @@ export const mutation = {
         if (!isPasswordCorrect) {
           return {
             error: {
-              email: "",
+              username: "",
               password: "Password is incorrect, check again",
             },
           }
