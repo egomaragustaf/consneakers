@@ -1,13 +1,13 @@
 import type { LoaderArgs, ActionArgs } from "@remix-run/node";
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Form, Link, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 
 import { model } from "~/models";
 import { authenticator } from "~/services";
-import { Button, Input, Layout } from "~/components";
+import { ButtonLoading, Input, Layout } from "~/components";
 
 const schema = z.object({
   username: z.string(),
@@ -22,6 +22,9 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function FormRoute() {
   const lastSubmission = useActionData<typeof action>();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+
   const [form, { username, password }] = useForm({
     lastSubmission,
     onValidate({ formData }) {
@@ -50,8 +53,10 @@ export default function FormRoute() {
                   name="username"
                   placeholder="username"
                   autoCorrect="off"
+                  disabled={isSubmitting}
+                  autoFocus={username.error ? true : undefined}
                   required
-                  className="border border-zinc-300"
+                  className="border border-zinc-400"
                 />
                 <p className="text-primary">{username.error}</p>
               </div>
@@ -63,14 +68,21 @@ export default function FormRoute() {
                   id={password.id}
                   name="password"
                   placeholder="enter password"
+                  disabled={isSubmitting}
+                  autoFocus={password.error ? true : undefined}
                   required
-                  className="border border-zinc-300"
+                  className="border border-zinc-400"
                 />
                 <p className="text-primary">{password.error}</p>
               </div>
 
               <input hidden name="redirectTo" />
-              <Button type="submit">Login</Button>
+              <ButtonLoading
+                type="submit"
+                loadingText="Logging in..."
+                isLoading={isSubmitting}>
+                Login
+              </ButtonLoading>
             </div>
           </Form>
         </section>
