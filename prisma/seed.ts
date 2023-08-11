@@ -3,28 +3,34 @@ import { PrismaClient } from "@prisma/client";
 
 import dataProducts from "~/data/products.json";
 import { slugify } from "~/utils";
+import dataUsersCredentials from "~/data/users-credentials.json"
 
 const prisma = new PrismaClient();
 
 async function main() {
+
   await prisma.user.deleteMany();
 
-  const hash =  bcrypt.hashSync("adminadmin", 10);
+  await prisma.userPassword.deleteMany();
   
-  const newUser = await prisma.user.create({
-    data: {
-      email: "admin@consneakers.com",
-      username: "admin",
-      name: "Admin",
-      password: {
-        create: {
-          hash
+  for (const cred of dataUsersCredentials) {
+    const hash = bcrypt.hashSync(cred.password, 10);
+
+    const newUser = await prisma.user.create({
+      data: {
+        email: cred.email,
+        username: cred.username,
+        name: cred.name,
+        password: {
+          create: {
+            hash,
+          },
         },
       },
-    },
-  });
-  if (!newUser) return null;
-  console.log(`User "${newUser.username}" created`);
+    });
+    
+    console.info(`✅ User "${newUser.username}" created`);
+  }
 
   await prisma.product.deleteMany();
 
@@ -46,7 +52,7 @@ async function main() {
   await prisma.product.createMany({
     data: newProducts,
   });
-  console.log(`New products created`)
+  console.info(`✅ New products created`)
 }
 
 main()
