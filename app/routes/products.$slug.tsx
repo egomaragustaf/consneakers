@@ -1,11 +1,12 @@
 import { parse } from "@conform-to/react";
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData, useNavigation } from "@remix-run/react";
+import { Form, Link, useLoaderData, useNavigation } from "@remix-run/react";
 
 import { authenticator } from "~/services/auth.server";
 import { prisma } from "~/db.server";
-import { Layout, ButtonLoading } from "~/components";
+import { Layout, ButtonLoading, Button } from "~/components";
+import { useRootLoaderData } from "~/hooks";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -29,6 +30,7 @@ export async function loader({ params }: LoaderArgs) {
 }
 
 export default function ProductSlugRoute() {
+  const { userSession } = useRootLoaderData();
   const { product } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -65,18 +67,30 @@ export default function ProductSlugRoute() {
               </span>
             </section>
 
-            <Form
-              method="post"
-              className="flex justify-center items-center mt-10">
-              <input hidden name="id" defaultValue={product.id} />
-              <ButtonLoading
-                type="submit"
-                isSubmitting={isSubmitting}
-                submittingText="Adding to Cart..."
-                className="w-full">
-                + Add to Cart
-              </ButtonLoading>
-            </Form>
+            {!userSession?.id && (
+              <section>
+                <Button className="w-full">
+                  <Link to={`/login?redirectTo=/products/${product.slug}`}>
+                    + Add to Cart
+                  </Link>
+                </Button>
+              </section>
+            )}
+
+            {userSession?.id && (
+              <Form
+                method="post"
+                className="flex justify-center items-center mt-10">
+                <input hidden name="id" defaultValue={product.id} />
+                <ButtonLoading
+                  type="submit"
+                  isSubmitting={isSubmitting}
+                  submittingText="Adding to Cart..."
+                  className="w-full">
+                  + Add to Cart
+                </ButtonLoading>
+              </Form>
+            )}
           </div>
         </article>
       </main>

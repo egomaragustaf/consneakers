@@ -8,6 +8,7 @@ import { z } from "zod";
 import { model } from "~/models";
 import { authenticator } from "~/services";
 import { ButtonLoading, Input, InputPassword, Layout } from "~/components";
+import { getRedirectTo } from "~/utils";
 
 const schema = z.object({
   username: z.string(),
@@ -115,7 +116,6 @@ export async function action({ request }: ActionArgs) {
   }
 
   return authenticator.authenticate("user-pass", request, {
-    successRedirect: "/dashboard",
-    failureRedirect: "/login",
+    successRedirect: getRedirectTo(request) || "/dashboard",
   });
 }
