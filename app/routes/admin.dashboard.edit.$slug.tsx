@@ -1,6 +1,11 @@
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { z } from "zod";
@@ -9,7 +14,7 @@ import { zfd } from "zod-form-data";
 import { prisma } from "~/db.server";
 import { Layout } from "~/components/layout/layout";
 import { slugify } from "~/utils";
-import { Sidebar } from "~/components";
+import { ButtonLoading, Sidebar } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -23,6 +28,7 @@ const schema = zfd.formData({
   slug: zfd.text(),
   price: zfd.numeric(z.number().min(0).max(100_000_000)),
   description: zfd.text(),
+  imageURL: zfd.text(),
 });
 
 export async function loader({ params }: LoaderArgs) {
@@ -42,6 +48,8 @@ export async function loader({ params }: LoaderArgs) {
 export default function EditProductRoute() {
   const lastSubmission = useActionData<typeof action>();
   const { product } = useLoaderData<typeof loader>();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
   const [form, fields] = useForm({
     lastSubmission,
     onValidate({ formData }) {
@@ -55,12 +63,12 @@ export default function EditProductRoute() {
 
   return (
     <Layout>
-      <main className="w-full flex gap-8 justify-center items-center">
+      <main className="flex gap-8 justify-start items-start mt-32 md:mt-40">
         <div className="w-60 flex">
           <Sidebar />
         </div>
 
-        <div>
+        <div className="w-full flex flex-col justify-center items-center">
           <header className="space-y-2">
             <h1 className="text-2xl">Add New Product</h1>
             <p>add product below</p>
@@ -113,11 +121,24 @@ export default function EditProductRoute() {
               <p>{fields.description.error}</p>
             </div>
 
-            <button
+            <div>
+              <label htmlFor="description">Product Image:</label>
+              <input
+                {...conform.input(fields.imageURL)}
+                id="description"
+                className="w-full px-2 py-1 rounded-md border-gray-300 border"
+                defaultValue={product.imageURL || ""}
+              />
+              <p>{fields.description.error}</p>
+            </div>
+
+            <ButtonLoading
               type="submit"
-              className="w-full py-2 rounded-md border-gray-300 text-white bg-slate-800 hover:bg-slate-900 border mt-4">
+              isSubmitting={isSubmitting}
+              submittingText="Updating..."
+              className="w-full mt-4">
               Update Product
-            </button>
+            </ButtonLoading>
           </Form>
         </div>
       </main>

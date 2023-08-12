@@ -9,7 +9,7 @@ import { zfd } from "zod-form-data";
 import { prisma } from "~/db.server";
 import { Layout } from "~/components/layout/layout";
 import { slugify } from "~/utils/slugify";
-import { Sidebar } from "~/components";
+import { Button, Sidebar } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -94,11 +94,9 @@ export default function FormRoute() {
               <p>{fields.description.error}</p>
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-2 rounded-md border-gray-300 text-white bg-slate-800 hover:bg-slate-900 border mt-4">
+            <Button type="submit" className="w-full mt-4">
               Add Product
-            </button>
+            </Button>
           </Form>
         </div>
       </main>
