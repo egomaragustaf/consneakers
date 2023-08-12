@@ -29,7 +29,7 @@ export async function loader({ params }: LoaderArgs) {
   return json({ product });
 }
 
-export default function ProductSlugRoute() {
+export default function Route() {
   const { userSession } = useRootLoaderData();
   const { product } = useLoaderData<typeof loader>();
   const navigation = useNavigation();

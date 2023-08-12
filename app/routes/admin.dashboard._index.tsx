@@ -1,0 +1,57 @@
+import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+
+import { prisma } from "~/db.server";
+import { Layout } from "~/components/layout/layout";
+import { authenticator } from "~/services";
+import { useLoaderData } from "@remix-run/react";
+import { Sidebar } from "~/components";
+
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: "Products Action" },
+    { name: "description", content: "Products Action Page" },
+  ];
+};
+
+export const loader = async ({ request }: LoaderArgs) => {
+  const userSession = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  if (!userSession?.id) return redirect("/logout");
+
+  const user = await prisma.user.findUnique({
+    where: { id: userSession.id },
+  });
+  if (!user) return redirect("/logout");
+
+  return json({ user });
+};
+
+export default function Route() {
+  const { user } = useLoaderData<typeof loader>();
+
+  if (!user) {
+    return (
+      <Layout>
+        <p>Sorry something went wrong</p>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <main className="flex gap-8 justify-start items-start mt-32 md:mt-40">
+        <div className="w-60 flex">
+          <Sidebar />
+        </div>
+
+        <div>
+          <header className="space-y-2">
+            <h1 className="text-2xl">Wellcome, {user.username}!</h1>
+          </header>
+        </div>
+      </main>
+    </Layout>
+  );
+}

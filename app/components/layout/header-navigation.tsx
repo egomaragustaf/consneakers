@@ -47,7 +47,7 @@ export function Navigation() {
 
         {userSession && (
           <div className="flex justify-center items-center gap-8">
-            <Link to={`/dashboard`}>
+            <Link to={`/admin/dashboard`}>
               <span>Dashboard</span>
             </Link>
             <Link to={`/cart`}>
