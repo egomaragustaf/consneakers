@@ -2,7 +2,32 @@ import { Link } from "@remix-run/react";
 
 import { Avatar, AvatarImage, SearchForm } from "~/components";
 import { useRootLoaderData } from "~/hooks";
+import type { UserSession } from "~/services";
 import { createAvatarImageURL } from "~/utils";
+
+const navPublicItems = [
+  { to: "/", text: "Home" },
+  {
+    to: "/about",
+    text: "About",
+  },
+];
+
+const navUnauthenticatedItems = [
+  { to: "/login", text: "Login" },
+  {
+    to: "/register",
+    text: "Register",
+  },
+];
+
+const navAuthenticatedItems = [
+  { to: "/admin/dashboard", text: "Dashboard" },
+  {
+    to: "/profile",
+    text: "Profile",
+  },
+];
 
 export function Navigation() {
   const { userSession } = useRootLoaderData();
@@ -23,12 +48,17 @@ export function Navigation() {
         <SearchForm />
         <nav className="w-full max-w-md text-sm flex justify-start items-center">
           <ul className="flex w-full gap-8">
-            <li>
-              <Link to={`/`}>Home</Link>
-            </li>
-            <li>
-              <Link to={`/`}>About</Link>
-            </li>
+            {navPublicItems.map((navPublicItem) => {
+              return (
+                <li key={navPublicItem.to}>
+                  <Link
+                    className="text-white font-semibold"
+                    to={navPublicItem.to}>
+                    {navPublicItem.text}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>
@@ -36,38 +66,51 @@ export function Navigation() {
       <div className="text-sm">
         {!userSession && (
           <div className="flex justify-center items-center gap-8">
-            <Link to={`/login`}>
-              <span>Login</span>
-            </Link>
-            <Link to={`/register`}>
-              <span>Register</span>
-            </Link>
+            {navUnauthenticatedItems.map((navUnauthenticatedItem) => {
+              return (
+                <span key={navUnauthenticatedItem.to}>
+                  <Link
+                    className="text-white font-semibold"
+                    to={navUnauthenticatedItem.to}>
+                    {navUnauthenticatedItem.text}
+                  </Link>
+                </span>
+              );
+            })}
           </div>
         )}
 
         {userSession && (
           <div className="flex justify-center items-center gap-8">
-            <Link to={`/admin/dashboard`}>
-              <span>Dashboard</span>
-            </Link>
-            <Link to={`/cart`}>
-              <span>Cart</span>
-            </Link>
-            <Link to={`/logout`}>
-              <span>Logout</span>
-            </Link>
-            <Avatar>
-              <Link to={`/profile`}>
-                <AvatarImage
-                  className="w-8"
-                  src={createAvatarImageURL(userSession.id)}
-                  alt={userSession.id}
-                />
-              </Link>
-            </Avatar>
+            {navAuthenticatedItems.map((navAuthenticatedItem) => {
+              return (
+                <span key={navAuthenticatedItem.to}>
+                  <Link to={navAuthenticatedItem.to}>
+                    {navAuthenticatedItem.to === "/profile" && userSession ? (
+                      <Avatar>
+                        <AvatarImage
+                          className="w-16"
+                          src={createAvatarImageURL(userSession?.id)}
+                          alt={userSession?.id}
+                        />
+                      </Avatar>
+                    ) : (
+                      navAuthenticatedItem.text
+                    )}
+                  </Link>
+                </span>
+              );
+            })}
           </div>
         )}
       </div>
     </header>
   );
+}
+
+export function checkIfActiveUsername(
+  location: Location,
+  userSession: UserSession | undefined
+) {
+  return location?.pathname === `/${userSession?.id}`;
 }
