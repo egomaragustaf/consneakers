@@ -116,6 +116,6 @@ export async function action({ request }: ActionArgs) {
   }
 
   return authenticator.authenticate("user-pass", request, {
-    successRedirect: getRedirectTo(request) || "/dashboard",
+    successRedirect: getRedirectTo(request) || "/admin/dashboard",
   });
 }

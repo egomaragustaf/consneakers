@@ -9,8 +9,8 @@ import { Sidebar } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "Products Action" },
-    { name: "description", content: "Products Action Page" },
+    { title: "Admin Dashboard" },
+    { name: "description", content: "Admin Dahsboard" },
   ];
 };
 
