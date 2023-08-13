@@ -70,7 +70,7 @@ export default function Route() {
                     </TableCell>
                     <TableCell>
                       <Link to={`/admin/dashboard/edit/${product.slug}`}>
-                        <Button>Edit</Button>
+                        <Button variant="link">Edit</Button>
                       </Link>
                     </TableCell>
                   </TableRow>

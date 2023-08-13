@@ -1,6 +1,6 @@
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Form, useActionData } from "@remix-run/react";
+import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
 import { z } from "zod";
@@ -9,7 +9,7 @@ import { zfd } from "zod-form-data";
 import { prisma } from "~/db.server";
 import { Layout } from "~/components/layout/layout";
 import { slugify } from "~/utils/slugify";
-import { Button, Sidebar } from "~/components";
+import { ButtonLoading, Sidebar } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -27,6 +27,8 @@ const schema = zfd.formData({
 
 export default function FormRoute() {
   const lastSubmission = useActionData<typeof action>();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
   const [form, fields] = useForm({
     lastSubmission,
     onValidate({ formData }) {
@@ -36,21 +38,20 @@ export default function FormRoute() {
 
   return (
     <Layout>
-      <main className="w-full flex gap-8 justify-start items-start mt-32 md:mt-40">
+      <main className="w-full flex justify-start items-start mt-32 md:mt-40">
         <div className="w-60 flex">
           <Sidebar />
         </div>
 
-        <div className="w-full flex flex-col justify-center items-center">
-          <header className="space-y-2">
+        <div className="w-full gap-6 flex flex-col justify-center items-center">
+          <header className="space-y-2 w-full flex justify-start items-center">
             <h1 className="text-2xl">Add New Product</h1>
-            <p>add product below</p>
           </header>
 
           <Form
             method="POST"
             {...form.props}
-            className="text-slate-700 w-full max-w-xl text-lg rounded-lg border bg-white p-4">
+            className="text-slate-700 w-full text-lg rounded-lg border bg-white p-4">
             <div>
               <label htmlFor="name" className="mb-2">
                 Product name:
@@ -94,9 +95,13 @@ export default function FormRoute() {
               <p>{fields.description.error}</p>
             </div>
 
-            <Button type="submit" className="w-full mt-4">
+            <ButtonLoading
+              type="submit"
+              isSubmitting={isSubmitting}
+              submittingText="Adding..."
+              className="w-96 mt-4">
               Add Product
-            </Button>
+            </ButtonLoading>
           </Form>
         </div>
       </main>

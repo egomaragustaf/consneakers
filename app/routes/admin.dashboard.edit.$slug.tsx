@@ -63,22 +63,21 @@ export default function EditProductRoute() {
 
   return (
     <Layout>
-      <main className="flex gap-8 justify-start items-start mt-32 md:mt-40">
+      <main className="w-full flex justify-start items-start mt-32 md:mt-40">
         <div className="w-60 flex">
           <Sidebar />
         </div>
 
-        <div className="w-full flex flex-col justify-center items-center">
-          <header className="space-y-2">
-            <h1 className="text-2xl">Add New Product</h1>
-            <p>add product below</p>
+        <div className="w-full gap-6 flex flex-col justify-center items-center">
+          <header className="space-y-2 w-full flex justify-start items-center">
+            <h1 className="text-2xl">Edit Product</h1>
           </header>
 
           <Form
             key={product.id}
             method="POST"
             {...form.props}
-            className="text-slate-700 w-full max-w-xl text-lg rounded-lg border bg-white p-4">
+            className="text-slate-700 w-full text-lg rounded-lg border bg-white p-4">
             <input
               {...conform.input(fields.slug)}
               type="hidden"
@@ -136,7 +135,7 @@ export default function EditProductRoute() {
               type="submit"
               isSubmitting={isSubmitting}
               submittingText="Updating..."
-              className="w-full mt-4">
+              className="w-96 mt-4">
               Update Product
             </ButtonLoading>
           </Form>
