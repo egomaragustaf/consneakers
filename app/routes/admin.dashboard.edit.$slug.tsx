@@ -18,8 +18,8 @@ import { ButtonLoading, Sidebar } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "Add New Product" },
-    { name: "description", content: "Add New Product" },
+    { title: "Edit Product" },
+    { name: "description", content: "Edit Product" },
   ];
 };
 

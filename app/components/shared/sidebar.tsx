@@ -39,9 +39,11 @@ export function Sidebar({ className }: SidebarProps) {
               </Button>
             </Link>
 
-            <Button variant="ghost" className="w-full justify-start">
-              Delete Product
-            </Button>
+            <Link to={`/admin/dashboard/delete`}>
+              <Button variant="ghost" className="w-full justify-start">
+                Delete Product
+              </Button>
+            </Link>
 
             <Link to={`/admin/dashboard/edit`}>
               <Button variant="ghost" className="w-full justify-start">
