@@ -1,6 +1,6 @@
-import type { V2_MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { V2_MetaFunction, ActionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, useLoaderData } from "@remix-run/react";
 
 import { prisma } from "~/db.server";
 import { Layout } from "~/components/layout/layout";
@@ -38,8 +38,8 @@ export default function Route() {
           <Sidebar />
         </div>
 
-        <div className="w-full flex flex-col justify-center items-center">
-          <header className="space-y-2">
+        <div className="w-full gap-6 flex flex-col justify-center items-center">
+          <header className="space-y-2 w-full flex justify-start items-center">
             <h1 className="text-2xl">Delete Products</h1>
           </header>
 
@@ -69,7 +69,11 @@ export default function Route() {
                       Rp {product.price.toLocaleString("id-ID")}
                     </TableCell>
                     <TableCell>
-                      <Button>Delete</Button>
+                      <Form method="POST">
+                        <Button type="submit" name="delete" value={product.id}>
+                          Delete
+                        </Button>
+                      </Form>
                     </TableCell>
                   </TableRow>
                 );
@@ -81,3 +85,25 @@ export default function Route() {
     </Layout>
   );
 }
+
+export const action = async ({ request }: ActionArgs) => {
+  const formData = await request.formData();
+  const deleteProductId = formData.get("delete") as string | undefined;
+
+  if (formData.has("delete")) {
+    try {
+      const productId = deleteProductId;
+
+      await prisma.product.delete({
+        where: { id: productId },
+      });
+
+      return redirect("/admin/dashboard/delete");
+    } catch (error) {
+      console.error("Error deleting product");
+      return json({ error: "Failed to delete the product" }, { status: 500 });
+    }
+  }
+
+  return json({ error: "Invalid request" }, { status: 400 });
+};

@@ -37,8 +37,8 @@ export default function Route() {
           <Sidebar />
         </div>
 
-        <div className="w-full flex flex-col justify-center items-center">
-          <header className="space-y-2">
+        <div className="w-full gap-6 flex flex-col justify-center items-center">
+          <header className="space-y-2 w-full flex justify-start items-center">
             <h1 className="text-2xl">All Products</h1>
           </header>
 
