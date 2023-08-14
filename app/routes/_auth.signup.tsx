@@ -1,5 +1,13 @@
-import { Form, Link } from "@remix-run/react";
-import { Button, Input, InputPassword, Layout } from "~/components";
+import type { LoaderArgs } from "@remix-run/node";
+import { Link } from "@remix-run/react";
+import { Layout, UserAuthSignUpForm } from "~/components";
+import { authenticator } from "~/services";
+
+export const loader = async ({ request }: LoaderArgs) => {
+  await authenticator.isAuthenticated(request, {
+    successRedirect: "/dashboard",
+  });
+};
 
 export default function Route() {
   return (
@@ -13,59 +21,7 @@ export default function Route() {
               Login
             </Link>
           </p>
-          <Form id="user-auth-form" method="POST">
-            <div className="flex flex-col gap-4">
-              <div className="space-y-2">
-                <label htmlFor="email">Email</label>
-                <Input
-                  id="email"
-                  name="email"
-                  placeholder="yourname@example.com"
-                  autoCorrect="off"
-                  required
-                  className="border border-zinc-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="name">Fullname</label>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="Full name"
-                  autoCorrect="off"
-                  required
-                  className="border border-zinc-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="username">Username</label>
-                <Input
-                  id="username"
-                  name="username"
-                  placeholder="username"
-                  autoCorrect="off"
-                  required
-                  className="border border-zinc-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="password">Password</label>
-                <InputPassword
-                  id="password"
-                  name="password"
-                  placeholder="enter password"
-                  required
-                  className="border border-zinc-400"
-                />
-              </div>
-
-              <input hidden name="redirectTo" />
-              <Button type="submit">Sign Up</Button>
-            </div>
-          </Form>
+          <UserAuthSignUpForm />
         </section>
 
         <section className="h-full flex justify-center items-center">
