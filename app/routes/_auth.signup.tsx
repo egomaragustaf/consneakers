@@ -1,10 +1,14 @@
-import type { LoaderArgs } from "@remix-run/node";
+import { parse } from "@conform-to/zod";
+import { json, type ActionArgs, type LoaderArgs } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { Layout, UserAuthSignUpForm } from "~/components";
+import { model } from "~/models";
 import { authenticator } from "~/services";
+import { schemaUserSignUp } from "~/shcemas";
+import { getRedirectTo } from "~/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  await authenticator.isAuthenticated(request, {
+  return await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard",
   });
 };
@@ -34,4 +38,23 @@ export default function Route() {
       </div>
     </Layout>
   );
+}
+
+export async function action({ request }: ActionArgs) {
+  const clonedRequest = request.clone();
+  const formData = await clonedRequest.formData();
+  const submission = parse(formData, { schema: schemaUserSignUp });
+
+  if (!submission.value || submission.intent !== "submit") {
+    return json(submission, { status: 400 });
+  }
+
+  const result = await model.user.mutation.signup(submission.value);
+  if (result.error) {
+    return json({ ...submission, error: result.error });
+  }
+
+  return authenticator.authenticate("user-pass", request, {
+    successRedirect: getRedirectTo(request) || "/admin/dashboard",
+  });
 }
