@@ -16,8 +16,8 @@ const navPublicItems = [
 const navUnauthenticatedItems = [
   { to: "/login", text: "Login" },
   {
-    to: "/signup",
-    text: "Sign Up",
+    to: "/register",
+    text: "Register",
   },
 ];
 
