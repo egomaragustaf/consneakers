@@ -2,29 +2,10 @@ import { useId } from "react";
 import { conform, useForm } from "@conform-to/react";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { parse } from "@conform-to/zod";
-import { z } from "zod";
 import { useRedirectTo } from "~/hooks";
 import type { action as actionSignUp } from "~/routes/_auth.signup";
 import { ButtonLoading, Input, InputPassword } from "~/components";
-
-const schema = z.object({
-  email: z
-    .string()
-    .min(1, "Email is required")
-    .email("Sorry, this is not an email"),
-  username: z
-    .string()
-    .min(4, "Username require at least 4 characters")
-    .max(20, "Username limited to 20 characters"),
-  name: z
-    .string()
-    .min(1, "Full name is required")
-    .max(50, "Full name limited to 50 characters"),
-  password: z
-    .string({ required_error: "Password is required" })
-    .min(8, "Password at least 8 characters")
-    .max(100, "Password max of 100 characters"),
-});
+import { schemaUserSignUp } from "~/shcemas";
 
 export function UserAuthSignUpForm({
   ...props
@@ -40,7 +21,7 @@ export function UserAuthSignUpForm({
     shouldValidate: "onSubmit",
     lastSubmission,
     onValidate({ formData }) {
-      return parse(formData, { schema });
+      return parse(formData, { schema: schemaUserSignUp });
     },
   });
 
