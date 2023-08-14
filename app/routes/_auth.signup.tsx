@@ -1,5 +1,17 @@
-import { Form, Link } from "@remix-run/react";
-import { Button, Input, InputPassword, Layout } from "~/components";
+import { parse } from "@conform-to/zod";
+import { json, type ActionArgs, type LoaderArgs } from "@remix-run/node";
+import { Link } from "@remix-run/react";
+import { Layout, UserAuthSignUpForm } from "~/components";
+import { model } from "~/models";
+import { authenticator } from "~/services";
+import { schemaUserSignUp } from "~/shcemas";
+import { getRedirectTo } from "~/utils";
+
+export const loader = async ({ request }: LoaderArgs) => {
+  return await authenticator.isAuthenticated(request, {
+    successRedirect: "/dashboard",
+  });
+};
 
 export default function Route() {
   return (
@@ -13,59 +25,7 @@ export default function Route() {
               Login
             </Link>
           </p>
-          <Form id="user-auth-form" method="POST">
-            <div className="flex flex-col gap-4">
-              <div className="space-y-2">
-                <label htmlFor="email">Email</label>
-                <Input
-                  id="email"
-                  name="email"
-                  placeholder="yourname@example.com"
-                  autoCorrect="off"
-                  required
-                  className="border border-zinc-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="name">Fullname</label>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="Full name"
-                  autoCorrect="off"
-                  required
-                  className="border border-zinc-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="username">Username</label>
-                <Input
-                  id="username"
-                  name="username"
-                  placeholder="username"
-                  autoCorrect="off"
-                  required
-                  className="border border-zinc-300"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="password">Password</label>
-                <InputPassword
-                  id="password"
-                  name="password"
-                  placeholder="enter password"
-                  required
-                  className="border border-zinc-400"
-                />
-              </div>
-
-              <input hidden name="redirectTo" />
-              <Button type="submit">Sign Up</Button>
-            </div>
-          </Form>
+          <UserAuthSignUpForm />
         </section>
 
         <section className="h-full flex justify-center items-center">
@@ -78,4 +38,23 @@ export default function Route() {
       </div>
     </Layout>
   );
+}
+
+export async function action({ request }: ActionArgs) {
+  const clonedRequest = request.clone();
+  const formData = await clonedRequest.formData();
+  const submission = parse(formData, { schema: schemaUserSignUp });
+
+  if (!submission.value || submission.intent !== "submit") {
+    return json(submission, { status: 400 });
+  }
+
+  const result = await model.user.mutation.signup(submission.value);
+  if (result.error) {
+    return json({ ...submission, error: result.error });
+  }
+
+  return authenticator.authenticate("user-pass", request, {
+    successRedirect: getRedirectTo(request) || "/admin/dashboard",
+  });
 }

@@ -5,6 +5,42 @@ import bcrypt from "bcryptjs"
 export type { User } from "@prisma/client"
 
 export const mutation = {
+  async signup({
+    email,
+    name,
+    username,
+    password,
+  }: Pick<User, "name" | "username" | "email"> & {
+    password: string
+  }) {
+    if (!email) return { error: { email: `Email is required` } }
+    const userEmail = await prisma.user.findUnique({
+      where: { email: email.trim() },
+      include: { password: true },
+    })
+    if (userEmail) return { error: { email: `Email ${email} is already used` } }
+
+    const userUsername = await prisma.user.findUnique({
+      where: { username: username.trim() },
+    })
+    if (userUsername) {
+      return { error: { username: `Username ${username} is already taken` } }
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await prisma.user.create({
+      data: {
+        name: name.trim(),
+        username: username.trim(),
+        email: email.trim(),
+        password: { create: { hash: hashedPassword } },
+      },
+    })
+
+    return { user, error: null }
+  },
+
     async login({
         username,
         password,
