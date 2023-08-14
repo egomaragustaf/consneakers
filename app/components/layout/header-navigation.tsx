@@ -16,8 +16,8 @@ const navPublicItems = [
 const navUnauthenticatedItems = [
   { to: "/login", text: "Login" },
   {
-    to: "/register",
-    text: "Register",
+    to: "/signup",
+    text: "Sign Up",
   },
 ];
 
@@ -63,9 +63,9 @@ export function Navigation() {
         </nav>
       </div>
 
-      <div className="text-sm">
+      <div className="text-sm w-96">
         {!userSession && (
-          <div className="flex justify-center items-center gap-8">
+          <div className="flex justify-evenly items-center">
             {navUnauthenticatedItems.map((navUnauthenticatedItem) => {
               return (
                 <span key={navUnauthenticatedItem.to}>
@@ -81,7 +81,7 @@ export function Navigation() {
         )}
 
         {userSession && (
-          <div className="flex justify-center items-center gap-8">
+          <div className="flex justify-evenly items-center gap-8">
             {navAuthenticatedItems.map((navAuthenticatedItem) => {
               return (
                 <span key={navAuthenticatedItem.to}>
@@ -89,7 +89,7 @@ export function Navigation() {
                     {navAuthenticatedItem.to === "/profile" && userSession ? (
                       <Avatar>
                         <AvatarImage
-                          className="w-16"
+                          className="w-8"
                           src={createAvatarImageURL(userSession?.id)}
                           alt={userSession?.id}
                         />

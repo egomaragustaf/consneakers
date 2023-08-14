@@ -1,5 +1,5 @@
 import { Form, Link } from "@remix-run/react";
-import { Button, Input, Layout } from "~/components";
+import { Button, Input, InputPassword, Layout } from "~/components";
 
 export default function Route() {
   return (
@@ -16,6 +16,30 @@ export default function Route() {
           <Form id="user-auth-form" method="POST">
             <div className="flex flex-col gap-4">
               <div className="space-y-2">
+                <label htmlFor="email">Email</label>
+                <Input
+                  id="email"
+                  name="email"
+                  placeholder="yourname@example.com"
+                  autoCorrect="off"
+                  required
+                  className="border border-zinc-300"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="name">Fullname</label>
+                <Input
+                  id="name"
+                  name="name"
+                  placeholder="Full name"
+                  autoCorrect="off"
+                  required
+                  className="border border-zinc-300"
+                />
+              </div>
+
+              <div className="space-y-2">
                 <label htmlFor="username">Username</label>
                 <Input
                   id="username"
@@ -24,6 +48,17 @@ export default function Route() {
                   autoCorrect="off"
                   required
                   className="border border-zinc-300"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="password">Password</label>
+                <InputPassword
+                  id="password"
+                  name="password"
+                  placeholder="enter password"
+                  required
+                  className="border border-zinc-400"
                 />
               </div>
 
