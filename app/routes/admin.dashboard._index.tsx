@@ -48,7 +48,7 @@ export default function Route() {
 
         <div>
           <header className="space-y-2">
-            <h1 className="text-2xl">Wellcome, {user.username}!</h1>
+            <h1 className="text-2xl">Welcome, {user.username}!</h1>
           </header>
         </div>
       </main>
