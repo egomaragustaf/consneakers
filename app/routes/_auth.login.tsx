@@ -40,7 +40,7 @@ export default function FormRoute() {
           <h1>Login</h1>
           <p className="inline-flex flex-wrap gap-1 text-muted-foreground">
             <span>New customers?</span>
-            <Link to={`/register`} className="hover-opacity font-bold">
+            <Link to={`/signup`} className="hover-opacity font-bold">
               Sign Up
             </Link>
           </p>
