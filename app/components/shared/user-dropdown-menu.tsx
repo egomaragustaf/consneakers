@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import {
   Button,
   DropdownMenu,
@@ -11,10 +11,11 @@ import {
   Avatar,
   AvatarImage,
 } from "~/components";
+import { useRootLoaderData } from "~/hooks";
 import { createAvatarImageURL } from "~/utils";
 
 export function UserDropdownMenu() {
-  const { userSession } = useLoaderData();
+  const { userSession } = useRootLoaderData();
 
   return (
     <DropdownMenu>
@@ -32,7 +33,7 @@ export function UserDropdownMenu() {
 
       <DropdownMenuContent className="w-56 overflow-scroll">
         <DropdownMenuLabel>
-          <h5>{userSession?.name}</h5>
+          <h5>{userSession?.id}</h5>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
