@@ -37,7 +37,7 @@ export function Navigation() {
   const { userSession } = useRootLoaderData();
 
   return (
-    <header className="z-10 fixed flex w-full items-center justify-between gap-6 px-4 md:px-20 bg-zinc-800 text-white">
+    <header className="z-10 sticky top-0 flex items-center justify-center gap-6 px-4 md:px-20 bg-zinc-800 text-white">
       <Link to={`/`}>
         <span>
           <img
@@ -85,7 +85,7 @@ export function Navigation() {
         )}
 
         {userSession && (
-          <div className="flex justify-center items-center gap-6">
+          <div className="flex justify-evenly items-center">
             {navAuthenticatedItems.map((navAuthenticatedItem) => {
               return (
                 <span key={navAuthenticatedItem.to}>
