@@ -37,7 +37,7 @@ export function Navigation() {
   const { userSession } = useRootLoaderData();
 
   return (
-    <header className="z-10 sticky top-0 flex items-center justify-center gap-6 px-4 md:px-20 bg-zinc-800 text-white">
+    <header className="z-10 sticky backdrop-blur top-0 flex items-center justify-center gap-6 px-4 md:px-20 bg-zinc-900/95 text-white">
       <Link to={`/`}>
         <span>
           <img
