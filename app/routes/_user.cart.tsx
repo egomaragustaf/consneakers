@@ -78,7 +78,7 @@ export default function Route() {
 
   return (
     <Layout>
-      <main className="w-full max-w-7xl flex gap-8 justify-center items-start mt-32 md:mt-40">
+      <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
         <article className="flex gap-16 w-full max-w-5xl">
           <section className="flex flex-col gap-4 w-1/2 max-w-3xl">
             <header className="text-2xl font-bold">

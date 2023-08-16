@@ -41,7 +41,7 @@ export default function Route() {
 
   return (
     <Layout>
-      <div className="w-full flex flex-col gap-4 justify-center items-center mt-32 md:mt-40">
+      <div className="w-full flex flex-col gap-4 justify-center items-center ">
         {!query && (
           <section>
             <h2 className="text-2xl font-bold">
