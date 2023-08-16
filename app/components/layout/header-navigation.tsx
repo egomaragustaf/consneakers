@@ -1,10 +1,9 @@
 import { Link } from "@remix-run/react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
-import { Avatar, AvatarImage, SearchForm } from "~/components";
+import { UserDropdownMenu, SearchForm } from "~/components";
 import { useRootLoaderData } from "~/hooks";
 import type { UserSession } from "~/services";
-import { createAvatarImageURL } from "~/utils";
 
 const navPublicItems = [
   { to: "/", text: "Home" },
@@ -86,23 +85,15 @@ export function Navigation() {
         )}
 
         {userSession && (
-          <div className="flex justify-evenly items-center">
+          <div className="flex justify-center items-center gap-6">
             {navAuthenticatedItems.map((navAuthenticatedItem) => {
               return (
                 <span key={navAuthenticatedItem.to}>
-                  <Link to={navAuthenticatedItem.to}>
-                    {navAuthenticatedItem.to === "/profile" && userSession ? (
-                      <Avatar>
-                        <AvatarImage
-                          className="w-8"
-                          src={createAvatarImageURL(userSession?.id)}
-                          alt={userSession?.id}
-                        />
-                      </Avatar>
-                    ) : (
-                      navAuthenticatedItem.icon
-                    )}
-                  </Link>
+                  {navAuthenticatedItem.to === "/profile" && userSession ? (
+                    <UserDropdownMenu key={navAuthenticatedItem.text} />
+                  ) : (
+                    <Link to={`/cart`}>{navAuthenticatedItem.icon}</Link>
+                  )}
                 </span>
               );
             })}

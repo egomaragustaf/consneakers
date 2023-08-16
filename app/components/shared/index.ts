@@ -3,3 +3,4 @@ export * from "./product-card";
 export * from "./search-form";
 export * from "./sidebar";
 export * from "./user-auth-signup-form";
+export * from "./user-dropdown-menu";

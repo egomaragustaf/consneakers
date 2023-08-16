@@ -15,15 +15,6 @@ export function Sidebar({ className }: SidebarProps) {
             Dahsboard
           </h2>
           <div className="space-y-1 flex flex-col">
-            <Button variant="ghost" className="w-full justify-start">
-              Notfication
-            </Button>
-            <Button variant="ghost" className="w-full justify-start">
-              Setting
-            </Button>
-
-            <Separator />
-
             <Link to={`/admin/dashboard/products`}>
               <Button variant="ghost" className="w-full justify-start">
                 All Products
