@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { Avatar, AvatarImage, SearchForm } from "~/components";
 import { useRootLoaderData } from "~/hooks";
@@ -22,7 +23,11 @@ const navUnauthenticatedItems = [
 ];
 
 const navAuthenticatedItems = [
-  { to: "/admin/dashboard", text: "Dashboard" },
+  {
+    to: "/cart",
+    text: "Cart",
+    icon: <AiOutlineShoppingCart className="text-3xl" />,
+  },
   {
     to: "/profile",
     text: "Profile",
@@ -81,7 +86,7 @@ export function Navigation() {
         )}
 
         {userSession && (
-          <div className="flex justify-evenly items-center gap-8">
+          <div className="flex justify-evenly items-center">
             {navAuthenticatedItems.map((navAuthenticatedItem) => {
               return (
                 <span key={navAuthenticatedItem.to}>
@@ -95,7 +100,7 @@ export function Navigation() {
                         />
                       </Avatar>
                     ) : (
-                      navAuthenticatedItem.text
+                      navAuthenticatedItem.icon
                     )}
                   </Link>
                 </span>

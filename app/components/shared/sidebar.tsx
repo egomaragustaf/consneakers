@@ -16,9 +16,6 @@ export function Sidebar({ className }: SidebarProps) {
           </h2>
           <div className="space-y-1 flex flex-col">
             <Button variant="ghost" className="w-full justify-start">
-              Cart
-            </Button>
-            <Button variant="ghost" className="w-full justify-start">
               Notfication
             </Button>
             <Button variant="ghost" className="w-full justify-start">
