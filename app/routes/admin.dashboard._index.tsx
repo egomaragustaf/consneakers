@@ -41,7 +41,7 @@ export default function Route() {
 
   return (
     <Layout>
-      <main className="flex gap-8 justify-start items-start">
+      <main className="flex gap-8 justify-start items-start min-h-screen">
         <div className="w-60 flex">
           <Sidebar />
         </div>
