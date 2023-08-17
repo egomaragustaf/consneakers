@@ -56,17 +56,16 @@ export function LandingPopularProduct() {
       <section className="w-full max-w-7xl flex justify-center items-center">
         <ul className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {filteredProducts.map((product) => {
-            if (product.soldQuantity !== null && product.soldQuantity < 30) {
-              return null;
+            if (product.soldQuantity !== null && product.soldQuantity >= 30) {
+              return (
+                <li key={product.id}>
+                  <Link to={`/products/${product.slug}`}>
+                    <ProductCard product={product as any} />
+                  </Link>
+                </li>
+              );
             }
-
-            return (
-              <li key={product.id}>
-                <Link to={`/products/${product.slug}`}>
-                  <ProductCard product={product as any} />
-                </Link>
-              </li>
-            );
+            return null;
           })}
         </ul>
       </section>
