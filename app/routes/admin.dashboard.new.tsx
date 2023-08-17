@@ -127,5 +127,5 @@ export async function action({ request }: ActionArgs) {
     return json(submission, { status: 500 });
   }
 
-  return redirect(`/admin/products`);
+  return redirect(`/admin/dashboard/products`);
 }

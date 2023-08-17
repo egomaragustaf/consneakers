@@ -16,9 +16,7 @@ export async function loader() {
     take: 10,
   });
 
-  const popularProducts = await prisma.product.findMany({
-    take: 4,
-  });
+  const popularProducts = await prisma.product.findMany();
 
   return json({ products, popularProducts });
 }
@@ -44,6 +42,11 @@ export function LandingHero() {
 export function LandingPopularProduct() {
   const { popularProducts } = useLoaderData<typeof loader>();
 
+  const filteredProducts = popularProducts.filter(
+    (product) =>
+      product.soldQuantity !== null && product.soldQuantity !== undefined
+  );
+
   return (
     <article className="w-full flex flex-col gap-4 justify-center items-center">
       <header className="w-full max-w-7xl">
@@ -51,8 +54,12 @@ export function LandingPopularProduct() {
       </header>
 
       <section className="w-full max-w-7xl flex justify-center items-center">
-        <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-12">
-          {popularProducts.map((product) => {
+        <ul className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {filteredProducts.map((product) => {
+            if (product.soldQuantity !== null && product.soldQuantity < 30) {
+              return null;
+            }
+
             return (
               <li key={product.id}>
                 <Link to={`/products/${product.slug}`}>
@@ -73,7 +80,7 @@ export function LandingAllProduct() {
   return (
     <article className="w-full flex flex-col gap-4 justify-center items-center">
       <header className="w-full max-w-7xl">
-        <h1 className="text-2xl font-bold">All Product</h1>
+        <h1 className="text-2xl font-bold">All Products</h1>
       </header>
 
       <section className="w-full max-w-7xl flex justify-center items-center">
