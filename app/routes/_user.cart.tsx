@@ -78,8 +78,8 @@ export default function Route() {
 
   return (
     <Layout>
-      <main className="w-full max-w-7xl flex gap-8 justify-center items-start min-h-screen">
-        <article className="flex gap-16 w-full max-w-5xl">
+      <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
+        <article className="flex gap-16 w-full max-w-5xl min-h-screen">
           <section className="flex flex-col gap-4 w-1/2 max-w-3xl">
             <header className="text-2xl font-bold">
               <h1>My Cart</h1>

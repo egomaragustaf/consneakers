@@ -41,9 +41,9 @@ export default function Route() {
 
   return (
     <Layout>
-      <div className="w-full flex flex-col gap-4 justify-center items-center ">
+      <div className="w-full flex flex-col gap-4 justify-center items-center">
         {!query && (
-          <section>
+          <section className="min-h-screen">
             <h2 className="text-2xl font-bold">
               Please, enter your search keyword above!
             </h2>
@@ -51,7 +51,7 @@ export default function Route() {
         )}
 
         {count <= 0 && query && (
-          <section>
+          <section className="min-h-screen">
             <h2 className="text-2xl font-bold">
               No result found for keyword "{query}"
             </h2>
@@ -59,7 +59,7 @@ export default function Route() {
         )}
 
         {products.length > 0 && (
-          <section className="space-y-2">
+          <section className="space-y-2 min-h-screen">
             <h1 className="text-2xl font-bold">Products</h1>
             <p className="text-muted-foreground">
               Found {products.length} with keyword "{query}"
