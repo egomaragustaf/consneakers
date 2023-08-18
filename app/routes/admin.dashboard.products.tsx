@@ -16,8 +16,8 @@ import {
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "Products Action" },
-    { name: "description", content: "Products Action Page" },
+    { title: "Dashboard Products" },
+    { name: "description", content: "Dashboard Products" },
   ];
 };
 

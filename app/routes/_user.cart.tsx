@@ -1,4 +1,5 @@
-import { json, type LoaderFunction } from "@remix-run/node";
+import type { V2_MetaFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { prisma } from "~/db.server";
 import { MdOutlineDelete } from "react-icons/md";
@@ -16,6 +17,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components";
+
+export const meta: V2_MetaFunction = () => {
+  return [{ title: "Cart" }, { name: "description", content: "Cart" }];
+};
 
 interface Product {
   id: string;

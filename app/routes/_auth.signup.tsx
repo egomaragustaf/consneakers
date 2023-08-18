@@ -1,11 +1,19 @@
 import { parse } from "@conform-to/zod";
-import { json, type ActionArgs, type LoaderArgs } from "@remix-run/node";
+import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { Layout, UserAuthSignUpForm } from "~/components";
 import { model } from "~/models";
 import { authenticator } from "~/services";
 import { schemaUserSignUp } from "~/shcemas";
 import { getRedirectTo } from "~/utils";
+
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: "Sign Up to Consneakers" },
+    { name: "description", content: "Sign Up to Consneakers" },
+  ];
+};
 
 export const loader = async ({ request }: LoaderArgs) => {
   return await authenticator.isAuthenticated(request, {

@@ -1,4 +1,4 @@
-import type { LoaderArgs, ActionArgs } from "@remix-run/node";
+import type { LoaderArgs, ActionArgs, V2_MetaFunction } from "@remix-run/node";
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
@@ -9,6 +9,13 @@ import { model } from "~/models";
 import { authenticator } from "~/services";
 import { ButtonLoading, Input, InputPassword, Layout } from "~/components";
 import { getRedirectTo } from "~/utils";
+
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: "Login to Consneakers" },
+    { name: "description", content: "Login to Consneakers" },
+  ];
+};
 
 const schema = z.object({
   username: z.string(),

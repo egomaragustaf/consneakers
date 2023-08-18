@@ -10,8 +10,8 @@ import { useRootLoaderData } from "~/hooks";
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "Consneakers" },
-    { name: "description", content: "Welcome to Consneakers!" },
+    { title: "Detail Product" },
+    { name: "description", content: "Detail Product" },
   ];
 };
 

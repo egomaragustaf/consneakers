@@ -1,7 +1,15 @@
-import { json, type LoaderArgs } from "@remix-run/node";
+import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Layout, ProductCard } from "~/components";
 import { prisma } from "~/db.server";
+
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: "Search Products" },
+    { name: "description", content: "Search Products" },
+  ];
+};
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = new URL(request.url);
