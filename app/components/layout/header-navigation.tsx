@@ -37,13 +37,13 @@ export function Navigation() {
   const { userSession } = useRootLoaderData();
 
   return (
-    <header className="z-10 sticky backdrop-blur top-0 flex items-center justify-center gap-6 px-4 md:px-20 bg-zinc-900/95 text-white">
+    <header className="z-10 sticky backdrop-blur top-0 flex items-center justify-center gap-6 px-4 lg:px-20 bg-zinc-900/95 text-white">
       <Link to={`/`}>
         <span>
           <img
             src="/images/logo-consneakers.png"
             alt="logo-consneakers"
-            className="w-12 md:w-16"
+            className="w-12 lg:w-16"
           />
         </span>
       </Link>

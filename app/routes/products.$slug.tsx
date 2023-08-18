@@ -46,14 +46,14 @@ export default function Route() {
   return (
     <Layout>
       <main className="w-full max-w-7xl flex gap-8 justify-center items-start ">
-        <article className="flex md:flex-row flex-col gap-8 w-full max-w-4xl">
+        <article className="flex lg:flex-row flex-col gap-8 w-full max-w-4xl">
           <img
             src={product.imageURL || ""}
             alt={product.slug}
             className="max-w-sm rounded-md border border-slate-200 shadow-lg"
           />
 
-          <div className="flex flex-col flex-grow gap-4 w-full md:w-1/3">
+          <div className="flex flex-col flex-grow gap-4 w-full lg:w-1/3">
             <header className="text-2xl font-bold">
               <h1>{product.name}</h1>
             </header>

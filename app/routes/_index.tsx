@@ -54,7 +54,7 @@ export function LandingPopularProduct() {
       </header>
 
       <section className="w-full max-w-7xl flex justify-center items-center">
-        <ul className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <ul className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           {filteredProducts.map((product) => {
             if (product.soldQuantity !== null && product.soldQuantity >= 30) {
               return (
@@ -83,7 +83,7 @@ export function LandingAllProduct() {
       </header>
 
       <section className="w-full max-w-7xl flex justify-center items-center">
-        <ul className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <ul className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           {products.map((product) => {
             return (
               <li key={product.id}>

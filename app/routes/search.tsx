@@ -66,7 +66,7 @@ export default function Route() {
             </p>
 
             <section className="w-full max-w-7xl flex justify-center items-center">
-              <ul className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <ul className="grid grid-cols-2 lg:grid-cols-5 gap-4">
                 {products.map((product) => {
                   return (
                     <li key={product.id}>
