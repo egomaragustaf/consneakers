@@ -158,7 +158,7 @@ export function PaginationNavigation({
   };
 
   return (
-    <nav className="flex items-center justify-center gap-4">
+    <nav className="flex items-center justify-center gap-2">
       {renderArrowMostLink("first", <FiChevronsLeft className="icon" />)}
       {renderArrowLink(
         "prev",
