@@ -3,8 +3,8 @@ import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
 import { prisma } from "~/db.server";
-import { Layout } from "~/components/layout/layout";
 import {
+  Layout,
   Button,
   Sidebar,
   Table,

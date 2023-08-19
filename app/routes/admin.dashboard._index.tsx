@@ -2,10 +2,9 @@ import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 
 import { prisma } from "~/db.server";
-import { Layout } from "~/components/layout/layout";
 import { authenticator } from "~/services";
 import { useLoaderData } from "@remix-run/react";
-import { Sidebar } from "~/components";
+import { Sidebar, Layout } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [

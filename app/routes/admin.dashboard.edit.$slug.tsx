@@ -12,9 +12,8 @@ import { z } from "zod";
 import { zfd } from "zod-form-data";
 
 import { prisma } from "~/db.server";
-import { Layout } from "~/components/layout/layout";
 import { slugify } from "~/utils";
-import { ButtonLoading, Sidebar } from "~/components";
+import { Layout, ButtonLoading, Sidebar } from "~/components";
 
 export const meta: V2_MetaFunction = () => {
   return [
