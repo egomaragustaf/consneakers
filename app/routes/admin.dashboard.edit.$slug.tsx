@@ -72,72 +72,74 @@ export default function EditProductRoute() {
             <h1 className="text-2xl">Edit Product</h1>
           </header>
 
-          <Form
-            key={product.id}
-            method="POST"
-            {...form.props}
-            className="text-slate-700 w-full text-lg rounded-lg border bg-white p-4">
-            <input
-              {...conform.input(fields.slug)}
-              type="hidden"
-              name="slug"
-              defaultValue={product.slug}
-            />
-
-            <div>
-              <label htmlFor="name" className="mb-2">
-                Product name:
-              </label>
+          <section className="w-full flex justify-start items-center">
+            <Form
+              key={product.id}
+              method="POST"
+              {...form.props}
+              className="text-slate-700 w-full max-w-xl text-lg rounded-lg border bg-white p-4">
               <input
-                {...conform.input(fields.name)}
-                id="name"
-                className="w-full px-2 py-1 rounded-md border-gray-300 border"
-                defaultValue={product.name}
+                {...conform.input(fields.slug)}
+                type="hidden"
+                name="slug"
+                defaultValue={product.slug}
               />
-              <p>{fields.name.error}</p>
-            </div>
 
-            <div>
-              <label htmlFor="price">Product price:</label>
-              <input
-                {...conform.input(fields.price, { type: "number" })}
-                id="price"
-                className="w-full px-2 py-1 rounded-md border-gray-300 border"
-                defaultValue={product.price}
-              />
-              <p>{fields.price.error}</p>
-            </div>
+              <div>
+                <label htmlFor="name" className="mb-2">
+                  Product name:
+                </label>
+                <input
+                  {...conform.input(fields.name)}
+                  id="name"
+                  className="w-full px-2 py-1 rounded-md border-gray-300 border"
+                  defaultValue={product.name}
+                />
+                <p>{fields.name.error}</p>
+              </div>
 
-            <div>
-              <label htmlFor="description">Product description:</label>
-              <input
-                {...conform.input(fields.description)}
-                id="description"
-                className="w-full px-2 py-1 rounded-md border-gray-300 border"
-                defaultValue={product.description || ""}
-              />
-              <p>{fields.description.error}</p>
-            </div>
+              <div>
+                <label htmlFor="price">Product price:</label>
+                <input
+                  {...conform.input(fields.price, { type: "number" })}
+                  id="price"
+                  className="w-full px-2 py-1 rounded-md border-gray-300 border"
+                  defaultValue={product.price}
+                />
+                <p>{fields.price.error}</p>
+              </div>
 
-            <div>
-              <label htmlFor="description">Product Image:</label>
-              <input
-                {...conform.input(fields.imageURL)}
-                id="description"
-                className="w-full px-2 py-1 rounded-md border-gray-300 border"
-                defaultValue={product.imageURL || ""}
-              />
-              <p>{fields.description.error}</p>
-            </div>
+              <div>
+                <label htmlFor="description">Product description:</label>
+                <input
+                  {...conform.input(fields.description)}
+                  id="description"
+                  className="w-full px-2 py-1 rounded-md border-gray-300 border"
+                  defaultValue={product.description || ""}
+                />
+                <p>{fields.description.error}</p>
+              </div>
 
-            <ButtonLoading
-              type="submit"
-              isSubmitting={isSubmitting}
-              submittingText="Updating..."
-              className="w-96 mt-4">
-              Update Product
-            </ButtonLoading>
-          </Form>
+              <div>
+                <label htmlFor="description">Product Image:</label>
+                <input
+                  {...conform.input(fields.imageURL)}
+                  id="description"
+                  className="w-full px-2 py-1 rounded-md border-gray-300 border"
+                  defaultValue={product.imageURL || ""}
+                />
+                <p>{fields.description.error}</p>
+              </div>
+
+              <ButtonLoading
+                type="submit"
+                isSubmitting={isSubmitting}
+                submittingText="Updating..."
+                className="w-96 mt-4">
+                Update Product
+              </ButtonLoading>
+            </Form>
+          </section>
         </div>
       </main>
     </Layout>
