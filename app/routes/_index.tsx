@@ -1,7 +1,6 @@
 import { json, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { Layout } from "~/components/layout/layout";
-import { BannerCarousel, ProductCard } from "~/components";
+import { BannerCarousel, ProductCard, Layout } from "~/components";
 import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {

@@ -1,10 +1,10 @@
-import type { V2_MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 
 import { prisma } from "~/db.server";
-import { Layout } from "~/components/layout/layout";
 import {
+  Layout,
   Button,
   Sidebar,
   Table,
@@ -73,6 +73,13 @@ export default function Route() {
                         <Button variant="link">Edit</Button>
                       </Link>
                     </TableCell>
+                    <TableCell>
+                      <Form method="POST">
+                        <Button type="submit" name="delete" value={product.id}>
+                          Delete
+                        </Button>
+                      </Form>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -83,3 +90,25 @@ export default function Route() {
     </Layout>
   );
 }
+
+export const action = async ({ request }: ActionArgs) => {
+  const formData = await request.formData();
+  const deleteProductId = formData.get("delete") as string | undefined;
+
+  if (formData.has("delete")) {
+    try {
+      const productId = deleteProductId;
+
+      await prisma.product.delete({
+        where: { id: productId },
+      });
+
+      return redirect("/admin/dashboard/edit");
+    } catch (error) {
+      console.error("Error deleting product");
+      return json({ error: "Failed to delete the product" }, { status: 500 });
+    }
+  }
+
+  return json({ error: "Invalid request" }, { status: 400 });
+};

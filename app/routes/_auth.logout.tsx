@@ -1,5 +1,5 @@
 import type { LoaderArgs, ActionArgs } from "@remix-run/node";
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "~/services";
 
 export const loader = async ({ request }: LoaderArgs) => {
   await authenticator.logout(request, { redirectTo: "/login" });
