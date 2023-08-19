@@ -7,3 +7,11 @@ export const schemaAddNewProduct = zfd.formData({
     description: zfd.text(),
     imageURL: zfd.text(),
   });
+
+export const schemaUpdateProduct = zfd.formData({
+    name: zfd.text(),
+    slug: zfd.text(),
+    price: zfd.numeric(z.number().min(0).max(100_000_000)),
+    description: zfd.text(),
+    imageURL: zfd.text(),
+  });
