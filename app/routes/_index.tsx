@@ -100,8 +100,11 @@ export function LandingAllProduct() {
 
   return (
     <article className="w-full flex flex-col gap-4 justify-center items-center">
-      <header className="w-full max-w-7xl">
+      <header className="w-full flex flex-col gap-4 max-w-7xl">
         <h1 className="text-2xl font-bold">All Products</h1>
+        <span className="w-full flex justify-end items-center">
+          <PaginationNavigation {...loaderData} />
+        </span>
       </header>
 
       <section className="w-full max-w-7xl flex justify-center items-center">
@@ -117,8 +120,6 @@ export function LandingAllProduct() {
           })}
         </ul>
       </section>
-
-      <PaginationNavigation {...loaderData} />
     </article>
   );
 }

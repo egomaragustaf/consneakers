@@ -177,7 +177,7 @@ export function PaginationNavigation({
                   className={cn(
                     "hover-opacity",
                     "flex w-8 justify-center rounded p-1 font-bold",
-                    isActive && "border border-primary text-primary",
+                    isActive && "bg-zinc-800 text-white",
                     !isActive && "text-muted-foreground hover:text-primary"
                   )}>
                   {pageNumber}
