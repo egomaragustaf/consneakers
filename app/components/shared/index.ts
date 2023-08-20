@@ -1,4 +1,5 @@
 export * from "./banner-carousel";
+export * from "./pagination";
 export * from "./product-card";
 export * from "./product-edit-form";
 export * from "./product-new-form";
