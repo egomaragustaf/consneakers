@@ -1,10 +1,14 @@
-import type { V2_MetaFunction, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { prisma } from "~/db.server";
+import type {
+  ActionArgs,
+  V2_MetaFunction,
+  LoaderFunction,
+} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, useLoaderData } from "@remix-run/react";
 import { MdOutlineDelete } from "react-icons/md";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
+import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
 import {
   Button,
@@ -122,9 +126,16 @@ export default function Route() {
                     <Button variant={"outline"}>
                       <AiOutlinePlus className="text-sm" />
                     </Button>
-                    <Button variant={"destructive"}>
-                      <MdOutlineDelete className="text-sm"></MdOutlineDelete>
-                    </Button>
+
+                    <Form method="POST">
+                      <Button
+                        variant={"destructive"}
+                        type="submit"
+                        name="delete"
+                        value={cartItem.id}>
+                        <MdOutlineDelete className="text-sm"></MdOutlineDelete>
+                      </Button>
+                    </Form>
                   </div>
                 </div>
                 <Separator className="my-4" />
@@ -162,9 +173,30 @@ export default function Route() {
             </Table>
 
             <Button>CHECKOUT</Button>
+            {/* <pre>{JSON.stringify(cart, null, 2)}</pre> */}
           </section>
         </article>
       </main>
     </Layout>
   );
 }
+
+export const action = async ({ request }: ActionArgs) => {
+  const formData = await request.formData();
+  const deleteCartItem = formData.get("delete") as string | undefined;
+
+  if (deleteCartItem) {
+    try {
+      await prisma.cartItem.delete({
+        where: { id: deleteCartItem },
+      });
+
+      return redirect("/cart");
+    } catch (error) {
+      console.error("Error deleting cart item");
+      return json({ error: "Failed to delete the cart item" }, { status: 500 });
+    }
+  }
+
+  return json({ error: "Invalid request" }, { status: 400 });
+};
