@@ -50,6 +50,8 @@ export const loader: LoaderFunction = async ({ request }) => {
     failureRedirect: "/login",
   });
 
+  if (!userSession.id) return null;
+
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
     include: { cartItems: { include: { product: true } } },
@@ -57,29 +59,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   if (!existingCart) {
     const newCart = await prisma.cart.create({
-      data: { userId: userSession.id || "" },
+      data: { userId: userSession?.id },
       include: { cartItems: { include: { product: true } } },
     });
     return json({ cart: newCart });
   }
 
-  const cartItemsMap = new Map<string, CartItem>();
-  for (const cartItem of existingCart.cartItems) {
-    if (cartItemsMap.has(cartItem.product.id)) {
-      cartItemsMap.get(cartItem.product.id)!.quantity += cartItem.quantity;
-    } else {
-      cartItemsMap.set(cartItem.product.id, { ...cartItem });
-    }
-  }
-
-  const aggregatedCartItems = Array.from(cartItemsMap.values());
-
-  const totalPrice = aggregatedCartItems.reduce(
-    (total, cartItem) => total + cartItem.product.price * cartItem.quantity,
-    0
-  );
-
-  return json({ cart: { cartItems: aggregatedCartItems, totalPrice } });
+  return json({ cart: existingCart });
 };
 
 export default function Route() {
@@ -106,12 +92,9 @@ export default function Route() {
 
                   <div className="flex flex-col items-start justify-center">
                     <h2>{cartItem.product.name}</h2>
-                    <p>Rp {cartItem.product.price.toLocaleString("id-ID")}</p>
+                    <p>Rp {cartItem.product.price}</p>
                     <h3 className="text-xl font-semibold text-primary">
-                      Rp{" "}
-                      {(
-                        cartItem.product.price * cartItem.quantity
-                      ).toLocaleString("id-ID")}
+                      Rp {cartItem.product.price * cartItem.quantity}
                     </h3>
                   </div>
                 </div>
@@ -167,7 +150,7 @@ export default function Route() {
                   </TableCell>
                   <TableCell>0%</TableCell>
                   <TableCell className="text-lg font-semibold text-primary">
-                    Rp {cart.totalPrice.toLocaleString("id-ID")}
+                    Rp {cart.totalPrice}
                   </TableCell>
                 </TableRow>
               </TableBody>

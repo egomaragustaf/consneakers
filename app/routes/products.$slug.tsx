@@ -111,9 +111,11 @@ export const action = async ({ request }: ActionArgs) => {
 
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
+    include: { cartItems: true },
   });
   if (!existingCart) return null;
 
+  // find the existing cart item with the specified id
   const existingCartItem = existingCart?.cartItems.find(
     (item) => item.productId === productId
   );
@@ -122,8 +124,7 @@ export const action = async ({ request }: ActionArgs) => {
   if (!existingCartItem) {
     await prisma.cartItem.create({
       data: {
-        userId: userSession?.id,
-        connect: { cartId: existingCart.id },
+        cartId: existingCart.id,
         productId: productId,
         quantity: 1,
       },
@@ -132,10 +133,11 @@ export const action = async ({ request }: ActionArgs) => {
   }
 
   // 2nd scenario: product is already in the cart
-  await prisma.cart.update({
-    where: { id: existingCart.id },
-    // TODO: increment quantity by 1
-    data: {}, // ...
+  await prisma.cartItem.update({
+    where: { id: existingCartItem.id },
+    data: {
+      quantity: { increment: 1 }, // Increment the quantity
+    },
   });
 
   return redirect("/cart");
