@@ -102,40 +102,40 @@ export const action = async ({ request }: ActionArgs) => {
   const userSession = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  if (!userSession.id) return null
+  if (!userSession.id) return null;
 
   const formData = await request.formData();
   const submission = parse(formData);
 
-  const productId = submission.payload.id
+  const productId = submission.payload.id;
 
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
   });
-  if (!existingCart) return null
+  if (!existingCart) return null;
 
   const existingCartItem = existingCart?.cartItems.find(
     (item) => item.productId === productId
   );
 
-// 1st scenario: product is not in the cart yet
+  // 1st scenario: product is not in the cart yet
   if (!existingCartItem) {
     await prisma.cartItem.create({
       data: {
         userId: userSession?.id,
         connect: { cartId: existingCart.id },
         productId: productId,
-        quantity: 1
+        quantity: 1,
       },
     });
     return redirect("/cart");
   }
 
-// 2nd scenario: product is already in the cart
+  // 2nd scenario: product is already in the cart
   await prisma.cart.update({
     where: { id: existingCart.id },
     // TODO: increment quantity by 1
-    data: {} // ...
+    data: {}, // ...
   });
 
   return redirect("/cart");

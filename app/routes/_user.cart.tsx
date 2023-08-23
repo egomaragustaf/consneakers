@@ -3,7 +3,7 @@ import type {
   V2_MetaFunction,
   LoaderFunction,
 } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { MdOutlineDelete } from "react-icons/md";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
@@ -128,11 +128,12 @@ export default function Route() {
                     </Button>
 
                     <Form method="POST">
-                      <Button
-                        variant={"destructive"}
-                        type="submit"
-                        name="delete"
-                        value={cartItem.id}>
+                      <input
+                        type="hidden"
+                        name="cartItemId"
+                        defaultValue={cartItem.id}
+                      />
+                      <Button variant="destructive" type="submit">
                         <MdOutlineDelete className="text-sm"></MdOutlineDelete>
                       </Button>
                     </Form>
@@ -183,18 +184,20 @@ export default function Route() {
 
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
-  const deleteCartItem = formData.get("delete") as string | undefined;
+  const cartItemId = formData.get("cartItemId")?.toString();
 
-  if (deleteCartItem) {
+  if (cartItemId) {
     try {
       await prisma.cartItem.delete({
-        where: { id: deleteCartItem },
+        where: { id: cartItemId },
       });
 
-      return redirect("/cart");
+      return json({ success: "Remove product from cart" });
     } catch (error) {
-      console.error("Error deleting cart item");
-      return json({ error: "Failed to delete the cart item" }, { status: 500 });
+      return json(
+        { error: "Failed to remove product from cart" },
+        { status: 400 }
+      );
     }
   }
 
