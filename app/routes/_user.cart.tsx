@@ -21,30 +21,15 @@ import {
   TableHeader,
   TableRow,
 } from "~/components";
+import type { getShoppingCart } from "~/models/cart.server";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Cart" }, { name: "description", content: "Cart" }];
 };
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  description: string | null;
-  imageURL?: string;
-}
-
-interface CartItem {
-  id: string;
-  quantity: number;
-  product: Product;
-}
-
-interface Cart {
-  cartItems: CartItem[];
-  totalPrice: number;
-  length: number;
-}
+type LoaderData = {
+  cart: Awaited<ReturnType<typeof getShoppingCart>>;
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userSession = await authenticator.isAuthenticated(request, {
@@ -66,14 +51,13 @@ export const loader: LoaderFunction = async ({ request }) => {
     return json({ cart: newCart });
   }
 
-  console.log({ cart: existingCart });
   return json({ cart: existingCart });
 };
 
 export default function Route() {
-  const { cart } = useLoaderData<{ cart: Cart }>();
+  const { cart } = useLoaderData<LoaderData>();
 
-  if (cart.cartItems.length <= 0) {
+  if (!cart?.cartItems.length) {
     return (
       <Layout>
         <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
@@ -103,11 +87,11 @@ export default function Route() {
             <header className="text-2xl font-bold">
               <h1>My Cart</h1>
             </header>
-            {cart.cartItems.map((cartItem) => (
+            {cart?.cartItems.map((cartItem) => (
               <div key={cartItem.id} className="flex flex-col">
                 <div className="flex">
                   <img
-                    src={cartItem.product.imageURL}
+                    src={cartItem.product.imageURL!}
                     alt={cartItem.product.name}
                     className="w-24 rounded border-primary"
                   />
@@ -166,14 +150,14 @@ export default function Route() {
               <TableBody>
                 <TableRow>
                   <TableCell>
-                    {cart.cartItems.reduce(
+                    {cart?.cartItems.reduce(
                       (total, cartItem) => total + cartItem.quantity,
                       0
                     )}
                   </TableCell>
                   <TableCell>0%</TableCell>
                   <TableCell className="text-lg font-semibold text-primary">
-                    Rp {cart.totalPrice}
+                    {/* Rp {cart?.totalPrice} */}
                   </TableCell>
                 </TableRow>
               </TableBody>
