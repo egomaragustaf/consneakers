@@ -12,6 +12,7 @@ import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
 import {
   Button,
+  Input,
   Layout,
   Separator,
   Table,
@@ -56,6 +57,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Route() {
   const { cart } = useLoaderData<LoaderData>();
+  const totalItemCount =
+    cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
+  const grandTotal =
+    cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
   if (!cart?.cartItems.length) {
     return (
@@ -83,7 +88,7 @@ export default function Route() {
     <Layout>
       <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
         <article className="flex gap-16 w-full max-w-5xl min-h-screen">
-          <section className="flex flex-col gap-4 w-1/2 max-w-3xl">
+          <section className="flex lg:flex-col flex-row gap-4 w-1/2 max-w-3xl">
             <header className="text-2xl font-bold">
               <h1>My Cart</h1>
             </header>
@@ -101,7 +106,7 @@ export default function Route() {
                     <h2>{cartItem.product.name}</h2>
                     <p>Rp {cartItem.product.price}</p>
                     <h3 className="text-xl font-semibold text-primary">
-                      Rp {cartItem.product.price * cartItem.quantity}
+                      Rp {cartItem.totalPrice}
                     </h3>
                   </div>
                 </div>
@@ -112,7 +117,13 @@ export default function Route() {
                     <Button variant={"outline"}>
                       <AiOutlineMinus className="text-sm" />
                     </Button>
-                    <span>{cartItem.quantity}</span>
+
+                    <Input
+                      disabled
+                      className="text-center w-10 bg-slate-100 disabled:cursor-default"
+                      value={cartItem.quantity}
+                    />
+
                     <Button variant={"outline"}>
                       <AiOutlinePlus className="text-sm" />
                     </Button>
@@ -149,15 +160,10 @@ export default function Route() {
               </TableHeader>
               <TableBody>
                 <TableRow>
-                  <TableCell>
-                    {cart?.cartItems.reduce(
-                      (total, cartItem) => total + cartItem.quantity,
-                      0
-                    )}
-                  </TableCell>
+                  <TableCell>{totalItemCount}</TableCell>
                   <TableCell>0%</TableCell>
                   <TableCell className="text-lg font-semibold text-primary">
-                    {/* Rp {cart?.totalPrice} */}
+                    Rp {grandTotal}
                   </TableCell>
                 </TableRow>
               </TableBody>

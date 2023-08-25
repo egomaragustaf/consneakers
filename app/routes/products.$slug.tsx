@@ -127,7 +127,8 @@ export const action = async ({ request }: ActionArgs) => {
   });
 
   const price = product?.price || 0;
-  const totalPrice = price * (existingCartItem?.quantity || 1);
+  const newQuantity = (existingCartItem?.quantity || 0) + 1;
+  const newTotalPrice = price * newQuantity;
 
   // 1st scenario: product is not in the cart yet
   if (!existingCartItem) {
@@ -137,7 +138,7 @@ export const action = async ({ request }: ActionArgs) => {
         productId: productId,
         quantity: 1,
         price: price,
-        totalPrice: totalPrice,
+        totalPrice: price,
       },
     });
     return redirect("/cart");
@@ -149,7 +150,7 @@ export const action = async ({ request }: ActionArgs) => {
     data: {
       quantity: { increment: 1 }, // Increment the quantity
       price: price,
-      totalPrice: totalPrice,
+      totalPrice: newTotalPrice,
     },
   });
 
