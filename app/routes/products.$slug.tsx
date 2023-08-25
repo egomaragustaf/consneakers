@@ -45,7 +45,7 @@ export default function Route() {
 
   return (
     <Layout>
-      <main className="w-full max-w-7xl flex gap-8 justify-center items-start ">
+      <main className="w-full max-w-7xl flex gap-8 justify-center items-start min-h-screen">
         <article className="flex lg:flex-row flex-col gap-8 w-full max-w-4xl">
           <img
             src={product.imageURL || ""}

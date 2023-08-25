@@ -4,7 +4,7 @@ import type {
   LoaderFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { MdOutlineDelete } from "react-icons/md";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
@@ -31,7 +31,7 @@ interface Product {
   name: string;
   price: number;
   description: string | null;
-  imageURL: string | null;
+  imageURL?: string;
 }
 
 interface CartItem {
@@ -43,6 +43,7 @@ interface CartItem {
 interface Cart {
   cartItems: CartItem[];
   totalPrice: number;
+  length: number;
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -65,11 +66,34 @@ export const loader: LoaderFunction = async ({ request }) => {
     return json({ cart: newCart });
   }
 
+  console.log({ cart: existingCart });
   return json({ cart: existingCart });
 };
 
 export default function Route() {
   const { cart } = useLoaderData<{ cart: Cart }>();
+
+  if (cart.cartItems.length <= 0) {
+    return (
+      <Layout>
+        <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
+          <article className="flex gap-16 w-full max-w-5xl min-h-screen">
+            <section className="flex flex-col gap-4 w-1/2 max-w-3xl">
+              <header className="text-2xl font-bold">
+                <h1>My Cart</h1>
+              </header>
+              <p>
+                No items in the shopping cart. Please,{" "}
+                <Link to={`/`}>
+                  <span className="text-primary font-bold">add product!</span>
+                </Link>
+              </p>
+            </section>
+          </article>
+        </main>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -79,12 +103,11 @@ export default function Route() {
             <header className="text-2xl font-bold">
               <h1>My Cart</h1>
             </header>
-
             {cart.cartItems.map((cartItem) => (
               <div key={cartItem.id} className="flex flex-col">
                 <div className="flex">
                   <img
-                    src={cartItem.product.imageURL || ""}
+                    src={cartItem.product.imageURL}
                     alt={cartItem.product.name}
                     className="w-24 rounded border-primary"
                   />
