@@ -62,7 +62,7 @@ export default function Route() {
   const grandTotal =
     cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
-  if (!cart?.cartItems.length) {
+  if (cart?.cartItems.length == 0) {
     return (
       <Layout>
         <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
@@ -95,11 +95,13 @@ export default function Route() {
             {cart?.cartItems.map((cartItem) => (
               <div key={cartItem.id} className="flex flex-col">
                 <div className="flex">
-                  <img
-                    src={cartItem.product.imageURL!}
-                    alt={cartItem.product.name}
-                    className="w-24 rounded border-primary"
-                  />
+                  <Link to={`/products/${cartItem.product.slug}`}>
+                    <img
+                      src={cartItem.product.imageURL!}
+                      alt={cartItem.product.name}
+                      className="w-28 rounded border-slate-200 shadow-md"
+                    />
+                  </Link>
                   <Separator orientation="vertical" className="mx-2" />
 
                   <div className="flex flex-col items-start justify-center">
