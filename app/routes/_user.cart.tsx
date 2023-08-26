@@ -62,28 +62,6 @@ export default function Route() {
   const grandTotal =
     cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
-  if (cart?.cartItems.length == 0) {
-    return (
-      <Layout>
-        <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
-          <article className="flex lg:flex-row flex-col gap-16 w-full max-w-5xl min-h-screen">
-            <section className="flex flex-col gap-4 lg:w-1/2 max-w-3xl">
-              <header className="text-2xl font-bold">
-                <h1>My Cart</h1>
-              </header>
-              <p>
-                No items in the shopping cart. Please,{" "}
-                <Link to={`/`}>
-                  <span className="text-primary font-bold">add product!</span>
-                </Link>
-              </p>
-            </section>
-          </article>
-        </main>
-      </Layout>
-    );
-  }
-
   return (
     <Layout>
       <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
@@ -92,59 +70,71 @@ export default function Route() {
             <header className="text-2xl font-bold">
               <h1>My Cart</h1>
             </header>
-            {cart?.cartItems.map((cartItem) => (
-              <div key={cartItem.id} className="flex flex-col">
-                <div className="flex">
-                  <Link to={`/products/${cartItem.product.slug}`}>
-                    <img
-                      src={cartItem.product.imageURL!}
-                      alt={cartItem.product.name}
-                      className="w-28 rounded border-slate-200 shadow-md"
-                    />
-                  </Link>
-                  <Separator orientation="vertical" className="mx-2" />
 
-                  <div className="flex flex-col items-start justify-center">
-                    <h2>{cartItem.product.name}</h2>
-                    <p>Rp {cartItem.product.price}</p>
-                    <h3 className="text-xl font-semibold text-primary">
-                      Rp {cartItem.totalPrice}
-                    </h3>
+            {cart?.cartItems.length === 0 ? (
+              <p>
+                No items in the shopping cart. Please,{" "}
+                <Link to={`/`}>
+                  <span className="text-primary font-bold">add a product!</span>
+                </Link>
+              </p>
+            ) : (
+              <>
+                {cart?.cartItems.map((cartItem) => (
+                  <div key={cartItem.id} className="flex flex-col">
+                    <div className="flex">
+                      <Link to={`/products/${cartItem.product.slug}`}>
+                        <img
+                          src={cartItem.product.imageURL!}
+                          alt={cartItem.product.name}
+                          className="w-28 rounded border-slate-200 shadow-md"
+                        />
+                      </Link>
+                      <Separator orientation="vertical" className="mx-2" />
+
+                      <div className="flex flex-col items-start justify-center">
+                        <h2>{cartItem.product.name}</h2>
+                        <p>Rp {cartItem.product.price}</p>
+                        <h3 className="text-xl font-semibold text-primary">
+                          Rp {cartItem.totalPrice}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span>Available Stock:</span>
+                      <div className="flex gap-4 items-center">
+                        <Button variant={"outline"}>
+                          <AiOutlineMinus className="text-sm" />
+                        </Button>
+
+                        <Input
+                          disabled
+                          className="text-center w-10 bg-slate-100 disabled:cursor-default"
+                          value={cartItem.quantity}
+                        />
+
+                        <Button variant={"outline"}>
+                          <AiOutlinePlus className="text-sm" />
+                        </Button>
+
+                        <Form method="POST">
+                          <input
+                            type="hidden"
+                            name="cartItemId"
+                            defaultValue={cartItem.id}
+                          />
+                          <Button variant="destructive" type="submit">
+                            <MdOutlineDelete className="text-sm"></MdOutlineDelete>
+                          </Button>
+                        </Form>
+                      </div>
+                    </div>
+                    <Separator className="my-4" />
                   </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span>Available Stock:</span>
-                  <div className="flex gap-4 items-center">
-                    <Button variant={"outline"}>
-                      <AiOutlineMinus className="text-sm" />
-                    </Button>
-
-                    <Input
-                      disabled
-                      className="text-center w-10 bg-slate-100 disabled:cursor-default"
-                      value={cartItem.quantity}
-                    />
-
-                    <Button variant={"outline"}>
-                      <AiOutlinePlus className="text-sm" />
-                    </Button>
-
-                    <Form method="POST">
-                      <input
-                        type="hidden"
-                        name="cartItemId"
-                        defaultValue={cartItem.id}
-                      />
-                      <Button variant="destructive" type="submit">
-                        <MdOutlineDelete className="text-sm"></MdOutlineDelete>
-                      </Button>
-                    </Form>
-                  </div>
-                </div>
-                <Separator className="my-4" />
-              </div>
-            ))}
+                ))}
+              </>
+            )}
           </section>
 
           <section className="flex flex-col gap-4 lg:w-1/2 max-w-3xl">
@@ -172,7 +162,6 @@ export default function Route() {
             </Table>
 
             <Button>CHECKOUT</Button>
-            {/* <pre>{JSON.stringify(cart, null, 2)}</pre> */}
           </section>
         </article>
       </main>
