@@ -111,7 +111,9 @@ export default function Route() {
                             defaultValue={cartItem.id}
                           />
                           <Button
-                            variant="outline"
+                            variant={
+                              cartItem.quantity === 0 ? "disabled" : "outline"
+                            }
                             type="submit"
                             value="decrementQuantity"
                             name="action">
@@ -151,7 +153,7 @@ export default function Route() {
                             type="submit"
                             value="removeFromCart"
                             name="action">
-                            <MdOutlineDelete className="text-sm"></MdOutlineDelete>
+                            <MdOutlineDelete className="text-sm text-white"></MdOutlineDelete>
                           </Button>
                         </Form>
                       </div>
