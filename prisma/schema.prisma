@@ -20,10 +20,13 @@ model User {
 
   password UserPassword?
 
-  carts Cart[]
+  carts Cart? @relation(fields: [cartId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  cartId    String?
+
+  @@index([cartId])
 }
 
 model UserPassword {
@@ -65,7 +68,7 @@ model Cart {
   // Define the one-to-many relationship between Cart and CartItem
   cartItems CartItem[]
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user   User[]
   userId String
 
   createdAt DateTime @default(now())
@@ -77,11 +80,13 @@ model Cart {
 model CartItem {
   id String @id @default(cuid())
 
-  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  cartId    String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  productId String
-  quantity  Int
+  cart       Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cartId     String
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId  String
+  quantity   Int
+  price      Int
+  totalPrice Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

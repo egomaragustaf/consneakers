@@ -45,10 +45,10 @@ export default function Route() {
 
   return (
     <Layout>
-      <main className="w-full max-w-7xl flex gap-8 justify-center items-start ">
+      <main className="w-full max-w-7xl flex gap-8 justify-center items-start min-h-screen">
         <article className="flex lg:flex-row flex-col gap-8 w-full max-w-4xl">
           <img
-            src={product.imageURL || ""}
+            src={product.imageURL!}
             alt={product.slug}
             className="max-w-sm rounded-md border border-slate-200 shadow-lg"
           />
@@ -102,32 +102,56 @@ export const action = async ({ request }: ActionArgs) => {
   const userSession = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
+  if (!userSession.id) return null;
 
   const formData = await request.formData();
   const submission = parse(formData);
 
-  const productToAdd = {
-    productId: submission.payload.id,
-    quantity: 1,
-  };
+  const productId = submission.payload.id;
 
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
+    include: { cartItems: true },
+  });
+  if (!existingCart) return null;
+
+  // find the existing cart item with the specified id
+  const existingCartItem = existingCart?.cartItems.find(
+    (item) => item.productId === productId
+  );
+
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
   });
 
-  if (!existingCart) {
-    await prisma.cart.create({
+  const price = product?.price || 0;
+  const newQuantity = (existingCartItem?.quantity || 0) + 1;
+  const newTotalPrice = price * newQuantity;
+
+  // 1st scenario: product is not in the cart yet
+  if (!existingCartItem) {
+    await prisma.cartItem.create({
       data: {
-        userId: userSession.id || "",
-        cartItems: { create: productToAdd },
+        cartId: existingCart.id,
+        productId: productId,
+        quantity: 1,
+        price: price,
+        totalPrice: price,
       },
     });
     return redirect("/cart");
   }
 
-  await prisma.cart.update({
-    where: { id: existingCart.id },
-    data: { cartItems: { create: productToAdd } },
+  // 2nd scenario: product is already in the cart
+  await prisma.cartItem.update({
+    where: { id: existingCartItem.id },
+    data: {
+      quantity: { increment: 1 }, // Increment the quantity
+      price: price,
+      totalPrice: newTotalPrice,
+    },
   });
 
   return redirect("/cart");
