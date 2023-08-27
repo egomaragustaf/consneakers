@@ -59,6 +59,8 @@ export default function Route() {
   const { cart } = useLoaderData<LoaderData>();
   const totalItemCount =
     cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
+  const grandTotal =
+    cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
   return (
     <Layout>
@@ -94,7 +96,7 @@ export default function Route() {
                         <h2>{cartItem.product.name}</h2>
                         <p>Rp {cartItem.product.price}</p>
                         <h3 className="text-xl font-semibold text-primary">
-                          Rp {cartItem.totalPrice * cartItem.quantity}
+                          Rp {cartItem.totalPrice}
                         </h3>
                       </div>
                     </div>
@@ -178,7 +180,9 @@ export default function Route() {
                 <TableRow>
                   <TableCell>{totalItemCount}</TableCell>
                   <TableCell>0%</TableCell>
-                  <TableCell className="text-lg font-semibold text-primary"></TableCell>
+                  <TableCell className="text-lg font-semibold text-primary">
+                    Rp {grandTotal}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -222,7 +226,7 @@ export const action = async ({ request }: ActionArgs) => {
         }
 
         case "decrementQuantity": {
-          const newQuantity = cartItem.quantity + 1;
+          const newQuantity = cartItem.quantity - 1;
           const newTotalPrice = cartItem.product.price * newQuantity;
           if (cartItem.quantity > 0) {
             return await prisma.cartItem.update({
