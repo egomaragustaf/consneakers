@@ -59,8 +59,6 @@ export default function Route() {
   const { cart } = useLoaderData<LoaderData>();
   const totalItemCount =
     cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
-  const grandTotal =
-    cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
   return (
     <Layout>
@@ -96,7 +94,7 @@ export default function Route() {
                         <h2>{cartItem.product.name}</h2>
                         <p>Rp {cartItem.product.price}</p>
                         <h3 className="text-xl font-semibold text-primary">
-                          Rp {cartItem.totalPrice}
+                          Rp {cartItem.totalPrice * cartItem.quantity}
                         </h3>
                       </div>
                     </div>
@@ -104,9 +102,20 @@ export default function Route() {
                     <div className="flex items-center justify-between">
                       <span>Available Stock:</span>
                       <div className="flex gap-4 items-center">
-                        <Button variant={"outline"}>
-                          <AiOutlineMinus className="text-sm" />
-                        </Button>
+                        <Form method="POST">
+                          <input
+                            type="hidden"
+                            name="cartItemId"
+                            defaultValue={cartItem.id}
+                          />
+                          <Button
+                            variant="outline"
+                            type="submit"
+                            value="decrementQuantity"
+                            name="action">
+                            <AiOutlineMinus className="text-sm" />
+                          </Button>
+                        </Form>
 
                         <Input
                           disabled
@@ -114,9 +123,20 @@ export default function Route() {
                           value={cartItem.quantity}
                         />
 
-                        <Button variant={"outline"}>
-                          <AiOutlinePlus className="text-sm" />
-                        </Button>
+                        <Form method="POST">
+                          <input
+                            type="hidden"
+                            name="cartItemId"
+                            defaultValue={cartItem.id}
+                          />
+                          <Button
+                            variant="outline"
+                            type="submit"
+                            value="incrementQuantity"
+                            name="action">
+                            <AiOutlinePlus className="text-sm" />
+                          </Button>
+                        </Form>
 
                         <Form method="POST">
                           <input
@@ -124,7 +144,11 @@ export default function Route() {
                             name="cartItemId"
                             defaultValue={cartItem.id}
                           />
-                          <Button variant="destructive" type="submit">
+                          <Button
+                            variant="destructive"
+                            type="submit"
+                            value="removeFromCart"
+                            name="action">
                             <MdOutlineDelete className="text-sm"></MdOutlineDelete>
                           </Button>
                         </Form>
@@ -154,9 +178,7 @@ export default function Route() {
                 <TableRow>
                   <TableCell>{totalItemCount}</TableCell>
                   <TableCell>0%</TableCell>
-                  <TableCell className="text-lg font-semibold text-primary">
-                    Rp {grandTotal}
-                  </TableCell>
+                  <TableCell className="text-lg font-semibold text-primary"></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -172,21 +194,60 @@ export default function Route() {
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const cartItemId = formData.get("cartItemId")?.toString();
+  const action = formData.get("action");
 
-  if (cartItemId) {
+  if (cartItemId && action) {
     try {
-      await prisma.cartItem.delete({
+      const cartItem = await prisma.cartItem.findUnique({
         where: { id: cartItemId },
+        include: { product: true },
       });
 
-      return json({ success: "Remove product from cart" });
+      if (!cartItem) {
+        return null;
+      }
+
+      switch (action) {
+        case "incrementQuantity": {
+          const newQuantity = cartItem.quantity + 1;
+          const newTotalPrice = cartItem.product.price * newQuantity;
+          return await prisma.cartItem.update({
+            where: { id: cartItem.id },
+            data: {
+              quantity: newQuantity,
+              totalPrice: newTotalPrice,
+            },
+            include: { product: true },
+          });
+        }
+
+        case "decrementQuantity": {
+          const newQuantity = cartItem.quantity + 1;
+          const newTotalPrice = cartItem.product.price * newQuantity;
+          if (cartItem.quantity > 0) {
+            return await prisma.cartItem.update({
+              where: { id: cartItem.id },
+              data: {
+                quantity: newQuantity,
+                totalPrice: newTotalPrice,
+              },
+              include: { product: true },
+            });
+          }
+          return null;
+        }
+
+        case "removeFromCart": {
+          return await prisma.cartItem.delete({ where: { id: cartItem.id } });
+        }
+
+        default:
+          return json({ message: "Invalid action" }, { status: 400 });
+      }
     } catch (error) {
-      return json(
-        { error: "Failed to remove product from cart" },
-        { status: 400 }
-      );
+      return json({ error: "Error" }, { status: 500 });
     }
   }
 
-  return json({ error: "Invalid request" }, { status: 400 });
+  return json({ message: "Invalid request" }, { status: 400 });
 };
