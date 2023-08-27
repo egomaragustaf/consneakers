@@ -63,7 +63,7 @@ export default function Route() {
               </h2>
               <p>{product.description}</p>
               <span className="font-semibold">
-                Sold Quantity: {product.soldQuantity}
+                Sold: {product.soldQuantity}
               </span>
             </section>
 
