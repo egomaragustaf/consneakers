@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link, NavLink } from "@remix-run/react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { UserDropdownMenu, SearchForm } from "~/components";
@@ -8,8 +8,8 @@ import type { UserSession } from "~/services";
 const navPublicItems = [
   { to: "/", text: "Home" },
   {
-    to: "/about",
-    text: "About",
+    to: "/products",
+    text: "Products",
   },
 ];
 
@@ -50,16 +50,20 @@ export function Navigation() {
 
       <div className="w-full py-4 flex flex-col gap-2">
         <SearchForm />
-        <nav className="w-full max-w-md text-sm flex justify-start items-center">
-          <ul className="flex w-full gap-8">
+        <nav className="w-full max-w-md text-base flex justify-start items-center">
+          <ul className="flex w-full gap-8 font-semibold">
             {navPublicItems.map((navPublicItem) => {
               return (
                 <li key={navPublicItem.to}>
-                  <Link
-                    className="text-white font-semibold"
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-rose-400 hover:text-white"
+                        : "text-white hover:text-rose-400"
+                    }
                     to={navPublicItem.to}>
                     {navPublicItem.text}
-                  </Link>
+                  </NavLink>
                 </li>
               );
             })}
@@ -73,11 +77,15 @@ export function Navigation() {
             {navUnauthenticatedItems.map((navUnauthenticatedItem) => {
               return (
                 <span key={navUnauthenticatedItem.to}>
-                  <Link
-                    className="text-white font-semibold"
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-rose-400 hover:text-white"
+                        : "text-white hover:text-rose-400"
+                    }
                     to={navUnauthenticatedItem.to}>
                     {navUnauthenticatedItem.text}
-                  </Link>
+                  </NavLink>
                 </span>
               );
             })}
@@ -92,7 +100,15 @@ export function Navigation() {
                   {navAuthenticatedItem.to === "/profile" && userSession ? (
                     <UserDropdownMenu key={navAuthenticatedItem.text} />
                   ) : (
-                    <Link to={`/cart`}>{navAuthenticatedItem.icon}</Link>
+                    <NavLink
+                      to={`/cart`}
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-rose-400 hover:text-white"
+                          : "text-white hover:text-rose-400"
+                      }>
+                      {navAuthenticatedItem.icon}
+                    </NavLink>
                   )}
                 </span>
               );
