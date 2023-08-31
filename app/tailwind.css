@@ -57,3 +57,32 @@
     @apply bg-background text-foreground;
   }
 }
+
+#nprogress {
+  @apply pointer-events-none z-50;
+}
+#nprogress .bar {
+  @apply fixed left-0 top-0 z-50 h-1 w-full;
+  @apply bg-rose-600 dark:bg-rose-400;
+}
+#nprogress .peg {
+  @apply absolute right-0 z-50 block h-full w-28 -translate-y-1 translate-x-0 rotate-3 opacity-100;
+  @apply shadow-[0_0_15px_#000,0_0_10px_#000] shadow-zinc-600 dark:shadow-[0_0_15px_#FFF,0_0_10px_#FFF];
+}
+
+#nprogress .spinner {
+  @apply fixed right-4 top-4 z-50 block;
+}
+
+#nprogress .spinner-icon {
+  @apply bg-transparent;
+  @apply z-50 box-border h-8 w-8 animate-spin rounded-full border-4 border-transparent duration-500;
+  @apply border-l-rose-600 border-t-rose-600 dark:border-l-rose-300 dark:border-t-rose-300;
+}
+.nprogress-custom-parent {
+  @apply relative z-50 overflow-hidden;
+}
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  @apply absolute z-50;
+}

@@ -6,15 +6,23 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "@remix-run/react";
-import stylesheet from "~/tailwind.css";
+import styles from "./tailwind.css";
 import { authenticator } from "./services";
+import NProgress from "nprogress";
+import { useEffect } from "react";
 
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
-];
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export default function App() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (navigation.state === "idle") NProgress.done();
+    else NProgress.start();
+  }, [navigation.state]);
+
   return (
     <html lang="en">
       <head>
