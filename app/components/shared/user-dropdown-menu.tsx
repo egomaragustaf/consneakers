@@ -51,11 +51,11 @@ export function UserDropdownMenu({
             <span>Profile</span>
           </DropdownMenuItem>
 
-          <DropdownMenuItem>
-            <Link to={`/admin/dashboard`}>
+          <Link to={`/admin/dashboard`}>
+            <DropdownMenuItem>
               <span>Dashboard</span>
-            </Link>
-          </DropdownMenuItem>
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuItem>
             <span>Settings</span>
@@ -68,11 +68,11 @@ export function UserDropdownMenu({
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem>
-          <Link to="/logout">
+        <Link to="/logout">
+          <DropdownMenuItem>
             <span>Log out</span>
-          </Link>
-        </DropdownMenuItem>
+          </DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   );
