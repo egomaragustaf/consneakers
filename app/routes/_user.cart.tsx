@@ -21,6 +21,7 @@ import {
   TableRow,
 } from "~/components";
 import type { getShoppingCart } from "~/models/cart.server";
+import { formatValueToCurrency } from "~/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Cart" }, { name: "description", content: "Cart" }];
@@ -64,7 +65,7 @@ export default function Route() {
     <Layout>
       <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
         <article className="flex lg:flex-row flex-col gap-16 w-full max-w-5xl min-h-screen">
-          <section className="flex flex-col gap-4 lg:w-1/2 max-w-3xl">
+          <section className="flex flex-col gap-4 lg:w-2/3 max-w-3xl">
             <header className="text-2xl font-bold">
               <h1>My Cart</h1>
             </header>
@@ -92,9 +93,9 @@ export default function Route() {
 
                       <div className="flex flex-col items-start justify-center">
                         <h2>{cartItem.product.name}</h2>
-                        <p>Rp {cartItem.product.price}</p>
+                        <p>{formatValueToCurrency(cartItem.product.price)}</p>
                         <h3 className="text-xl font-semibold">
-                          Rp {cartItem.totalPrice}
+                          {formatValueToCurrency(cartItem.totalPrice)}
                         </h3>
                       </div>
                     </div>
@@ -165,7 +166,7 @@ export default function Route() {
             )}
           </section>
 
-          <section className="flex flex-col gap-4 lg:w-1/2 max-w-3xl">
+          <section className="flex flex-col gap-4 lg:w-1/3 max-w-3xl">
             <header className="text-2xl font-bold">
               <h1>Summary</h1>
             </header>
@@ -178,7 +179,7 @@ export default function Route() {
                 </TableRow>
                 <TableRow className="text-lg font-semibold text-zinc-800">
                   <TableCell>Total Price:</TableCell>
-                  <TableCell>Rp {grandTotal}</TableCell>
+                  <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
