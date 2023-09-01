@@ -3,7 +3,7 @@ export * from "./pagination";
 export * from "./product-card";
 export * from "./product-edit-form";
 export * from "./product-new-form";
-export * from "./search-form";
+export * from "./search-form-products";
 export * from "./sidebar";
 export * from "./user-auth-signup-form";
 export * from "./user-dropdown-menu";

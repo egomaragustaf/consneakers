@@ -9,18 +9,18 @@ interface Props {
 }
 
 export function SearchForm({
-  action = "/search",
+  action = "/products",
   placeholder = "Search...",
 }: Props) {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("q") || "";
+  const query = searchParams.get("q") ?? "";
 
   return (
     <form method="GET" action={action} className="w-full">
       <fieldset className="group relative flex items-center gap-1">
         <label htmlFor="search" hidden />
         <Input
-          id="search"
+          id="searchProducts"
           type="search"
           name="q"
           placeholder={placeholder}
