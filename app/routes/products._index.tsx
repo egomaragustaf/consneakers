@@ -17,7 +17,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   if (!query) {
     const products = await prisma.product.findMany({
-      take: 100,
+      take: 50,
     });
 
     return json({ query, count: products.length, products });
@@ -57,9 +57,9 @@ export default function Route() {
           <section className="space-y-2 min-h-screen">
             <h1 className="text-2xl font-bold">All Products</h1>
             {query && (
-              <h1 className="text-muted-foreground">
+              <p className="text-muted-foreground">
                 Found {products.length} with keyword "{query}"
-              </h1>
+              </p>
             )}
 
             <section className="w-full max-w-7xl flex justify-center items-center">
