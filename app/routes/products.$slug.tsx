@@ -7,6 +7,7 @@ import { authenticator } from "~/services/auth.server";
 import { prisma } from "~/db.server";
 import { Layout, ButtonLoading, Button } from "~/components";
 import { useRootLoaderData } from "~/hooks";
+import { formatValueToCurrency } from "~/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -59,7 +60,7 @@ export default function Route() {
             </header>
             <section className="flex flex-col gap-2">
               <h2 className="text-xl font-bold text-rose-700">
-                Rp {product.price.toLocaleString("id-ID")}
+                {formatValueToCurrency(product.price)}
               </h2>
               <p>{product.description}</p>
               <span className="font-semibold">

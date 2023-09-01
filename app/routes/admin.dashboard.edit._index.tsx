@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components";
+import { formatValueToCurrency } from "~/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -66,7 +67,7 @@ export default function Route() {
                     <TableCell>{product.name}</TableCell>
                     <TableCell>{product.description}</TableCell>
                     <TableCell>
-                      Rp {product.price.toLocaleString("id-ID")}
+                      {formatValueToCurrency(product.price)}
                     </TableCell>
                     <TableCell>
                       <Link to={`/admin/dashboard/edit/${product.slug}`}>

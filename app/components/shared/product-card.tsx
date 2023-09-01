@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components";
+import { formatValueToCurrency } from "~/utils";
 
 interface Props {
   product: Product & {
@@ -33,7 +34,7 @@ export function ProductCard({ product }: Props) {
       <CardContent>
         <CardTitle>{product.name}</CardTitle>
         <CardDescription>{product.description}</CardDescription>
-        <CardFooter>Rp {product.price.toLocaleString("id-ID")}</CardFooter>
+        <CardFooter>{formatValueToCurrency(product.price)}</CardFooter>
       </CardContent>
     </Card>
   );
