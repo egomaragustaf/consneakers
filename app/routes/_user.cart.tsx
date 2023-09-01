@@ -102,7 +102,9 @@ export default function Route() {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span>Available Stock:</span>
+                      <span>
+                        Available Stock: {cartItem.product.stockQuantity}
+                      </span>
                       <div className="flex gap-4 items-center">
                         <Form method="POST">
                           <input
