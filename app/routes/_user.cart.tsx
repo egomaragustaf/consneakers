@@ -18,8 +18,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "~/components";
 import type { getShoppingCart } from "~/models/cart.server";
@@ -95,7 +93,7 @@ export default function Route() {
                       <div className="flex flex-col items-start justify-center">
                         <h2>{cartItem.product.name}</h2>
                         <p>Rp {cartItem.product.price}</p>
-                        <h3 className="text-xl font-semibold text-primary">
+                        <h3 className="text-xl font-semibold">
                           Rp {cartItem.totalPrice}
                         </h3>
                       </div>
@@ -169,29 +167,23 @@ export default function Route() {
 
           <section className="flex flex-col gap-4 lg:w-1/2 max-w-3xl">
             <header className="text-2xl font-bold">
-              <h1>Cart Subtotal</h1>
+              <h1>Summary</h1>
             </header>
 
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Total Product:</TableHead>
-                  <TableHead>Total Discount:</TableHead>
-                  <TableHead>Total Price:</TableHead>
-                </TableRow>
-              </TableHeader>
               <TableBody>
                 <TableRow>
+                  <TableCell>Total Product:</TableCell>
                   <TableCell>{totalItemCount}</TableCell>
-                  <TableCell>0%</TableCell>
-                  <TableCell className="text-lg font-semibold text-primary">
-                    Rp {grandTotal}
-                  </TableCell>
+                </TableRow>
+                <TableRow className="text-lg font-semibold text-zinc-800">
+                  <TableCell>Total Price:</TableCell>
+                  <TableCell>Rp {grandTotal}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
 
-            <Button>CHECKOUT</Button>
+            <Button className="bg-zinc-800 hover:bg-zinc-700">CHECKOUT</Button>
           </section>
         </article>
       </main>
