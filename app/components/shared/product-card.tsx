@@ -27,7 +27,7 @@ export function ProductCard({ product }: Props) {
         <img
           src={product.imageURL}
           alt={product.slug}
-          className="rounded-t-lg h-auto w-auto"
+          className="rounded-t-lg h-auto w-auto object-fit"
         />
       </CardHeader>
       <CardContent>
