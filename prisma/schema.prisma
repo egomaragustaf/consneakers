@@ -54,7 +54,8 @@ model Product {
 
   description String? @db.Text
 
-  soldQuantity Int?
+  soldQuantity  Int?
+  stockQuantity Int
 
   cartItems CartItem[]
 

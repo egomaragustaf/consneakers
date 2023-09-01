@@ -46,6 +46,7 @@ async function main() {
       description: product.description,
       imageURL: product.imageURL,
       soldQuantity: product.soldQuantity || 0,
+      stockQuantity: product.stockQuantity,
     };
   });
 
