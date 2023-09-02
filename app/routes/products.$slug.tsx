@@ -66,6 +66,9 @@ export default function Route() {
               <span className="font-semibold">
                 Sold: {product.soldQuantity}
               </span>
+              <span className="font-semibold">
+                Available Stock: {product.stockQuantity}
+              </span>
             </section>
 
             {!userSession?.id && (
