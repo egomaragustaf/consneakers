@@ -1,11 +1,18 @@
+import type { Prisma } from "@prisma/client";
 import { Authenticator, AuthorizationError } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import { prisma } from "~/db.server";
+import type { model } from "~/models";
 import { sessionStorage } from "~/services/session.server";
 
 export interface UserSession {
   id?: string
 }
+
+export interface UserData
+  extends NonNullable<
+    Prisma.PromiseReturnType<typeof model.user.query.getForSession>
+  > {}
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
@@ -19,7 +26,7 @@ authenticator.use(
     const user = await prisma.user.findUnique({
       where: { username },
     });
-    if (!user) {
+    if (!user?.id) {
       throw new AuthorizationError("User is not found");
     }
 

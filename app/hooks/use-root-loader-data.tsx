@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { useMatches } from "@remix-run/react";
 
-import type { UserSession } from "~/services";
+import type { UserData, UserSession } from "~/services";
 
 export type RootLoaderData = {
   userSession: UserSession | undefined;
+  userData: UserData | undefined;
 };
 
 export function useMatchesData(
@@ -23,5 +24,6 @@ export function useRootLoaderData() {
 
   return {
     userSession: data?.userSession,
+    userData: data?.userData,
   };
 }

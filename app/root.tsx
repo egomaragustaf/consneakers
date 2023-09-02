@@ -1,4 +1,9 @@
-import { type LoaderArgs, json, type LinksFunction } from "@remix-run/node";
+import {
+  type LoaderArgs,
+  json,
+  type LinksFunction,
+  redirect,
+} from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -12,6 +17,7 @@ import styles from "./tailwind.css";
 import { authenticator } from "./services";
 import NProgress from "nprogress";
 import { useEffect } from "react";
+import { model } from "~/models";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -43,6 +49,13 @@ export default function App() {
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userSession = await authenticator.isAuthenticated(request);
+  const userData = await model.user.query.getForSession({
+    id: String(userSession?.id),
+  });
 
-  return json({ userSession });
+  if (userSession && !userData) {
+    return redirect(`/logout`);
+  }
+
+  return json({ userSession, userData });
 };

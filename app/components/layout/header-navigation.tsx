@@ -3,7 +3,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { UserDropdownMenu, SearchForm } from "~/components";
 import { useRootLoaderData } from "~/hooks";
-import type { UserSession } from "~/services";
+import type { UserData } from "~/services";
 
 const navPublicItems = [
   { to: "/", text: "Home" },
@@ -35,6 +35,7 @@ const navAuthenticatedItems = [
 
 export function Navigation() {
   const { userSession } = useRootLoaderData();
+  const { userData } = useRootLoaderData();
 
   return (
     <header className="z-10 sticky backdrop-blur top-0 flex items-center justify-center gap-6 px-4 lg:px-20 bg-zinc-900/95 text-white">
@@ -97,7 +98,7 @@ export function Navigation() {
             {navAuthenticatedItems.map((navAuthenticatedItem) => {
               return (
                 <span key={navAuthenticatedItem.to}>
-                  {navAuthenticatedItem.to === "/profile" && userSession ? (
+                  {navAuthenticatedItem.to === "/profile" && userData ? (
                     <UserDropdownMenu key={navAuthenticatedItem.text} />
                   ) : (
                     <NavLink
@@ -122,7 +123,7 @@ export function Navigation() {
 
 export function checkIfActiveUsername(
   location: Location,
-  userSession: UserSession | undefined
+  userData: UserData | undefined
 ) {
-  return location?.pathname === `/${userSession?.id}`;
+  return location?.pathname === `/${userData?.username}`;
 }

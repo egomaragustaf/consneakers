@@ -4,6 +4,35 @@ import bcrypt from "bcryptjs"
 
 export type { User } from "@prisma/client"
 
+export const query = {
+  count() {
+    return prisma.user.count()
+  },
+
+  getAllUsernames() {
+    return prisma.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        updatedAt: true,
+      },
+    })
+  },
+
+  getForSession({ id }: Pick<User, "id">) {
+    return prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+        cartId: true,
+      },
+    })
+  },
+}
+
 export const mutation = {
   async signup({
     email,

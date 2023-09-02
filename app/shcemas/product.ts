@@ -6,6 +6,8 @@ export const schemaAddNewProduct = zfd.formData({
     price: zfd.numeric(z.number().min(0).max(100_000_000)),
     description: zfd.text(),
     imageURL: zfd.text(),
+    stockQuantity: zfd.numeric(),
+    soldQuantity: zfd.numeric(),
   });
 
 export const schemaUpdateProduct = zfd.formData({
@@ -14,4 +16,6 @@ export const schemaUpdateProduct = zfd.formData({
     price: zfd.numeric(z.number().min(0).max(100_000_000)),
     description: zfd.text(),
     imageURL: zfd.text(),
+    stockQuantity: zfd.numeric(),
+    soldQuantity: zfd.numeric(),
   });
