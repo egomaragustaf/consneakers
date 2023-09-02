@@ -39,7 +39,7 @@ export function UserDropdownMenu({
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align={align} className="w-56 overflow-scroll mt-2">
+      <DropdownMenuContent align={align} className="w-56 mt-2">
         <DropdownMenuLabel>
           <h5>{userSession?.id}</h5>
         </DropdownMenuLabel>
