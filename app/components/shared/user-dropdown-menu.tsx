@@ -1,4 +1,6 @@
-import { Link } from "@remix-run/react";
+import type { LoaderArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { NavLink, useLoaderData } from "@remix-run/react";
 import {
   Button,
   DropdownMenu,
@@ -11,20 +13,34 @@ import {
   Avatar,
   AvatarImage,
 } from "~/components";
-import { useRootLoaderData } from "~/hooks";
+import { prisma } from "~/db.server";
+import { authenticator } from "~/services";
 import { createAvatarImageURL } from "~/utils";
+
+export const loader = async ({ request }: LoaderArgs) => {
+  const userSession = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+  if (!userSession?.id) return redirect("/logout");
+
+  const user = await prisma.user.findUnique({
+    where: { id: userSession.id },
+  });
+  if (!user) return redirect("/logout");
+
+  return json({ user });
+};
 
 export function UserDropdownMenu({
   align = "end",
 }: {
   align?: "center" | "start" | "end" | undefined;
 }) {
-  const { userSession } = useRootLoaderData();
+  const { user } = useLoaderData<typeof loader>();
 
-  if (!userSession) {
-    return null;
+  if (!user) {
+    return <p>Invalid user</p>;
   }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,8 +48,8 @@ export function UserDropdownMenu({
           <Avatar>
             <AvatarImage
               className="w-8"
-              src={createAvatarImageURL(userSession?.id)}
-              alt={userSession?.id}
+              src={createAvatarImageURL(user?.username)}
+              alt={user?.username}
             />
           </Avatar>
         </Button>
@@ -41,7 +57,7 @@ export function UserDropdownMenu({
 
       <DropdownMenuContent align={align} className="w-56 mt-2">
         <DropdownMenuLabel>
-          <h5>{userSession?.id}</h5>
+          <h5>Hi, {user?.username}!</h5>
         </DropdownMenuLabel>
 
         <DropdownMenuSeparator />
@@ -51,11 +67,11 @@ export function UserDropdownMenu({
             <span>Profile</span>
           </DropdownMenuItem>
 
-          <Link to={`/admin/dashboard`}>
+          <NavLink to={`/admin/dashboard`}>
             <DropdownMenuItem>
               <span>Dashboard</span>
             </DropdownMenuItem>
-          </Link>
+          </NavLink>
 
           <DropdownMenuItem>
             <span>Settings</span>
@@ -68,11 +84,11 @@ export function UserDropdownMenu({
 
         <DropdownMenuSeparator />
 
-        <Link to="/logout">
+        <NavLink to="/logout">
           <DropdownMenuItem>
             <span>Log out</span>
           </DropdownMenuItem>
-        </Link>
+        </NavLink>
       </DropdownMenuContent>
     </DropdownMenu>
   );
