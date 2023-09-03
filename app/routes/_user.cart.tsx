@@ -229,7 +229,7 @@ export const action = async ({ request }: ActionArgs) => {
         case "decrementQuantity": {
           const newQuantity = cartItem.quantity - 1;
           const newTotalPrice = cartItem.product.price * newQuantity;
-          if (cartItem.quantity > 0) {
+          if (cartItem.quantity >= 1) {
             return await prisma.cartItem.update({
               where: { id: cartItem.id },
               data: {
@@ -239,7 +239,7 @@ export const action = async ({ request }: ActionArgs) => {
               include: { product: true },
             });
           }
-          return null;
+          return await prisma.cartItem.delete({ where: { id: cartItem.id } });
         }
 
         case "removeFromCart": {
