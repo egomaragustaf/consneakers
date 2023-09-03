@@ -172,13 +172,13 @@ export default function Route() {
                 <h1>Summary</h1>
               </header>
 
-              <Table>
+              <Table className="bg-zinc-100 rounded">
                 <TableBody>
                   <TableRow>
                     <TableCell>Total Product:</TableCell>
                     <TableCell>{totalItemCount}</TableCell>
                   </TableRow>
-                  <TableRow className="text-lg font-semibold text-zinc-800">
+                  <TableRow className="text-lg font-bold text-zinc-800">
                     <TableCell>Total Price:</TableCell>
                     <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
                   </TableRow>
