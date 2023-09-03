@@ -166,26 +166,30 @@ export default function Route() {
             )}
           </section>
 
-          <section className="flex flex-col gap-4 lg:w-1/3 max-w-3xl">
-            <header className="text-2xl font-bold">
-              <h1>Summary</h1>
-            </header>
+          {cart?.cartItems.length === 0 ? null : (
+            <section className="flex flex-col gap-4 lg:w-1/3 max-w-3xl">
+              <header className="text-2xl font-bold">
+                <h1>Summary</h1>
+              </header>
 
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Total Product:</TableCell>
-                  <TableCell>{totalItemCount}</TableCell>
-                </TableRow>
-                <TableRow className="text-lg font-semibold text-zinc-800">
-                  <TableCell>Total Price:</TableCell>
-                  <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Total Product:</TableCell>
+                    <TableCell>{totalItemCount}</TableCell>
+                  </TableRow>
+                  <TableRow className="text-lg font-semibold text-zinc-800">
+                    <TableCell>Total Price:</TableCell>
+                    <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
 
-            <Button className="bg-zinc-800 hover:bg-zinc-700">CHECKOUT</Button>
-          </section>
+              <Button className="bg-zinc-800 hover:bg-zinc-700">
+                CHECKOUT
+              </Button>
+            </section>
+          )}
         </article>
       </main>
     </Layout>
