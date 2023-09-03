@@ -73,7 +73,7 @@ export default function Route() {
             {cart?.cartItems.length === 0 ? (
               <p>
                 No items in the shopping cart. Please,{" "}
-                <Link to={`/`}>
+                <Link to={`/products`}>
                   <span className="text-primary font-bold">add a product!</span>
                 </Link>
               </p>
@@ -159,10 +159,19 @@ export default function Route() {
                         </Form>
                       </div>
                     </div>
+
                     <Separator className="my-4" />
                   </div>
                 ))}
               </>
+            )}
+
+            {cart?.cartItems.length === 0 ? null : (
+              <Link to={`/products`}>
+                <span className="text-primary text-base font-bold">
+                  Add products again
+                </span>
+              </Link>
             )}
           </section>
 
@@ -229,7 +238,7 @@ export const action = async ({ request }: ActionArgs) => {
         case "decrementQuantity": {
           const newQuantity = cartItem.quantity - 1;
           const newTotalPrice = cartItem.product.price * newQuantity;
-          if (cartItem.quantity >= 1) {
+          if (cartItem.quantity > 1) {
             return await prisma.cartItem.update({
               where: { id: cartItem.id },
               data: {
