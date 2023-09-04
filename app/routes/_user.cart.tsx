@@ -168,7 +168,7 @@ export default function Route() {
 
             {cart?.cartItems.length === 0 ? null : (
               <Link to={`/products`}>
-                <span className="text-primary text-base font-bold">
+                <span className="text-primary text-base w-full flex items-center justify-end font-bold">
                   Add products again
                 </span>
               </Link>
