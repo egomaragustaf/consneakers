@@ -175,7 +175,7 @@ export default function Route() {
             )}
           </section>
 
-          {cart?.cartItems.length === 0 ? null : (
+          {!cart?.cartItems.length ? null : (
             <section className="flex flex-col gap-4 lg:w-1/3 max-w-3xl">
               <header className="text-2xl font-bold">
                 <h1>Summary</h1>
