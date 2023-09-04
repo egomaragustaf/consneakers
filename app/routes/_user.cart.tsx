@@ -70,7 +70,7 @@ export default function Route() {
               <h1>My Cart</h1>
             </header>
 
-            {cart?.cartItems.length === 0 ? (
+            {!cart?.cartItems.length ? (
               <p>
                 No items in the shopping cart. Please,{" "}
                 <Link to={`/products`}>
@@ -166,7 +166,7 @@ export default function Route() {
               </>
             )}
 
-            {cart?.cartItems.length === 0 ? null : (
+            {!cart?.cartItems.length ? null : (
               <Link to={`/products`}>
                 <span className="text-primary text-base w-full flex items-center justify-end font-bold">
                   Add products again
