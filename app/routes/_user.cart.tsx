@@ -70,10 +70,10 @@ export default function Route() {
               <h1>My Cart</h1>
             </header>
 
-            {cart?.cartItems.length === 0 ? (
+            {!cart?.cartItems.length ? (
               <p>
                 No items in the shopping cart. Please,{" "}
-                <Link to={`/`}>
+                <Link to={`/products`}>
                   <span className="text-primary font-bold">add a product!</span>
                 </Link>
               </p>
@@ -159,33 +159,46 @@ export default function Route() {
                         </Form>
                       </div>
                     </div>
+
                     <Separator className="my-4" />
                   </div>
                 ))}
               </>
             )}
+
+            {!cart?.cartItems.length ? null : (
+              <Link to={`/products`}>
+                <span className="text-primary text-base w-full flex items-center justify-end font-bold">
+                  Add products again
+                </span>
+              </Link>
+            )}
           </section>
 
-          <section className="flex flex-col gap-4 lg:w-1/3 max-w-3xl">
-            <header className="text-2xl font-bold">
-              <h1>Summary</h1>
-            </header>
+          {!cart?.cartItems.length ? null : (
+            <section className="flex flex-col gap-4 lg:w-1/3 max-w-3xl">
+              <header className="text-2xl font-bold">
+                <h1>Summary</h1>
+              </header>
 
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Total Product:</TableCell>
-                  <TableCell>{totalItemCount}</TableCell>
-                </TableRow>
-                <TableRow className="text-lg font-semibold text-zinc-800">
-                  <TableCell>Total Price:</TableCell>
-                  <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+              <Table className="bg-zinc-100 rounded">
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Total Product:</TableCell>
+                    <TableCell>{totalItemCount}</TableCell>
+                  </TableRow>
+                  <TableRow className="text-lg font-bold text-zinc-800">
+                    <TableCell>Total Price:</TableCell>
+                    <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
 
-            <Button className="bg-zinc-800 hover:bg-zinc-700">CHECKOUT</Button>
-          </section>
+              <Button className="bg-zinc-800 hover:bg-zinc-700">
+                CHECKOUT
+              </Button>
+            </section>
+          )}
         </article>
       </main>
     </Layout>
@@ -225,7 +238,7 @@ export const action = async ({ request }: ActionArgs) => {
         case "decrementQuantity": {
           const newQuantity = cartItem.quantity - 1;
           const newTotalPrice = cartItem.product.price * newQuantity;
-          if (cartItem.quantity > 0) {
+          if (cartItem.quantity > 1) {
             return await prisma.cartItem.update({
               where: { id: cartItem.id },
               data: {
@@ -235,7 +248,7 @@ export const action = async ({ request }: ActionArgs) => {
               include: { product: true },
             });
           }
-          return null;
+          return await prisma.cartItem.delete({ where: { id: cartItem.id } });
         }
 
         case "removeFromCart": {
