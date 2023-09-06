@@ -18,20 +18,12 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   if (!userSession.id) return null;
 
-  const existingCart = await prisma.cart.findFirst({
+  const cart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
     include: { cartItems: { include: { product: true } } },
   });
 
-  if (!existingCart) {
-    const newCart = await prisma.cart.create({
-      data: { userId: userSession?.id },
-      include: { cartItems: { include: { product: true } } },
-    });
-    return json({ cart: newCart });
-  }
-
-  return json({ cart: existingCart });
+  return json({ cart });
 };
 
 export default function Route() {
