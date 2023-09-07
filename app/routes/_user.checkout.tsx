@@ -3,7 +3,22 @@ import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 
 import { useLoaderData } from "@remix-run/react";
 
-import { Layout, Table, TableBody, TableCell, TableRow } from "~/components";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Input,
+  Layout,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "~/components";
 import { prisma } from "~/db.server";
 import type { getShoppingCart } from "~/models/cart.server";
 import { authenticator } from "~/services";
@@ -48,7 +63,7 @@ export default function Route() {
               <h1>Checkout</h1>
             </header>
 
-            <main>
+            <main className="flex flex-col gap-4">
               <h2>Delivery Address</h2>
             </main>
           </section>
