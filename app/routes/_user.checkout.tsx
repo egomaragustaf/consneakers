@@ -4,7 +4,7 @@ import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import {
-  AddNewAddressForm,
+  AddNewLocationForm,
   Button,
   Dialog,
   DialogContent,
@@ -79,7 +79,7 @@ export default function Route() {
                       Add your shipping address
                     </DialogDescription>
                   </DialogHeader>
-                  <AddNewAddressForm />
+                  <AddNewLocationForm />
                   <DialogFooter className="flex gap-x-4">
                     <Button
                       type="submit"

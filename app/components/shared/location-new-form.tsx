@@ -1,6 +1,6 @@
 import { Input } from "~/components";
 
-export function AddNewAddressForm() {
+export function AddNewLocationForm() {
   return (
     <div className="grid gap-4 py-4">
       <div className="grid grid-cols-4 items-center gap-4">
