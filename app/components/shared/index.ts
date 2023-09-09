@@ -1,4 +1,4 @@
-export * from "./address-new-form";
+export * from "./user-location-new-form";
 export * from "./banner-carousel";
 export * from "./pagination";
 export * from "./product-card";
