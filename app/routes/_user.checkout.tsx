@@ -91,6 +91,16 @@ export default function Route() {
                       />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
+                      <label htmlFor="label" className="text-right">
+                        Label
+                      </label>
+                      <Input
+                        id="label"
+                        placeholder="Label"
+                        className="col-span-3 border"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
                       <label htmlFor="username" className="text-right">
                         Username
                       </label>
