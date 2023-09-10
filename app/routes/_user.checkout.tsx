@@ -1,17 +1,12 @@
+import { parse } from "@conform-to/zod";
+import type { ActionArgs, V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-
 import { useLoaderData } from "@remix-run/react";
 
 import {
   AddNewUserLocationForm,
   Button,
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
   Layout,
   Table,
@@ -22,6 +17,7 @@ import {
 import { prisma } from "~/db.server";
 import type { getShoppingCart } from "~/models/cart.server";
 import { authenticator } from "~/services";
+import { schemaAddNewUserLocation } from "~/shcemas";
 import { formatValueToCurrency } from "~/utils";
 
 export const meta: V2_MetaFunction = () => {
@@ -72,22 +68,8 @@ export default function Route() {
                     + Add Address
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Add Address</DialogTitle>
-                    <DialogDescription>
-                      Add your shipping address
-                    </DialogDescription>
-                  </DialogHeader>
-                  <AddNewUserLocationForm />
-                  <DialogFooter className="flex gap-x-4">
-                    <Button
-                      type="submit"
-                      className="bg-zinc-800 hover:bg-zinc-700">
-                      Add Address
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
+
+                <AddNewUserLocationForm />
               </Dialog>
             </main>
           </section>
@@ -115,3 +97,33 @@ export default function Route() {
     </Layout>
   );
 }
+
+export const action = async ({ request }: ActionArgs) => {
+  const formData = await request.formData();
+  const submission = parse(formData, { schema: schemaAddNewUserLocation });
+
+  if (!submission.value || submission.intent !== "submit") {
+    return json(submission, { status: 400 });
+  }
+
+  const userSession = await authenticator.isAuthenticated(request);
+  if (!userSession?.id) {
+    return json({ error: "User not authenticated" }, { status: 401 });
+  }
+
+  try {
+    const newUserLocation = await prisma.userLocation.create({
+      data: { ...submission.value, userId: userSession.id },
+    });
+
+    if (!newUserLocation) {
+      return json({ error: "Failed to create user location" }, { status: 500 });
+    }
+    return json({ success: true });
+  } catch (error) {
+    return json(
+      { error: "An error occurred while creating user location" },
+      { status: 500 }
+    );
+  }
+};
