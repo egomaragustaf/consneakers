@@ -5,7 +5,7 @@ import { Link } from "@remix-run/react";
 import { Layout, UserAuthSignUpForm } from "~/components";
 import { model } from "~/models";
 import { authenticator } from "~/services";
-import { schemaUserSignUp } from "~/shcemas";
+import { schemaUserSignUp } from "~/schemas";
 import { getRedirectTo } from "~/utils";
 
 export const meta: V2_MetaFunction = () => {

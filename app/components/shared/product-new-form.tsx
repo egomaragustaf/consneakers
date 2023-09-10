@@ -4,7 +4,7 @@ import { Form, useActionData, useNavigation } from "@remix-run/react";
 
 import type { action as actionAddNewProduct } from "~/routes/admin.dashboard.new";
 import { ButtonLoading } from "~/components";
-import { schemaAddNewProduct } from "~/shcemas";
+import { schemaAddNewProduct } from "~/schemas";
 
 export function AddNewProductForm() {
   const lastSubmission = useActionData<typeof actionAddNewProduct>();

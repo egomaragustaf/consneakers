@@ -12,7 +12,7 @@ import type {
   action as actionEditProduct,
 } from "~/routes/admin.dashboard.edit.$slug";
 import { ButtonLoading } from "~/components";
-import { schemaUpdateProduct } from "~/shcemas";
+import { schemaUpdateProduct } from "~/schemas";
 
 export function EditProductForm() {
   const lastSubmission = useActionData<typeof actionEditProduct>();
@@ -26,11 +26,6 @@ export function EditProductForm() {
     },
     defaultValue: {
       ...product,
-      slug: [],
-      name: [],
-      description: [],
-      price: [],
-      imageURL: [],
     },
   });
 

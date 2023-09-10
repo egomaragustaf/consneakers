@@ -4,6 +4,7 @@ import { useMatches } from "@remix-run/react";
 import type { UserData, UserSession } from "~/services";
 
 export type RootLoaderData = {
+  isDevelopment: boolean;
   userSession: UserSession | undefined;
   userData: UserData | undefined;
 };
@@ -23,6 +24,7 @@ export function useRootLoaderData() {
   const data = useMatchesData("root") as RootLoaderData;
 
   return {
+    isDevelopment: process.env.NODE_ENV === "development" ? true : false,
     userSession: data?.userSession,
     userData: data?.userData,
   };

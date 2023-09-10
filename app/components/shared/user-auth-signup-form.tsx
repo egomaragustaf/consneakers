@@ -5,7 +5,7 @@ import { parse } from "@conform-to/zod";
 import { useRedirectTo } from "~/hooks";
 import type { action as actionSignUp } from "~/routes/_auth.signup";
 import { ButtonLoading, Input, InputPassword } from "~/components";
-import { schemaUserSignUp } from "~/shcemas";
+import { schemaUserSignUp } from "~/schemas";
 
 export function UserAuthSignUpForm({
   ...props

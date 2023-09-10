@@ -12,9 +12,11 @@ import {
   DialogTitle,
   Input,
 } from "~/components";
-import { schemaAddNewUserLocation } from "~/shcemas";
+import { schemaAddNewUserLocation } from "~/schemas";
+import { useRootLoaderData } from "~/hooks";
 
 export function AddNewUserLocationForm() {
+  const { isDevelopment } = useRootLoaderData();
   const lastSubmission = useActionData<typeof actionAddNewUserLocation>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -23,6 +25,12 @@ export function AddNewUserLocationForm() {
     onValidate({ formData }) {
       return parse(formData, { schema: schemaAddNewUserLocation });
     },
+    defaultValue: isDevelopment
+      ? {
+          latitude: -7.586546,
+          longitude: 110.817448,
+        }
+      : undefined,
   });
 
   return (

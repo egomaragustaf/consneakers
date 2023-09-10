@@ -6,7 +6,7 @@ import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import { slugify } from "~/utils";
 import { EditProductForm, Layout, Sidebar } from "~/components";
-import { schemaUpdateProduct } from "~/shcemas";
+import { schemaUpdateProduct } from "~/schemas";
 
 export const meta: V2_MetaFunction = () => {
   return [

@@ -17,7 +17,7 @@ import {
 import { prisma } from "~/db.server";
 import type { getShoppingCart } from "~/models/cart.server";
 import { authenticator } from "~/services";
-import { schemaAddNewUserLocation } from "~/shcemas";
+import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
 
 export const meta: V2_MetaFunction = () => {
@@ -108,7 +108,7 @@ export const action = async ({ request }: ActionArgs) => {
 
   const userSession = await authenticator.isAuthenticated(request);
   if (!userSession?.id) {
-    return json({ error: "User not authenticated" }, { status: 401 });
+    return json(submission, { status: 401 });
   }
 
   try {
@@ -117,13 +117,10 @@ export const action = async ({ request }: ActionArgs) => {
     });
 
     if (!newUserLocation) {
-      return json({ error: "Failed to create user location" }, { status: 500 });
+      return json(submission, { status: 500 });
     }
-    return json({ success: true });
+    return json(submission, { status: 200 });
   } catch (error) {
-    return json(
-      { error: "An error occurred while creating user location" },
-      { status: 500 }
-    );
+    return json(submission, { status: 500 });
   }
 };
