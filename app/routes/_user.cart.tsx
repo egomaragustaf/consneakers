@@ -194,9 +194,11 @@ export default function Route() {
                 </TableBody>
               </Table>
 
-              <Button className="bg-zinc-800 hover:bg-zinc-700">
-                CHECKOUT
-              </Button>
+              <Link to={`/checkout`}>
+                <Button className="w-full bg-zinc-800 hover:bg-zinc-700">
+                  CHECKOUT
+                </Button>
+              </Link>
             </section>
           )}
         </article>
