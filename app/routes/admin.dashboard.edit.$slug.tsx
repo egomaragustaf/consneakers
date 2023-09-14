@@ -7,6 +7,7 @@ import { prisma } from "~/db.server";
 import { slugify } from "~/utils";
 import { EditProductForm, Layout, Sidebar } from "~/components";
 import { schemaUpdateProduct } from "~/schemas";
+import { useRootLoaderData } from "~/hooks";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -30,6 +31,7 @@ export async function loader({ params }: LoaderArgs) {
 }
 
 export default function Route() {
+  const { userSession } = useRootLoaderData();
   const { product } = useLoaderData<typeof loader>();
 
   if (!product) {
@@ -49,7 +51,7 @@ export default function Route() {
           </header>
 
           <section className="w-full flex justify-start items-center">
-            <EditProductForm />
+            {userSession?.id && <EditProductForm />}
           </section>
         </div>
       </main>

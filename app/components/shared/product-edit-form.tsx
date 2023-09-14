@@ -13,12 +13,15 @@ import type {
 } from "~/routes/admin.dashboard.edit.$slug";
 import { ButtonLoading } from "~/components";
 import { schemaUpdateProduct } from "~/schemas";
+import { useRootLoaderData } from "~/hooks";
 
 export function EditProductForm() {
+  const { userSession } = useRootLoaderData();
   const lastSubmission = useActionData<typeof actionEditProduct>();
   const { product } = useLoaderData<typeof loaderEditProduct>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+
   const [form, fields] = useForm({
     lastSubmission,
     onValidate({ formData }) {
@@ -29,22 +32,22 @@ export function EditProductForm() {
     },
   });
 
-  if (!product) {
-    return <p>Sorry, no product found.</p>;
-  }
-
   return (
     <section className="w-full flex justify-start items-center">
       <Form
-        key={product.id}
         method="POST"
         {...form.props}
         className="text-slate-700 w-full max-w-xl text-lg rounded-lg border bg-white p-4">
         <input
+          hidden
+          {...conform.input(fields.userId)}
+          defaultValue={userSession?.id}
+        />
+        <input
           {...conform.input(fields.slug)}
           type="hidden"
           name="slug"
-          defaultValue={product.slug}
+          defaultValue={product?.slug}
         />
 
         <div>
@@ -55,7 +58,7 @@ export function EditProductForm() {
             {...conform.input(fields.name)}
             id="name"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product.name}
+            defaultValue={product?.name}
           />
           <p>{fields.name.error}</p>
         </div>
@@ -66,7 +69,7 @@ export function EditProductForm() {
             {...conform.input(fields.price, { type: "number" })}
             id="price"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product.price}
+            defaultValue={product?.price}
           />
           <p>{fields.price.error}</p>
         </div>
@@ -77,7 +80,7 @@ export function EditProductForm() {
             {...conform.input(fields.description)}
             id="description"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product.description || ""}
+            defaultValue={product?.description || ""}
           />
           <p>{fields.description.error}</p>
         </div>
@@ -88,7 +91,7 @@ export function EditProductForm() {
             {...conform.input(fields.imageURL)}
             id="description"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product.imageURL || ""}
+            defaultValue={product?.imageURL || ""}
           />
           <p>{fields.description.error}</p>
         </div>
