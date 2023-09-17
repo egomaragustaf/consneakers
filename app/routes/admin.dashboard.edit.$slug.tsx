@@ -4,10 +4,10 @@ import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 
 import { prisma } from "~/db.server";
-import { slugify } from "~/utils";
 import { EditProductForm, Layout, Sidebar } from "~/components";
 import { schemaUpdateProduct } from "~/schemas";
 import { useRootLoaderData } from "~/hooks";
+import { slugify } from "~/utils";
 
 export const meta: V2_MetaFunction = () => {
   return [

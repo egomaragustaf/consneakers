@@ -13,16 +13,18 @@ import type {
 } from "~/routes/admin.dashboard.edit.$slug";
 import { ButtonLoading } from "~/components";
 import { schemaUpdateProduct } from "~/schemas";
-import { useRootLoaderData } from "~/hooks";
 
 export function EditProductForm() {
-  const { userSession } = useRootLoaderData();
   const lastSubmission = useActionData<typeof actionEditProduct>();
   const { product } = useLoaderData<typeof loaderEditProduct>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const [form, fields] = useForm({
+  const [
+    form,
+    { slug, name, price, description, imageURL, soldQuantity, stockQuantity },
+  ] = useForm({
+    shouldValidate: "onSubmit",
     lastSubmission,
     onValidate({ formData }) {
       return parse(formData, { schema: schemaUpdateProduct });
@@ -32,22 +34,20 @@ export function EditProductForm() {
     },
   });
 
+  if (!product) return null;
+
   return (
     <section className="w-full flex justify-start items-center">
       <Form
-        method="POST"
+        method="PUT"
         {...form.props}
         className="text-slate-700 w-full max-w-xl text-lg rounded-lg border bg-white p-4">
         <input
+          {...conform.input(slug)}
           hidden
-          {...conform.input(fields.userId)}
-          defaultValue={userSession?.id}
-        />
-        <input
-          {...conform.input(fields.slug)}
-          type="hidden"
+          id="slug"
           name="slug"
-          defaultValue={product?.slug}
+          className="w-full px-2 py-1 rounded-md border-gray-300 border"
         />
 
         <div>
@@ -55,45 +55,67 @@ export function EditProductForm() {
             Product name:
           </label>
           <input
-            {...conform.input(fields.name)}
+            {...conform.input(name)}
             id="name"
+            name="name"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product?.name}
           />
-          <p>{fields.name.error}</p>
+          <p>{name.error}</p>
         </div>
 
         <div>
           <label htmlFor="price">Product price:</label>
           <input
-            {...conform.input(fields.price, { type: "number" })}
+            {...conform.input(price, { type: "number" })}
             id="price"
+            name="price"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product?.price}
           />
-          <p>{fields.price.error}</p>
+          <p>{price.error}</p>
         </div>
 
         <div>
           <label htmlFor="description">Product description:</label>
           <input
-            {...conform.input(fields.description)}
+            {...conform.input(description || "")}
             id="description"
+            name="description"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product?.description || ""}
           />
-          <p>{fields.description.error}</p>
+          <p>{description.error}</p>
         </div>
 
         <div>
-          <label htmlFor="description">Product Image:</label>
+          <label htmlFor="imageURL">Product Image:</label>
           <input
-            {...conform.input(fields.imageURL)}
-            id="description"
+            {...conform.input(imageURL || "")}
+            id="imageURL"
+            name="imageURL"
             className="w-full px-2 py-1 rounded-md border-gray-300 border"
-            defaultValue={product?.imageURL || ""}
           />
-          <p>{fields.description.error}</p>
+          <p>{imageURL.error}</p>
+        </div>
+
+        <div>
+          <label htmlFor="soldQuantity">Sold Quantity:</label>
+          <input
+            {...conform.input(soldQuantity)}
+            id="soldQuantity"
+            name="soldQuantity"
+            className="w-full px-2 py-1 rounded-md border-gray-300 border"
+          />
+          <p>{soldQuantity.error}</p>
+        </div>
+
+        <div>
+          <label htmlFor="stockQuantity">Stock Quantity:</label>
+          <input
+            {...conform.input(stockQuantity)}
+            id="stockQuantity"
+            name="stockQuantity"
+            className="w-full px-2 py-1 rounded-md border-gray-300 border"
+          />
+          <p>{stockQuantity.error}</p>
         </div>
 
         <ButtonLoading
