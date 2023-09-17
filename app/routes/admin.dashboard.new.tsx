@@ -6,6 +6,7 @@ import { prisma } from "~/db.server";
 import { slugify } from "~/utils";
 import { AddNewProductForm, Layout, Sidebar } from "~/components";
 import { schemaAddNewProduct } from "~/schemas";
+import { useRootLoaderData } from "~/hooks";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -15,6 +16,8 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export default function FormRoute() {
+  const { userSession } = useRootLoaderData();
+
   return (
     <Layout>
       <main className="w-full flex justify-start items-start ">
@@ -28,7 +31,7 @@ export default function FormRoute() {
           </header>
 
           <section className="w-full flex justify-start items-center">
-            <AddNewProductForm />
+            {userSession && <AddNewProductForm />}
           </section>
         </div>
       </main>
