@@ -27,6 +27,15 @@ export function AddNewUserLocationForm() {
     },
     defaultValue: isDevelopment
       ? {
+          address: "Joyotakan RT01 / RW06",
+          countryCode: "ID",
+          province: "Jawa Tengah",
+          city: "Surakarta",
+          district: "Serengan",
+          subDistrict: "Joyotakan",
+          street: "Jalan Kahayan no 6",
+          streetDetails: "Jalan Kahayan no 6, Joyotakan RT01 / RW06",
+          postalCode: 57157,
           latitude: -7.586546,
           longitude: 110.817448,
         }
@@ -49,12 +58,8 @@ export function AddNewUserLocationForm() {
             id="label"
             placeholder="Label"
             className="col-span-3 border">
-            <option value="office" className="col-span-3 border">
-              Office
-            </option>
-            <option value="home" className="col-span-3 border">
-              Home
-            </option>
+            <option value="office">Office</option>
+            <option value="home">Home</option>
           </select>
         </div>
 
@@ -78,6 +83,18 @@ export function AddNewUserLocationForm() {
             {...conform.input(fields.countryCode)}
             id="country"
             placeholder="Country"
+            className="col-span-3 border"
+          />
+        </div>
+
+        <div className="grid grid-cols-4 items-center gap-4">
+          <label htmlFor="province" className="text-right">
+            Province
+          </label>
+          <Input
+            {...conform.input(fields.province)}
+            id="province"
+            placeholder="province"
             className="col-span-3 border"
           />
         </div>
