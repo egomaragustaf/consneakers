@@ -4,17 +4,14 @@ import type {
   LoaderFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
-import { MdOutlineDelete } from "react-icons/md";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { Link, useLoaderData } from "@remix-run/react";
 
 import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
 import {
   Button,
-  Input,
+  CartItem,
   Layout,
-  Separator,
   Table,
   TableBody,
   TableCell,
@@ -80,88 +77,13 @@ export default function Route() {
             ) : (
               <>
                 {cart?.cartItems.map((cartItem) => (
-                  <div key={cartItem.id} className="flex flex-col">
-                    <div className="flex">
-                      <Link to={`/products/${cartItem.product.slug}`}>
-                        <img
-                          src={cartItem.product.imageURL!}
-                          alt={cartItem.product.name}
-                          className="w-28 rounded border-slate-200 shadow-md"
-                        />
-                      </Link>
-                      <Separator orientation="vertical" className="mx-2" />
-
-                      <div className="flex flex-col items-start justify-center">
-                        <h2>{cartItem.product.name}</h2>
-                        <p>{formatValueToCurrency(cartItem.product.price)}</p>
-                        <h3 className="text-xl font-semibold">
-                          {formatValueToCurrency(cartItem.totalPrice)}
-                        </h3>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span>
-                        Available Stock: {cartItem.product.stockQuantity}
-                      </span>
-                      <div className="flex gap-4 items-center">
-                        <Form method="POST">
-                          <input
-                            type="hidden"
-                            name="cartItemId"
-                            defaultValue={cartItem.id}
-                          />
-                          <Button
-                            variant={
-                              cartItem.quantity === 0 ? "disabled" : "outline"
-                            }
-                            type="submit"
-                            value="decrementQuantity"
-                            name="action">
-                            <AiOutlineMinus className="text-sm" />
-                          </Button>
-                        </Form>
-
-                        <Input
-                          disabled
-                          className="text-center w-10 bg-slate-100 disabled:cursor-default"
-                          value={cartItem.quantity}
-                        />
-
-                        <Form method="POST">
-                          <input
-                            type="hidden"
-                            name="cartItemId"
-                            defaultValue={cartItem.id}
-                          />
-                          <Button
-                            variant="outline"
-                            type="submit"
-                            value="incrementQuantity"
-                            name="action">
-                            <AiOutlinePlus className="text-sm" />
-                          </Button>
-                        </Form>
-
-                        <Form method="POST">
-                          <input
-                            type="hidden"
-                            name="cartItemId"
-                            defaultValue={cartItem.id}
-                          />
-                          <Button
-                            variant="destructive"
-                            type="submit"
-                            value="removeFromCart"
-                            name="action">
-                            <MdOutlineDelete className="text-sm text-white"></MdOutlineDelete>
-                          </Button>
-                        </Form>
-                      </div>
-                    </div>
-
-                    <Separator className="my-4" />
-                  </div>
+                  <CartItem
+                    key={cartItem.id}
+                    cart={cart}
+                    cartItem={cartItem}
+                    product={cartItem.product}
+                    quantity={cartItem.quantity}
+                  />
                 ))}
               </>
             )}
@@ -210,7 +132,7 @@ export default function Route() {
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
   const cartItemId = formData.get("cartItemId")?.toString();
-  const action = formData.get("action");
+  const action = formData.get("_action");
 
   if (cartItemId && action) {
     try {
@@ -224,7 +146,7 @@ export const action = async ({ request }: ActionArgs) => {
       }
 
       switch (action) {
-        case "incrementQuantity": {
+        case "increment-item-in-cart": {
           const newQuantity = cartItem.quantity + 1;
           const newTotalPrice = cartItem.product.price * newQuantity;
           return await prisma.cartItem.update({
@@ -237,7 +159,7 @@ export const action = async ({ request }: ActionArgs) => {
           });
         }
 
-        case "decrementQuantity": {
+        case "decrement-item-in-cart": {
           const newQuantity = cartItem.quantity - 1;
           const newTotalPrice = cartItem.product.price * newQuantity;
           if (cartItem.quantity > 1) {
@@ -253,7 +175,7 @@ export const action = async ({ request }: ActionArgs) => {
           return await prisma.cartItem.delete({ where: { id: cartItem.id } });
         }
 
-        case "removeFromCart": {
+        case "delete-item-in-cart": {
           return await prisma.cartItem.delete({ where: { id: cartItem.id } });
         }
 

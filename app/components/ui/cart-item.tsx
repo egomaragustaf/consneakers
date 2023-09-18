@@ -13,7 +13,7 @@ function calculateCartItem({
   return { product, quantity, min: 0, max: 0 };
 }
 
-export function CartListItem({
+export function CartItem({
   cart,
   cartItem,
   product,
@@ -34,8 +34,11 @@ export function CartListItem({
 
   if (cartItemFetcher.submission) {
     const values = Object(cartItemFetcher.submission.formData);
-    if (values._action === "update-item-in-cart") {
-      cartItemQuantity = Number(values.quantity);
+    if (values._action === "increment-item-in-cart") {
+      cartItemQuantity = Number(values.quantity) + 1;
+    }
+    if (values._action === "decrement-item-in-cart") {
+      cartItemQuantity = Number(values.quantity) - 1;
     }
     if (values._action === "delete-item-in-cart") {
       cartItemDeleting = true;
@@ -93,7 +96,7 @@ export function CartListItem({
                 <MdOutlineDelete className="h-6 w-6 text-gray-500 hover:text-red-800" />
               </button>
               <input type="hidden" name="_action" value="delete-item-in-cart" />
-              <input type="hidden" name="orderId" value={cart?.id} />
+              <input type="hidden" name="cartItemId" value={cartItem?.id} />
               <input type="hidden" name="orderItemId" value={cartItem?.id} />
             </cartItemFetcher.Form>
             {/* DELETE */}
@@ -110,8 +113,12 @@ export function CartListItem({
                 )}>
                 <AiOutlineMinus className="h-6 w-6" />
               </button>
-              <input type="hidden" name="_action" value="update-item-in-cart" />
-              <input type="hidden" name="orderId" value={cart?.id} />
+              <input
+                type="hidden"
+                name="_action"
+                value="decrement-item-in-cart"
+              />
+              <input type="hidden" name="cartItemId" value={cartItem?.id} />
               <input
                 type="hidden"
                 name="productId"
@@ -150,8 +157,12 @@ export function CartListItem({
                 )}>
                 <AiOutlinePlus className="h-6 w-6" />
               </button>
-              <input type="hidden" name="_action" value="update-item-in-cart" />
-              <input type="hidden" name="orderId" value={cart?.id} />
+              <input
+                type="hidden"
+                name="_action"
+                value="increment-item-in-cart"
+              />
+              <input type="hidden" name="cartItemId" value={cartItem?.id} />
               <input
                 type="hidden"
                 name="productId"
