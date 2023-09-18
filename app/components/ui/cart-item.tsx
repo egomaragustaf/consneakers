@@ -10,7 +10,7 @@ function calculateCartItem({
   product: any;
   quantity: number;
 }) {
-  return { product, quantity, min: 0, max: 0 };
+  return { product, quantity, min: 1, max: product.stockQuantity };
 }
 
 export function CartItem({
