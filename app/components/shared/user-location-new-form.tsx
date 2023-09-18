@@ -41,32 +41,23 @@ export function AddNewUserLocationForm() {
       </DialogHeader>
       <Form method="POST" {...form.props} className="grid gap-4 py-4">
         <div className="grid grid-cols-4 items-center gap-4">
-          <label htmlFor="name" className="text-right">
-            Name
-          </label>
-          <Input id="name" placeholder="Name" className="col-span-3 border" />
-        </div>
-        <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="label" className="text-right">
             Label
           </label>
-          <Input
+          <select
             {...conform.input(fields.label)}
             id="label"
             placeholder="Label"
-            className="col-span-3 border"
-          />
+            className="col-span-3 border">
+            <option value="office" className="col-span-3 border">
+              Office
+            </option>
+            <option value="home" className="col-span-3 border">
+              Home
+            </option>
+          </select>
         </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <label htmlFor="username" className="text-right">
-            Username
-          </label>
-          <Input
-            id="username"
-            placeholder="username"
-            className="col-span-3 border"
-          />
-        </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="address" className="text-right">
             Address
@@ -78,6 +69,7 @@ export function AddNewUserLocationForm() {
             className="col-span-3 border"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="country" className="text-right">
             Country
@@ -89,6 +81,7 @@ export function AddNewUserLocationForm() {
             className="col-span-3 border"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="city" className="text-right">
             City
@@ -100,6 +93,7 @@ export function AddNewUserLocationForm() {
             className="col-span-3 border"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="district" className="text-right">
             District
@@ -111,6 +105,7 @@ export function AddNewUserLocationForm() {
             className="col-span-3 border"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="subdistrict" className="text-right">
             Sub District
@@ -122,6 +117,7 @@ export function AddNewUserLocationForm() {
             className="col-span-3 border"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="postalcode" className="text-right">
             Postal Code
@@ -133,6 +129,7 @@ export function AddNewUserLocationForm() {
             className="col-span-3 border"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="latitude" className="text-right">
             Latitude
@@ -144,6 +141,7 @@ export function AddNewUserLocationForm() {
             className="col-span-3 border"
           />
         </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="longitude" className="text-right">
             Longitude
