@@ -12,6 +12,7 @@ export const schemaAddNewUserLocation = zfd.formData({
     street: zfd.text(),
     streetDetails: zfd.text(),
     postalCode: zfd.text(),
+    mapsURL: zfd.text(),
     latitude: zfd.numeric(z.number()),
     longitude: zfd.numeric(z.number()),
   });

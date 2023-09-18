@@ -27,6 +27,7 @@ export function AddNewUserLocationForm() {
     },
     defaultValue: isDevelopment
       ? {
+          label: "Home",
           address: "Joyotakan RT01 / RW06",
           countryCode: "ID",
           province: "Jawa Tengah",
@@ -35,6 +36,7 @@ export function AddNewUserLocationForm() {
           subDistrict: "Joyotakan",
           street: "Jalan Kahayan no 6",
           streetDetails: "Jalan Kahayan no 6, Joyotakan RT01 / RW06",
+          mapsURL: "https://maps.app.goo.gl/mA8ieRFCETJyH2588",
           postalCode: 57157,
           latitude: -7.586546,
           longitude: 110.817448,
@@ -53,14 +55,12 @@ export function AddNewUserLocationForm() {
           <label htmlFor="label" className="text-right">
             Label
           </label>
-          <select
+          <Input
             {...conform.input(fields.label)}
             id="label"
-            placeholder="Label"
-            className="col-span-3 border">
-            <option value="office">Office</option>
-            <option value="home">Home</option>
-          </select>
+            placeholder="label"
+            className="col-span-3 border"
+          />
         </div>
 
         <div className="grid grid-cols-4 items-center gap-4">
@@ -136,6 +136,30 @@ export function AddNewUserLocationForm() {
         </div>
 
         <div className="grid grid-cols-4 items-center gap-4">
+          <label htmlFor="street" className="text-right">
+            Street
+          </label>
+          <Input
+            {...conform.input(fields.street)}
+            id="street"
+            placeholder="Street"
+            className="col-span-3 border"
+          />
+        </div>
+
+        <div className="grid grid-cols-4 items-center gap-4">
+          <label htmlFor="streetDetails" className="text-right">
+            Street Details
+          </label>
+          <Input
+            {...conform.input(fields.streetDetails)}
+            id="streetDetails"
+            placeholder="Street Details"
+            className="col-span-3 border"
+          />
+        </div>
+
+        <div className="grid grid-cols-4 items-center gap-4">
           <label htmlFor="postalcode" className="text-right">
             Postal Code
           </label>
@@ -143,6 +167,18 @@ export function AddNewUserLocationForm() {
             {...conform.input(fields.postalCode)}
             id="postalcode"
             placeholder="Postal Code"
+            className="col-span-3 border"
+          />
+        </div>
+
+        <div className="grid grid-cols-4 items-center gap-4">
+          <label htmlFor="mapsURL" className="text-right">
+            Maps URL
+          </label>
+          <Input
+            {...conform.input(fields.mapsURL)}
+            id="mapsURL"
+            placeholder="Maps URL"
             className="col-span-3 border"
           />
         </div>
