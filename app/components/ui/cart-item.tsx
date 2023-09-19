@@ -172,6 +172,7 @@ export function CartItem({
           </div>
         </div>
       </div>
+      <Separator className="my-2" />
     </div>
   );
 }
