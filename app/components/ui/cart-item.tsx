@@ -49,11 +49,11 @@ export function CartItem({
   const isLessThanMin = Boolean(Number(cartItemQuantity) - min <= 0);
 
   return (
-    <li className="border-b border-gray-200 py-2" hidden={cartItemDeleting}>
+    <div className="border-b border-gray-200 py-2" hidden={cartItemDeleting}>
       <div className="flex items-center">
         <Link to={`/products/${product?.slug}`}>
           <img
-            className="h-20 w-20 rounded border"
+            className="w-28 rounded border-slate-200 shadow-md"
             src={product.imageURL}
             alt={product.name}
           />
@@ -179,6 +179,6 @@ export function CartItem({
           </div>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
