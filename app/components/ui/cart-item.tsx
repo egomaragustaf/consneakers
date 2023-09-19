@@ -1,7 +1,8 @@
 import { Link, useFetcher } from "@remix-run/react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
-import { cn } from "~/utils";
+import { formatValueToCurrency } from "~/utils";
+import { Button, Input, Separator } from "~/components";
 
 function calculateCartItem({
   product,
@@ -49,31 +50,29 @@ export function CartItem({
   const isLessThanMin = Boolean(Number(cartItemQuantity) - min <= 0);
 
   return (
-    <li className="border-b border-gray-200 py-2" hidden={cartItemDeleting}>
-      <div className="flex items-center">
+    <div className="flex flex-col" hidden={cartItemDeleting}>
+      <div className="flex">
         <Link to={`/products/${product?.slug}`}>
           <img
-            className="h-20 w-20 rounded border"
+            className="w-24 rounded border-slate-200 shadow-md"
             src={product.imageURL}
             alt={product.name}
           />
         </Link>
 
-        <div className="ml-4">
-          <Link to={`/products/${product?.slug}`}>
-            <h3 className="text-brand-900">{cartItem?.product.name}</h3>
-          </Link>
+        <Separator orientation="vertical" className="mx-2" />
 
-          <div className="mt-0.5 space-y-px text-sm text-gray-900">
-            <div>
-              <span>({cartItem?.quantity} pcs)</span>
-              <span> x </span>
-              <span>{product?.price}</span>
-            </div>
-            <div>
-              <span className="font-bold">{cartItem?.subTotalPrice}</span>
-            </div>
-          </div>
+        <div className="flex flex-col items-start justify-center">
+          <Link to={`/products/${product?.slug}`}>
+            <h3 className="font-semibold">{cartItem?.product.name}</h3>
+          </Link>
+          <p>
+            <span>{cartItem?.quantity}</span> x{" "}
+            {formatValueToCurrency(cartItem.product.price)}
+          </p>
+          <h2 className="text-xl font-semibold">
+            {formatValueToCurrency(cartItem.totalPrice)}
+          </h2>
         </div>
       </div>
 
@@ -86,33 +85,16 @@ export function CartItem({
         {/* CART ITEM COUNTER */}
         <div>
           <div className="mx-6 flex items-center gap-2">
-            {/* DELETE */}
-            <cartItemFetcher.Form method="post" action="/cart" className="mr-8">
-              <button
-                type="submit"
-                data-action-id="remove-from-cart"
-                className="block">
-                <span className="sr-only">Hapus dari keranjang</span>
-                <MdOutlineDelete className="h-6 w-6 text-gray-500 hover:text-red-800" />
-              </button>
-              <input type="hidden" name="_action" value="delete-item-in-cart" />
-              <input type="hidden" name="cartItemId" value={cartItem?.id} />
-              <input type="hidden" name="orderItemId" value={cartItem?.id} />
-            </cartItemFetcher.Form>
-            {/* DELETE */}
-
             {/* DECREMENT */}
             <cartItemFetcher.Form method="post" action="/cart">
-              <button
+              <Button
                 data-action-id="decrement-cart"
                 type="submit"
                 disabled={isLessThanMin}
-                className={cn(
-                  "text-green-500 hover:text-green-800",
-                  isLessThanMin && "text-gray-300 hover:text-gray-300"
-                )}>
-                <AiOutlineMinus className="h-6 w-6" />
-              </button>
+                variant={isLessThanMin ? "disabled" : "outline"}
+                className="border-zinc-400">
+                <AiOutlineMinus className="text-sm" />
+              </Button>
               <input
                 type="hidden"
                 name="_action"
@@ -135,28 +117,24 @@ export function CartItem({
 
             {/* QUANTITY */}
             <div>
-              <input
-                className="h-8 w-14 rounded border-gray-200 bg-gray-50 p-0 text-center text-gray-600 [-moz-appearance:_textfield] focus-visible:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
-                type="number"
+              <Input
                 disabled
+                className="text-center w-12 bg-slate-100 disabled:cursor-default"
                 value={Number(cartItemQuantity)}
               />
-              <span className="sr-only">{Number(cartItemQuantity)} pieces</span>
             </div>
             {/* QUANTITY */}
 
             {/* INCREMENT */}
             <cartItemFetcher.Form method="POST" action="/cart">
-              <button
-                data-action-id="increment-cart"
+              <Button
+                data-action-id="decrement-cart"
                 type="submit"
                 disabled={isMoreThanMax}
-                className={cn(
-                  "text-green-500 hover:text-green-800",
-                  isMoreThanMax && "text-gray-300 hover:text-gray-300"
-                )}>
-                <AiOutlinePlus className="h-6 w-6" />
-              </button>
+                variant={isMoreThanMax ? "disabled" : "outline"}
+                className="border-zinc-400">
+                <AiOutlinePlus className="text-sm" />
+              </Button>
               <input
                 type="hidden"
                 name="_action"
@@ -176,9 +154,25 @@ export function CartItem({
               />
             </cartItemFetcher.Form>
             {/* INCREMENT */}
+
+            {/* DELETE */}
+            <cartItemFetcher.Form method="post" action="/cart" className="mr-8">
+              <Button
+                type="submit"
+                data-action-id="remove-from-cart"
+                className="block">
+                <span className="sr-only">Remove from Cart</span>
+                <MdOutlineDelete className="text-lg text-white" />
+              </Button>
+              <input type="hidden" name="_action" value="delete-item-in-cart" />
+              <input type="hidden" name="cartItemId" value={cartItem?.id} />
+              <input type="hidden" name="orderItemId" value={cartItem?.id} />
+            </cartItemFetcher.Form>
+            {/* DELETE */}
           </div>
         </div>
       </div>
-    </li>
+      <Separator className="my-2" />
+    </div>
   );
 }
