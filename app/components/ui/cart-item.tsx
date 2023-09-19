@@ -54,7 +54,7 @@ export function CartItem({
       <div className="flex">
         <Link to={`/products/${product?.slug}`}>
           <img
-            className="w-28 rounded border-slate-200 shadow-md"
+            className="w-24 rounded border-slate-200 shadow-md"
             src={product.imageURL}
             alt={product.name}
           />
@@ -64,7 +64,7 @@ export function CartItem({
 
         <div className="flex flex-col items-start justify-center">
           <Link to={`/products/${product?.slug}`}>
-            <h3 className="text-brand-900">{cartItem?.product.name}</h3>
+            <h3 className="font-semibold">{cartItem?.product.name}</h3>
           </Link>
           <p>
             <span>{cartItem?.quantity}</span> x{" "}
