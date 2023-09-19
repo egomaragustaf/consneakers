@@ -1,7 +1,8 @@
 import { Link, useFetcher } from "@remix-run/react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
-import { cn } from "~/utils";
+import { cn, formatValueToCurrency } from "~/utils";
+import { Separator } from "~/components";
 
 function calculateCartItem({
   product,
@@ -49,8 +50,8 @@ export function CartItem({
   const isLessThanMin = Boolean(Number(cartItemQuantity) - min <= 0);
 
   return (
-    <div className="border-b border-gray-200 py-2" hidden={cartItemDeleting}>
-      <div className="flex items-center">
+    <div className="flex flex-col" hidden={cartItemDeleting}>
+      <div className="flex">
         <Link to={`/products/${product?.slug}`}>
           <img
             className="w-28 rounded border-slate-200 shadow-md"
@@ -59,21 +60,19 @@ export function CartItem({
           />
         </Link>
 
-        <div className="ml-4">
+        <Separator orientation="vertical" className="mx-2" />
+
+        <div className="flex flex-col items-start justify-center">
           <Link to={`/products/${product?.slug}`}>
             <h3 className="text-brand-900">{cartItem?.product.name}</h3>
           </Link>
-
-          <div className="mt-0.5 space-y-px text-sm text-gray-900">
-            <div>
-              <span>({cartItem?.quantity} pcs)</span>
-              <span> x </span>
-              <span>{product?.price}</span>
-            </div>
-            <div>
-              <span className="font-bold">{cartItem?.subTotalPrice}</span>
-            </div>
-          </div>
+          <p>
+            <span>{cartItem?.quantity}</span> x{" "}
+            {formatValueToCurrency(cartItem.product.price)}
+          </p>
+          <h2 className="text-xl font-semibold">
+            {formatValueToCurrency(cartItem.totalPrice)}
+          </h2>
         </div>
       </div>
 
