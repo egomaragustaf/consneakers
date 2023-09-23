@@ -100,7 +100,9 @@ export default function Route() {
 
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-fit">
+                  <Button
+                    variant="default"
+                    className="w-fit bg-zinc-800 hover:bg-zinc-700">
                     + Add Address
                   </Button>
                 </DialogTrigger>
