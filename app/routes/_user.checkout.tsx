@@ -71,7 +71,7 @@ export default function Route() {
                         <TableCell>Adrress</TableCell>
                         <TableCell>:</TableCell>
                         <TableCell>
-                          {location.subDistrict}, {location.district},
+                          {location.subDistrict}, {location.district},{" "}
                           {location.city}, {location.province},{" "}
                           {location.countryCode}
                         </TableCell>
