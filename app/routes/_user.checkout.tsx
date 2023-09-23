@@ -62,7 +62,7 @@ export default function Route() {
                 return (
                   <Table className="bg-zinc-100 rounded" key={location.id}>
                     <TableBody>
-                      <TableRow>
+                      <TableRow className="text-base font-semibold text-zinc-800">
                         <TableCell>Label</TableCell>
                         <TableCell>:</TableCell>
                         <TableCell>{location.label}</TableCell>
