@@ -97,7 +97,9 @@ model Cart {
   id String @id @default(cuid())
 
   // Define the one-to-many relationship between Cart and CartItem
-  cartItems CartItem[]
+  cartItems       CartItem[]
+  totalQuantity   Int
+  grandTotalPrice Int
 
   user   User[]
   userId String

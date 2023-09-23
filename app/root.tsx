@@ -18,6 +18,7 @@ import { authenticator } from "./services";
 import NProgress from "nprogress";
 import { useEffect } from "react";
 import { model } from "~/models";
+import { prisma } from "./db.server";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -57,5 +58,9 @@ export const loader = async ({ request }: LoaderArgs) => {
     return redirect(`/logout`);
   }
 
-  return json({ userSession, userData });
+  const cart = await prisma.cart.findFirst({
+    where: { userId: userSession?.id },
+  });
+
+  return json({ userSession, userData, cart });
 };
