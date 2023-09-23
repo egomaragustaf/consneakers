@@ -44,7 +44,7 @@ export function Navigation() {
           <img
             src="/images/logo-consneakers.png"
             alt="logo-consneakers"
-            className="w-12 lg:w-16"
+            className="w-24"
           />
         </span>
       </Link>
