@@ -15,7 +15,6 @@ import {
   TableRow,
 } from "~/components";
 import { prisma } from "~/db.server";
-import type { getShoppingCart } from "~/models/cart.server";
 import { authenticator } from "~/services";
 import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
@@ -24,27 +23,20 @@ export const meta: V2_MetaFunction = () => {
   return [{ title: "Checkout" }, { name: "description", content: "Checkout" }];
 };
 
-type LoaderData = {
-  cart: Awaited<ReturnType<typeof getShoppingCart>>;
-};
-
 export const loader = async ({ request }: LoaderArgs) => {
-  const userSession = await authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
+  const user = await prisma.user.findFirst({
+    include: { locations: true },
   });
 
-  if (!userSession.id) return null;
-
   const cart = await prisma.cart.findFirst({
-    where: { userId: userSession.id },
     include: { cartItems: { include: { product: true } } },
   });
 
-  return json({ cart });
+  return json({ cart, user });
 };
 
 export default function Route() {
-  const { cart } = useLoaderData<LoaderData>();
+  const { cart, user } = useLoaderData<typeof loader>();
 
   return (
     <Layout>
@@ -57,6 +49,8 @@ export default function Route() {
 
             <main className="flex flex-col gap-4">
               <h2>Delivery Address</h2>
+
+              <pre>{JSON.stringify(user?.locations, null, 2)}</pre>
 
               <Dialog>
                 <DialogTrigger asChild>
