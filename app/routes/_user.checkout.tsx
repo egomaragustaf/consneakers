@@ -60,29 +60,41 @@ export default function Route() {
 
               {user?.locations.map((location) => {
                 return (
-                  <Table className="bg-zinc-100 rounded" key={location.id}>
-                    <TableBody>
-                      <TableRow className="text-base font-semibold text-zinc-800">
-                        <TableCell>Label</TableCell>
-                        <TableCell>:</TableCell>
-                        <TableCell>{location.label}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Adrress</TableCell>
-                        <TableCell>:</TableCell>
-                        <TableCell>
-                          {location.subDistrict}, {location.district},{" "}
-                          {location.city}, {location.province},{" "}
-                          {location.countryCode}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Street Detail</TableCell>
-                        <TableCell>:</TableCell>
-                        <TableCell>{location.streetDetails}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                  <div key={location.id}>
+                    <Table className="bg-zinc-100 rounded">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="text-left w-36">
+                            Label
+                          </TableCell>
+                          <TableCell className="text-left w-4">:</TableCell>
+                          <TableCell className="text-left w-96 font-semibold text-base">
+                            {location.label}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="text-left w-36">
+                            Adrress
+                          </TableCell>
+                          <TableCell className="text-left w-4">:</TableCell>
+                          <TableCell className="text-left w-96">
+                            {location.subDistrict}, {location.district},{" "}
+                            {location.city}, {location.province},{" "}
+                            {location.countryCode}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="text-left w-36">
+                            Street Detail
+                          </TableCell>
+                          <TableCell className="text-left w-4">:</TableCell>
+                          <TableCell className="text-left w-96">
+                            {location.streetDetails}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
                 );
               })}
 
