@@ -1,9 +1,13 @@
-import { Link, NavLink } from "@remix-run/react";
+import type { LoaderArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, NavLink, useLoaderData } from "@remix-run/react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { UserDropdownMenu, SearchForm } from "~/components";
+import { prisma } from "~/db.server";
 import { useRootLoaderData } from "~/hooks";
-import type { UserData } from "~/services";
+import type { getShoppingCart } from "~/models/cart.server";
+import { authenticator, type UserData } from "~/services";
 
 const navPublicItems = [
   { to: "/", text: "Home" },
@@ -33,9 +37,28 @@ const navAuthenticatedItems = [
   },
 ];
 
+type LoaderData = {
+  cart: Awaited<ReturnType<typeof getShoppingCart>>;
+};
+
+export const loader = async ({ request }: LoaderArgs) => {
+  const userSession = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+
+  if (!userSession.id) return null;
+
+  const cart = await prisma.cart.findFirst({
+    where: { userId: userSession?.id },
+  });
+
+  return json({ cart });
+};
+
 export function Navigation() {
   const { userSession } = useRootLoaderData();
   const { userData } = useRootLoaderData();
+  const { cart } = useLoaderData<LoaderData>();
 
   return (
     <header className="z-10 sticky backdrop-blur top-0 flex items-center justify-center gap-6 px-4 lg:px-20 bg-zinc-900/95 text-white">
@@ -109,6 +132,13 @@ export function Navigation() {
                           : "text-white hover:text-rose-400"
                       }>
                       {navAuthenticatedItem.icon}
+
+                      {cart?.totalQuantity !== undefined &&
+                        cart?.totalQuantity > 0 && (
+                          <div className="-ml-2 flex h-5 w-5 items-center justify-center rounded-full text-zinc-800 bg-white">
+                            {cart?.totalQuantity}
+                          </div>
+                        )}
                     </NavLink>
                   )}
                 </span>

@@ -45,10 +45,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Route() {
   const { cart } = useLoaderData<LoaderData>();
-  const totalItemCount =
-    cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
-  const grandTotal =
-    cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
   return (
     <Layout>
@@ -83,11 +79,13 @@ export default function Route() {
               <TableBody>
                 <TableRow>
                   <TableCell>Total Product:</TableCell>
-                  <TableCell>{totalItemCount}</TableCell>
+                  <TableCell>{cart?.totalQuantity}</TableCell>
                 </TableRow>
                 <TableRow className="text-lg font-bold text-zinc-800">
                   <TableCell>Total Price:</TableCell>
-                  <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
+                  <TableCell>
+                    {formatValueToCurrency(cart?.grandTotalPrice)}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>

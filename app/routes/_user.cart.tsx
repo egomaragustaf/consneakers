@@ -42,21 +42,39 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   if (!existingCart) {
     const newCart = await prisma.cart.create({
-      data: { userId: userSession?.id },
+      data: {
+        userId: userSession?.id,
+        totalQuantity: 0,
+        grandTotalPrice: 0,
+      },
       include: { cartItems: { include: { product: true } } },
     });
     return json({ cart: newCart });
   }
 
-  return json({ cart: existingCart });
+  const totalQuantity = existingCart.cartItems.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
+  const grandTotalPrice = existingCart.cartItems.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0
+  );
+
+  // Update the existing cart with the calculated values
+  await prisma.cart.update({
+    where: { id: existingCart.id },
+    data: {
+      totalQuantity,
+      grandTotalPrice,
+    },
+  });
+
+  return json({ cart: { ...existingCart, totalQuantity, grandTotalPrice } });
 };
 
 export default function Route() {
   const { cart } = useLoaderData<LoaderData>();
-  const totalItemCount =
-    cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
-  const grandTotal =
-    cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
   return (
     <Layout>
@@ -107,11 +125,13 @@ export default function Route() {
                 <TableBody>
                   <TableRow>
                     <TableCell>Total Product:</TableCell>
-                    <TableCell>{totalItemCount}</TableCell>
+                    <TableCell>{cart.totalQuantity}</TableCell>
                   </TableRow>
                   <TableRow className="text-lg font-bold text-zinc-800">
                     <TableCell>Total Price:</TableCell>
-                    <TableCell>{formatValueToCurrency(grandTotal)}</TableCell>
+                    <TableCell>
+                      {formatValueToCurrency(cart.grandTotalPrice)}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
