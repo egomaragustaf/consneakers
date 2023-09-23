@@ -1,6 +1,6 @@
 import { parse } from "@conform-to/zod";
 import type { ActionArgs, V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import {
@@ -24,19 +24,27 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export const loader = async ({ request }: LoaderArgs) => {
+  const userSession = await authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+
+  if (!userSession.id) return redirect("/login");
+
   const user = await prisma.user.findFirst({
+    where: { id: userSession.id },
     include: { locations: true },
   });
 
   const cart = await prisma.cart.findFirst({
+    where: { userId: userSession.id },
     include: { cartItems: { include: { product: true } } },
   });
 
-  return json({ cart, user });
+  return json({ user, cart });
 };
 
 export default function Route() {
-  const { cart, user } = useLoaderData<typeof loader>();
+  const { user, cart } = useLoaderData<typeof loader>();
 
   return (
     <Layout>
@@ -48,9 +56,35 @@ export default function Route() {
             </header>
 
             <main className="flex flex-col gap-4">
-              <h2>Delivery Address</h2>
+              <h2>Your Adress</h2>
 
-              <pre>{JSON.stringify(user?.locations, null, 2)}</pre>
+              {user?.locations.map((location) => {
+                return (
+                  <Table className="bg-zinc-100 rounded" key={location.id}>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>Label</TableCell>
+                        <TableCell>:</TableCell>
+                        <TableCell>{location.label}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Adrress</TableCell>
+                        <TableCell>:</TableCell>
+                        <TableCell>
+                          {location.subDistrict}, {location.district},
+                          {location.city}, {location.province},{" "}
+                          {location.countryCode}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Street Detail</TableCell>
+                        <TableCell>:</TableCell>
+                        <TableCell>{location.streetDetails}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                );
+              })}
 
               <Dialog>
                 <DialogTrigger asChild>
