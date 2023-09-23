@@ -1,6 +1,6 @@
 import { parse } from "@conform-to/zod";
 import type { ActionArgs, V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import {
@@ -15,7 +15,6 @@ import {
   TableRow,
 } from "~/components";
 import { prisma } from "~/db.server";
-import type { getShoppingCart } from "~/models/cart.server";
 import { authenticator } from "~/services";
 import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
@@ -24,27 +23,28 @@ export const meta: V2_MetaFunction = () => {
   return [{ title: "Checkout" }, { name: "description", content: "Checkout" }];
 };
 
-type LoaderData = {
-  cart: Awaited<ReturnType<typeof getShoppingCart>>;
-};
-
 export const loader = async ({ request }: LoaderArgs) => {
   const userSession = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
 
-  if (!userSession.id) return null;
+  if (!userSession.id) return redirect("/login");
+
+  const user = await prisma.user.findFirst({
+    where: { id: userSession.id },
+    include: { locations: true },
+  });
 
   const cart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
     include: { cartItems: { include: { product: true } } },
   });
 
-  return json({ cart });
+  return json({ user, cart });
 };
 
 export default function Route() {
-  const { cart } = useLoaderData<LoaderData>();
+  const { user, cart } = useLoaderData<typeof loader>();
 
   return (
     <Layout>
@@ -56,11 +56,53 @@ export default function Route() {
             </header>
 
             <main className="flex flex-col gap-4">
-              <h2>Delivery Address</h2>
+              <h2>Your Adress</h2>
+
+              {user?.locations.map((location) => {
+                return (
+                  <div key={location.id}>
+                    <Table className="bg-zinc-100 rounded">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="text-left w-36">
+                            Label
+                          </TableCell>
+                          <TableCell className="text-left w-4">:</TableCell>
+                          <TableCell className="text-left w-96 font-semibold text-base">
+                            {location.label}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="text-left w-36">
+                            Adrress
+                          </TableCell>
+                          <TableCell className="text-left w-4">:</TableCell>
+                          <TableCell className="text-left w-96">
+                            {location.subDistrict}, {location.district},{" "}
+                            {location.city}, {location.province},{" "}
+                            {location.countryCode}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="text-left w-36">
+                            Street Detail
+                          </TableCell>
+                          <TableCell className="text-left w-4">:</TableCell>
+                          <TableCell className="text-left w-96">
+                            {location.streetDetails}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+                );
+              })}
 
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-fit">
+                  <Button
+                    variant="default"
+                    className="w-fit bg-zinc-800 hover:bg-zinc-700">
                     + Add Address
                   </Button>
                 </DialogTrigger>
