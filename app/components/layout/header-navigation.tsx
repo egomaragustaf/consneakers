@@ -49,8 +49,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   if (!userSession.id) return null;
 
   const cart = await prisma.cart.findFirst({
-    where: { userId: userSession.id },
-    include: { cartItems: { include: { product: true } } },
+    where: { userId: userSession?.id },
   });
 
   return json({ cart });
@@ -60,8 +59,6 @@ export function Navigation() {
   const { userSession } = useRootLoaderData();
   const { userData } = useRootLoaderData();
   const { cart } = useLoaderData<LoaderData>();
-  const totalItemCount =
-    cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
 
   return (
     <header className="z-10 sticky backdrop-blur top-0 flex items-center justify-center gap-6 px-4 lg:px-20 bg-zinc-900/95 text-white">
@@ -96,7 +93,6 @@ export function Navigation() {
             })}
           </ul>
         </nav>
-        <p>{totalItemCount}</p>
       </div>
 
       <div className="text-sm w-96">
@@ -136,6 +132,13 @@ export function Navigation() {
                           : "text-white hover:text-rose-400"
                       }>
                       {navAuthenticatedItem.icon}
+
+                      {cart?.totalQuantity !== undefined &&
+                        cart?.totalQuantity > 0 && (
+                          <div className="-ml-2 flex h-5 w-5 items-center justify-center rounded-full text-zinc-800 bg-white">
+                            {cart?.totalQuantity}
+                          </div>
+                        )}
                     </NavLink>
                   )}
                 </span>

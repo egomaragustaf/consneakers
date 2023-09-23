@@ -45,10 +45,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Route() {
   const { cart } = useLoaderData<LoaderData>();
-  const totalItemCount =
-    cart?.cartItems.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
-  const grandTotal =
-    cart?.cartItems.reduce((acc, item) => acc + item.totalPrice, 0) ?? 0;
 
   return (
     <Layout>

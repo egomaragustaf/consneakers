@@ -60,7 +60,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   const cart = await prisma.cart.findFirst({
     where: { userId: userSession?.id },
-    include: { cartItems: { include: { product: true } } },
   });
 
   return json({ userSession, userData, cart });
