@@ -27,8 +27,5 @@ export function useRootLoaderData() {
     isDevelopment: process.env.NODE_ENV === "development" ? true : false,
     userSession: data?.userSession,
     userData: data?.userData,
-    ENV: {
-      MAPBOX_PUBLIC_TOKEN: process.env.MAPBOX_PUBLIC_TOKEN,
-    },
   };
 }
