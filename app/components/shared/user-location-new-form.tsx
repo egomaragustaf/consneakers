@@ -1,6 +1,6 @@
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { useActionData, useFetcher, useNavigation } from "@remix-run/react";
 
 import type { action as actionAddNewUserLocation } from "~/routes/_user.checkout";
 import {
@@ -22,6 +22,7 @@ export function AddNewUserLocationForm({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const fetcher = useFetcher();
   const { isDevelopment } = useRootLoaderData();
   const lastSubmission = useActionData<typeof actionAddNewUserLocation>();
   const navigation = useNavigation();
@@ -56,7 +57,15 @@ export function AddNewUserLocationForm({
         <DialogTitle>Add Address</DialogTitle>
         <DialogDescription>Add your shipping address</DialogDescription>
       </DialogHeader>
-      <Form method="POST" {...form.props}>
+      <fetcher.Form
+        method="POST"
+        {...form.props}
+        onSubmit={(event) => {
+          fetcher.submit(event.currentTarget.form, {
+            method: "POST",
+          });
+          setOpen(false);
+        }}>
         <div className="grid gap-4 py-4 w-1/2">
           <div className="grid grid-cols-4 items-center gap-4">
             <label htmlFor="label" className="text-right">
@@ -224,7 +233,7 @@ export function AddNewUserLocationForm({
             </ButtonLoading>
           </DialogFooter>
         </div>
-      </Form>
+      </fetcher.Form>
     </DialogContent>
   );
 }
