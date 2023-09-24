@@ -45,8 +45,8 @@ export function AddNewUserLocationForm({
           streetDetails: "Jalan Kahayan no 6, Joyotakan RT01 / RW06",
           mapsURL: "https://maps.app.goo.gl/mA8ieRFCETJyH2588",
           postalCode: 57157,
-          latitude: -7.586546,
-          longitude: 110.817448,
+          latitude: -7.593207,
+          longitude: 110.827002,
         }
       : undefined,
   });
