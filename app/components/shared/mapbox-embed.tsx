@@ -1,20 +1,18 @@
 import { useState } from "react";
 import { MapPin } from "lucide-react";
-import type { MarkerDragEvent } from "react-map-gl";
+import type { MarkerDragEvent, MapEvent } from "react-map-gl";
 import type { UserLocation } from "@prisma/client";
 import MapboxGL, {
   FullscreenControl,
   GeolocateControl,
-  Marker,
+  Marker as MapboxMarker,
   NavigationControl,
   Popup,
   ScaleControl,
 } from "react-map-gl";
 
 import { useRootLoaderData } from "~/hooks";
-import { Debug } from "~/components";
-import { defaultAddressCoordinate } from "~/schema";
-import type { AddressCoordinate } from "~/schema";
+import { defaultAddressCoordinate, type AddressCoordinate } from "~/schemas";
 
 interface Props {
   address?: UserLocation;
@@ -39,10 +37,10 @@ export function MapboxEmbed(props: Props) {
     handleChangeCoordinate,
   } = props;
 
-  const { ENV } = useRootLoaderData();
+  const { env } = useRootLoaderData();
   const [popupShown, setPopupShown] = useState(false);
 
-  const mapboxAccessToken = ENV.MAPBOX_PUBLIC_TOKEN;
+  const mapboxAccessToken = env.MAPBOX_PUBLIC_TOKEN;
   const mapStyle = "mapbox://styles/mapbox/streets-v9";
 
   /**
@@ -67,8 +65,8 @@ export function MapboxEmbed(props: Props) {
 
   const [markerPosition, setMarkerPosition] = useState(coordinate);
 
-  const handleOnClick = (event: mapboxgl.MapboxEvent<MouseEvent>) => {
-    event.originalEvent.stopPropagation();
+  const handleOnClick = (event: MapEvent) => {
+    // event?.originalEvent?.stopPropagation();
     setPopupShown(true);
   };
 
@@ -101,17 +99,17 @@ export function MapboxEmbed(props: Props) {
         <NavigationControl visualizePitch />
         <ScaleControl />
 
-        <Marker
+        <MapboxMarker
           anchor="bottom"
           longitude={markerPosition.longitude}
           latitude={markerPosition.latitude}
           draggable={draggable}
-          onClick={handleOnClick}
+          onClick={handleOnClick as any}
           onDragStart={handleOnDragStart}
           onDrag={handleOnDrag}
           onDragEnd={handleOnDragEnd}>
           <MapPin className="h-10 w-10 cursor-pointer text-red-500" />
-        </Marker>
+        </MapboxMarker>
         {address && popupShown && (
           <Popup
             anchor="top"
@@ -125,9 +123,9 @@ export function MapboxEmbed(props: Props) {
         )}
       </MapboxGL>
 
-      <div title="markerPosition" className="max-w-xs">
-        {markerPosition}
-      </div>
+      <pre title="markerPosition" className="max-w-xs">
+        {JSON.stringify(markerPosition, null, 2)}
+      </pre>
     </div>
   );
 }

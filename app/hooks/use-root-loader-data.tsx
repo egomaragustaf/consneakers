@@ -7,6 +7,9 @@ export type RootLoaderData = {
   isDevelopment: boolean;
   userSession: UserSession | undefined;
   userData: UserData | undefined;
+  env: {
+    MAPBOX_PUBLIC_TOKEN: string;
+  };
 };
 
 export function useMatchesData(
@@ -27,5 +30,6 @@ export function useRootLoaderData() {
     isDevelopment: process.env.NODE_ENV === "development" ? true : false,
     userSession: data?.userSession,
     userData: data?.userData,
+    env: data?.env,
   };
 }

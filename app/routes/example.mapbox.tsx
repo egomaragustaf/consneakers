@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { Debug, MapboxEmbed } from "~/components";
+import { MapboxEmbed } from "~/components";
 import { prisma } from "~/db.server";
 
 export async function loader() {
@@ -31,9 +31,9 @@ export default function ExamplesMapboxRoute() {
           />
         </div>
         <div>
-          <Debug title="address" className="whitespace-pre-wrap">
-            {address}
-          </Debug>
+          <pre title="address" className="whitespace-pre-wrap">
+            {JSON.stringify(address, null, 2)}
+          </pre>
         </div>
       </section>
 

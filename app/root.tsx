@@ -13,6 +13,7 @@ import {
   ScrollRestoration,
   useNavigation,
 } from "@remix-run/react";
+import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "./tailwind.css";
 import { authenticator } from "./services";
 import NProgress from "nprogress";
@@ -62,5 +63,10 @@ export const loader = async ({ request }: LoaderArgs) => {
     where: { userId: userSession?.id },
   });
 
-  return json({ userSession, userData, cart });
+  return json({
+    userSession,
+    userData,
+    cart,
+    env: { MAPBOX_PUBLIC_TOKEN: String(process.env.MAPBOX_PUBLIC_TOKEN) },
+  });
 };

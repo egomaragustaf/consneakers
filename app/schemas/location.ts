@@ -16,3 +16,13 @@ export const schemaAddNewUserLocation = zfd.formData({
     latitude: zfd.numeric(z.number()),
     longitude: zfd.numeric(z.number()),
   });
+
+  export type AddressCoordinate = {
+    latitude: number;
+    longitude: number;
+  };
+  
+  export const defaultAddressCoordinate: AddressCoordinate = {
+    latitude: -6.1753924,
+    longitude: 106.8271528,
+  };
