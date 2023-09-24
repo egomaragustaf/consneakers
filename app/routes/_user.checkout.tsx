@@ -18,6 +18,7 @@ import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
 import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
+import { useState } from "react";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Checkout" }, { name: "description", content: "Checkout" }];
@@ -45,6 +46,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Route() {
   const { user, cart } = useLoaderData<typeof loader>();
+  const [open, setOpen] = useState(false);
 
   return (
     <Layout>
@@ -98,7 +100,7 @@ export default function Route() {
                 );
               })}
 
-              <Dialog>
+              <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                   <Button
                     variant="default"
@@ -107,7 +109,7 @@ export default function Route() {
                   </Button>
                 </DialogTrigger>
 
-                <AddNewUserLocationForm />
+                <AddNewUserLocationForm open={open} setOpen={setOpen} />
               </Dialog>
             </main>
           </section>

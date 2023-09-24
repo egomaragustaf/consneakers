@@ -15,7 +15,13 @@ import {
 import { schemaAddNewUserLocation } from "~/schemas";
 import { useRootLoaderData } from "~/hooks";
 
-export function AddNewUserLocationForm() {
+export function AddNewUserLocationForm({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const { isDevelopment } = useRootLoaderData();
   const lastSubmission = useActionData<typeof actionAddNewUserLocation>();
   const navigation = useNavigation();
