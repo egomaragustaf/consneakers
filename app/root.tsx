@@ -13,15 +13,18 @@ import {
   ScrollRestoration,
   useNavigation,
 } from "@remix-run/react";
-import "mapbox-gl/dist/mapbox-gl.css";
 import styles from "./tailwind.css";
 import { authenticator } from "./services";
 import NProgress from "nprogress";
 import { useEffect } from "react";
 import { model } from "~/models";
 import { prisma } from "./db.server";
+import mapboxGLStyles from "mapbox-gl/dist/mapbox-gl.css";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: mapboxGLStyles },
+];
 
 export default function App() {
   const navigation = useNavigation();
