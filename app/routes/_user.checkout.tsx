@@ -1,7 +1,7 @@
 import { parse } from "@conform-to/zod";
 import type { ActionArgs, V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 import {
   AddNewUserLocationForm,
@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogTrigger,
   Layout,
+  Separator,
   Table,
   TableBody,
   TableCell,
@@ -41,11 +42,11 @@ export const loader = async ({ request }: LoaderArgs) => {
     include: { cartItems: { include: { product: true } } },
   });
 
-  return json({ user, cart });
+  return json({ user, cart, cartItems: cart?.cartItems });
 };
 
 export default function Route() {
-  const { user, cart } = useLoaderData<typeof loader>();
+  const { user, cart, cartItems } = useLoaderData<typeof loader>();
   const [open, setOpen] = useState(false);
 
   return (
@@ -58,6 +59,42 @@ export default function Route() {
             </header>
 
             <main className="flex flex-col gap-4">
+              <h2>Your Cart</h2>
+              {cartItems?.map((cartItem) => {
+                return (
+                  <div className="flex flex-col" key={cartItem?.id}>
+                    <div className="flex">
+                      <Link to={`/products/${cartItem?.product?.slug}`}>
+                        <img
+                          className="w-20 rounded border-slate-200 shadow-md"
+                          src={cartItem?.product?.imageURL || ""}
+                          alt={cartItem?.product?.name}
+                        />
+                      </Link>
+
+                      <Separator orientation="vertical" className="mx-2" />
+
+                      <div className="flex flex-col items-start justify-center">
+                        <Link to={`/products/${cartItem?.product?.slug}`}>
+                          <h3 className="font-medium">
+                            {cartItem?.product.name}
+                          </h3>
+                        </Link>
+                        <p>
+                          <span>{cartItem?.quantity}</span> x{" "}
+                          {formatValueToCurrency(cartItem.product.price)}
+                        </p>
+                        <h2 className="text-base font-medium">
+                          {formatValueToCurrency(cartItem.totalPrice)}
+                        </h2>
+                      </div>
+                    </div>
+
+                    <Separator className="my-2" />
+                  </div>
+                );
+              })}
+
               <h2>Your Adress</h2>
 
               {user?.locations.map((location) => {
