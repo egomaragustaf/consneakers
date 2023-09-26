@@ -11,9 +11,12 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
+  MapboxEmbed,
 } from "~/components";
-import { schemaAddNewUserLocation } from "~/schemas";
+import type { AddressCoordinate } from "~/schemas";
+import { defaultAddressCoordinate, schemaAddNewUserLocation } from "~/schemas";
 import { useRootLoaderData } from "~/hooks";
+import { useState } from "react";
 
 export function AddNewUserLocationForm({
   open,
@@ -22,6 +25,14 @@ export function AddNewUserLocationForm({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const [coordinate, setCoordinate] = useState<AddressCoordinate>({
+    longitude: defaultAddressCoordinate.longitude,
+    latitude: defaultAddressCoordinate.latitude,
+  });
+
+  const handleChangeCoordinate = (newCoordinate: AddressCoordinate) => {
+    setCoordinate(newCoordinate);
+  };
   const fetcher = useFetcher();
   const { isDevelopment } = useRootLoaderData();
   const lastSubmission = useActionData<typeof actionAddNewUserLocation>();
@@ -45,8 +56,6 @@ export function AddNewUserLocationForm({
           streetDetails: "Jalan Kahayan no 6, Joyotakan RT01 / RW06",
           mapsURL: "https://maps.app.goo.gl/mA8ieRFCETJyH2588",
           postalCode: 57157,
-          latitude: -7.593207,
-          longitude: 110.827002,
         }
       : undefined,
   });
@@ -199,27 +208,38 @@ export function AddNewUserLocationForm({
             />
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="latitude" className="text-right">
-              Latitude
-            </label>
-            <Input
-              {...conform.input(fields.latitude)}
-              id="latitude"
-              placeholder="Latitude"
-              className="col-span-3 border"
-            />
-          </div>
+          <div className="space-y-1">
+            <div className="flex">
+              <label htmlFor="latitude" className="text-right">
+                Latitude
+              </label>
+              <Input
+                {...conform.input(fields.latitude)}
+                hidden
+                type="number"
+                name="latitude"
+                value={coordinate.latitude}
+                readOnly
+              />
 
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="longitude" className="text-right">
-              Longitude
-            </label>
-            <Input
-              {...conform.input(fields.longitude)}
-              id="longitude"
-              placeholder="Longitude"
-              className="col-span-3 border"
+              <label htmlFor="longitude" className="text-right">
+                Longitude
+              </label>
+              <Input
+                {...conform.input(fields.longitude)}
+                hidden
+                type="number"
+                name="longitude"
+                value={coordinate.longitude}
+                readOnly
+              />
+            </div>
+            <MapboxEmbed
+              style={{ width: "100%", height: 300 }}
+              zoom={12}
+              draggable
+              coordinateValue={coordinate}
+              handleChangeCoordinate={handleChangeCoordinate}
             />
           </div>
 

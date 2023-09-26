@@ -122,10 +122,6 @@ export function MapboxEmbed(props: Props) {
           </Popup>
         )}
       </MapboxGL>
-
-      <pre title="markerPosition" className="max-w-xs">
-        {JSON.stringify(markerPosition, null, 2)}
-      </pre>
     </div>
   );
 }
