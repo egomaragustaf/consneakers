@@ -33,7 +33,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   const user = await prisma.user.findFirst({
     where: { id: userSession.id },
-    include: { locations: true },
+    include: { locations: { take: 1 } },
   });
 
   const cart = await prisma.cart.findFirst({
