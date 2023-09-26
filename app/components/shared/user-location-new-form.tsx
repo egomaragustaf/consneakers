@@ -74,7 +74,8 @@ export function AddNewUserLocationForm({
             method: "POST",
           });
           setOpen(false);
-        }}>
+        }}
+        className="flex space-x-8">
         <div className="grid gap-4 py-4 w-1/2">
           <div className="grid grid-cols-4 items-center gap-4">
             <label htmlFor="label" className="text-right">
@@ -207,41 +208,38 @@ export function AddNewUserLocationForm({
               className="col-span-3 border"
             />
           </div>
+        </div>
 
-          <div className="space-y-1">
-            <div className="flex">
-              <label htmlFor="latitude" className="text-right">
-                Latitude
-              </label>
-              <Input
-                {...conform.input(fields.latitude)}
-                hidden
-                type="number"
-                name="latitude"
-                value={coordinate.latitude}
-                readOnly
-              />
-
-              <label htmlFor="longitude" className="text-right">
-                Longitude
-              </label>
-              <Input
-                {...conform.input(fields.longitude)}
-                hidden
-                type="number"
-                name="longitude"
-                value={coordinate.longitude}
-                readOnly
-              />
-            </div>
-            <MapboxEmbed
-              style={{ width: "100%", height: 300 }}
-              zoom={12}
-              draggable
-              coordinateValue={coordinate}
-              handleChangeCoordinate={handleChangeCoordinate}
+        <div className="space-y-1 w-1/2">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <label htmlFor="latitude">Latitude</label>
+            <Input
+              {...conform.input(fields.latitude)}
+              hidden
+              type="number"
+              name="latitude"
+              value={coordinate.latitude}
+              readOnly
             />
           </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <label htmlFor="longitude">Longitude</label>
+            <Input
+              {...conform.input(fields.longitude)}
+              hidden
+              type="number"
+              name="longitude"
+              value={coordinate.longitude}
+              readOnly
+            />
+          </div>
+          <MapboxEmbed
+            style={{ width: "100%", height: 300 }}
+            zoom={12}
+            draggable
+            coordinateValue={coordinate}
+            handleChangeCoordinate={handleChangeCoordinate}
+          />
 
           <DialogFooter className="flex gap-x-4">
             <ButtonLoading
