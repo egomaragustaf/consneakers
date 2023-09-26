@@ -246,7 +246,7 @@ export function AddNewUserLocationForm({
               type="submit"
               isSubmitting={isSubmitting}
               submittingText="Adding..."
-              className="bg-zinc-800 hover:bg-zinc-700">
+              className="w-full bg-zinc-800 hover:bg-zinc-700">
               Add Address
             </ButtonLoading>
           </DialogFooter>
