@@ -94,6 +94,15 @@ export default function Route() {
                             {location.streetDetails}
                           </TableCell>
                         </TableRow>
+                        <TableRow>
+                          <TableCell className="text-left w-36">
+                            Coordinate
+                          </TableCell>
+                          <TableCell className="text-left w-4">:</TableCell>
+                          <TableCell className="text-left w-96">
+                            {location.latitude}, {location.longitude}
+                          </TableCell>
+                        </TableRow>
                       </TableBody>
                     </Table>
                   </div>
