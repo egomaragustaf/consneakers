@@ -20,6 +20,7 @@ import { authenticator } from "~/services";
 import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
 import { useState } from "react";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Checkout" }, { name: "description", content: "Checkout" }];
@@ -53,9 +54,12 @@ export default function Route() {
     <Layout>
       <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
         <article className="flex lg:flex-row flex-col gap-16 w-full max-w-5xl min-h-screen">
-          <section className="flex flex-col gap-4 lg:w-2/3 max-w-3xl">
-            <header className="text-2xl font-bold">
-              <h1>Checkout</h1>
+          <section className="flex flex-col gap-10 lg:w-2/3 max-w-3xl">
+            <header className="flex gap-4 font-bold">
+              <Link to={"/cart"}>
+                <AiOutlineArrowLeft className="text-4xl text-primary" />
+              </Link>
+              <h1 className="text-2xl">Checkout</h1>
             </header>
 
             <main className="flex flex-col gap-4">
