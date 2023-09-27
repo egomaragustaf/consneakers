@@ -8,3 +8,4 @@ export * from "./input";
 export * from "./select";
 export * from "./separator";
 export * from "./table";
+export * from "./tooltip";
