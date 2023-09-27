@@ -9,6 +9,10 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const adminSideBarItems = [
   {
+    to: "/admin/dashboard/profile",
+    text: "Profile",
+  },
+  {
     to: "/admin/dashboard/products",
     text: "All Products",
   },
@@ -28,17 +32,14 @@ const adminSideBarItems = [
 
 const userSideBarItems = [
   {
-    to: "/user/dashboard",
+    to: "/user/profile",
     text: "Profile",
   },
 ];
 
 export function Sidebar({ className }: SidebarProps) {
   const { userData } = useRootLoaderData();
-
   const isAdmin = userData?.username === "admin";
-
-  console.log(isAdmin);
 
   return (
     <div className={cn("pb-4 rounded fixed", className)}>
