@@ -7,6 +7,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "~/components";
 import { formatValueToCurrency } from "~/utils";
 
@@ -32,7 +36,16 @@ export function ProductCard({ product }: Props) {
         />
       </CardHeader>
       <CardContent>
-        <CardTitle>{product.name}</CardTitle>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <CardTitle>{product.name}</CardTitle>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{product.name}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <CardDescription>{product.description}</CardDescription>
         <CardFooter>{formatValueToCurrency(product.price)}</CardFooter>
       </CardContent>
