@@ -3,7 +3,6 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { UserDropdownMenu, SearchForm } from "~/components";
 import { useRootLoaderData } from "~/hooks";
-import { type UserData } from "~/services";
 
 const navPublicItems = [
   { to: "/", text: "Home" },
@@ -123,11 +122,4 @@ export function Navigation() {
       </div>
     </header>
   );
-}
-
-export function checkIfActiveUsername(
-  location: Location,
-  userData: UserData | undefined
-) {
-  return location?.pathname === `/${userData?.username}`;
 }
