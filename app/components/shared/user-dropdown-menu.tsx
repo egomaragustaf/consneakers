@@ -20,6 +20,7 @@ export function UserDropdownMenu({
   align?: "center" | "start" | "end" | undefined;
 }) {
   const { userData } = useRootLoaderData();
+  const isAdmin = userData?.username === "admin";
 
   if (!userData) {
     return null;
@@ -46,25 +47,37 @@ export function UserDropdownMenu({
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <span>Profile</span>
-          </DropdownMenuItem>
-
-          <Link to={`/admin/dashboard`}>
+        {isAdmin && (
+          <DropdownMenuGroup>
             <DropdownMenuItem>
-              <span>Dashboard</span>
+              <span>Profile</span>
             </DropdownMenuItem>
-          </Link>
+            <Link to={`/admin/dashboard`}>
+              <DropdownMenuItem>
+                <span>Dashboard</span>
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem>
+              <span>Settings</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        )}
 
-          <DropdownMenuItem>
-            <span>Settings</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem>
-            <span>Notifications</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        {!isAdmin && (
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <span>Profile</span>
+            </DropdownMenuItem>
+            <Link to={`/user/dashboard`}>
+              <DropdownMenuItem>
+                <span>Dashboard</span>
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem>
+              <span>Settings</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        )}
 
         <DropdownMenuSeparator />
 
