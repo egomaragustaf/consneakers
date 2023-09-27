@@ -62,7 +62,12 @@ export async function action({ request }: ActionArgs) {
     return json({ ...submission, error: result.error });
   }
 
+  const isAdmin = result.user.username === "admin";
+
   return authenticator.authenticate("user-pass", request, {
-    successRedirect: getRedirectTo(request) || "/admin/dashboard",
+    successRedirect:
+      getRedirectTo(request) || isAdmin
+        ? "/admin/dashboard"
+        : "/user/dashboard",
   });
 }
