@@ -16,7 +16,17 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export default function FormRoute() {
-  const { userSession } = useRootLoaderData();
+  const { userSession, isAdmin } = useRootLoaderData();
+
+  if (!isAdmin) {
+    return (
+      <Layout>
+        <main className="flex gap-8 justify-start items-start min-h-screen">
+          <p>Sorry something went wrong</p>
+        </main>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

@@ -31,11 +31,17 @@ export async function loader({ params }: LoaderArgs) {
 }
 
 export default function Route() {
-  const { userSession } = useRootLoaderData();
+  const { userSession, isAdmin } = useRootLoaderData();
   const { product } = useLoaderData<typeof loader>();
 
-  if (!product) {
-    return <p>Sorry, no product found.</p>;
+  if (!product && !isAdmin) {
+    return (
+      <Layout>
+        <main className="flex gap-8 justify-start items-start min-h-screen">
+          <p>Sorry something went wrong</p>
+        </main>
+      </Layout>
+    );
   }
 
   return (

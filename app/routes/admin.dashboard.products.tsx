@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "~/components";
 import { formatValueToCurrency } from "~/utils";
+import { useRootLoaderData } from "~/hooks";
 
 export const meta: V2_MetaFunction = () => {
   return [
@@ -30,6 +31,17 @@ export async function loader() {
 
 export default function Route() {
   const { products } = useLoaderData<typeof loader>();
+  const { isAdmin } = useRootLoaderData();
+
+  if (!isAdmin) {
+    return (
+      <Layout>
+        <main className="flex gap-8 justify-start items-start min-h-screen">
+          <p>Sorry something went wrong</p>
+        </main>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

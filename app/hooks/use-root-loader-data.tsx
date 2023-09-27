@@ -9,6 +9,7 @@ export type RootLoaderData = {
   userSession: UserSession | undefined;
   userData: UserData | undefined;
   cart: Cart | null;
+  isAdmin: boolean;
   env: {
     MAPBOX_PUBLIC_TOKEN: string;
   };
@@ -34,5 +35,6 @@ export function useRootLoaderData() {
     userData: data?.userData,
     cart: data?.cart,
     env: data?.env,
+    isAdmin: data?.isAdmin,
   };
 }

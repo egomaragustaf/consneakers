@@ -57,6 +57,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   const userData = await model.user.query.getForSession({
     id: String(userSession?.id),
   });
+  const isAdmin = userData?.username === "admin";
 
   if (userSession && !userData) {
     return redirect(`/logout`);
@@ -71,6 +72,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     userSession,
     userData,
     cart,
+    isAdmin,
     env: { MAPBOX_PUBLIC_TOKEN: String(process.env.MAPBOX_PUBLIC_TOKEN) },
   });
 };
