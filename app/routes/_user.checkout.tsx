@@ -1,7 +1,7 @@
 import { parse } from "@conform-to/zod";
 import type { ActionArgs, V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 import {
   AddNewUserLocationForm,
@@ -9,6 +9,7 @@ import {
   Dialog,
   DialogTrigger,
   Layout,
+  Separator,
   Table,
   TableBody,
   TableCell,
@@ -19,6 +20,7 @@ import { authenticator } from "~/services";
 import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
 import { useState } from "react";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 export const meta: V2_MetaFunction = () => {
   return [{ title: "Checkout" }, { name: "description", content: "Checkout" }];
@@ -41,23 +43,62 @@ export const loader = async ({ request }: LoaderArgs) => {
     include: { cartItems: { include: { product: true } } },
   });
 
-  return json({ user, cart });
+  return json({ user, cart, cartItems: cart?.cartItems });
 };
 
 export default function Route() {
-  const { user, cart } = useLoaderData<typeof loader>();
+  const { user, cart, cartItems } = useLoaderData<typeof loader>();
   const [open, setOpen] = useState(false);
 
   return (
     <Layout>
       <main className="w-full max-w-7xl flex gap-8 justify-center items-start">
         <article className="flex lg:flex-row flex-col gap-16 w-full max-w-5xl min-h-screen">
-          <section className="flex flex-col gap-4 lg:w-2/3 max-w-3xl">
-            <header className="text-2xl font-bold">
-              <h1>Checkout</h1>
+          <section className="flex flex-col gap-10 lg:w-2/3 max-w-3xl">
+            <header className="flex gap-4 font-bold">
+              <Link to={"/cart"}>
+                <AiOutlineArrowLeft className="text-4xl text-primary" />
+              </Link>
+              <h1 className="text-2xl">Checkout</h1>
             </header>
 
             <main className="flex flex-col gap-4">
+              <h2>Your Cart</h2>
+              {cartItems?.map((cartItem) => {
+                return (
+                  <div className="flex flex-col" key={cartItem?.id}>
+                    <div className="flex">
+                      <Link to={`/products/${cartItem?.product?.slug}`}>
+                        <img
+                          className="w-20 rounded border-slate-200 shadow-md"
+                          src={cartItem?.product?.imageURL || ""}
+                          alt={cartItem?.product?.name}
+                        />
+                      </Link>
+
+                      <Separator orientation="vertical" className="mx-2" />
+
+                      <div className="flex flex-col items-start justify-center">
+                        <Link to={`/products/${cartItem?.product?.slug}`}>
+                          <h3 className="font-medium">
+                            {cartItem?.product.name}
+                          </h3>
+                        </Link>
+                        <p>
+                          <span>{cartItem?.quantity}</span> x{" "}
+                          {formatValueToCurrency(cartItem.product.price)}
+                        </p>
+                        <h2 className="text-base font-medium">
+                          {formatValueToCurrency(cartItem.totalPrice)}
+                        </h2>
+                      </div>
+                    </div>
+
+                    <Separator className="my-2" />
+                  </div>
+                );
+              })}
+
               <h2>Your Adress</h2>
 
               {user?.locations.map((location) => {
