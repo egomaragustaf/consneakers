@@ -29,11 +29,14 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Route() {
   const { user } = useLoaderData<typeof loader>();
+  const isAdmin = user?.username === "admin";
 
-  if (!user) {
+  if (!user || !isAdmin) {
     return (
       <Layout>
-        <p>Sorry something went wrong</p>
+        <main className="flex gap-8 justify-start items-start min-h-screen">
+          <p>Sorry something went wrong</p>
+        </main>
       </Layout>
     );
   }
