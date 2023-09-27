@@ -45,9 +45,14 @@ export function Sidebar({ className }: SidebarProps) {
     <div className={cn("pb-4 rounded fixed", className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+          <NavLink
+            to={isAdmin ? "/admin/dashboard" : "/user/dashboard"}
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "hover:bg-muted mb-2 px-4 text-lg font-semibold tracking-tight justify-start"
+            )}>
             Dashboard
-          </h2>
+          </NavLink>
 
           {isAdmin && (
             <div className="space-y-1 flex flex-col">
