@@ -43,7 +43,7 @@ export default function FormRoute() {
   return (
     <div className="w-full lg:grid flex flex-col-reverse lg:flex-col items-center justify-center max-w-none md:grid-cols-4">
       <section className="space-y-6 mx-auto flex w-full max-w-md flex-col p-8 md:col-span-2 border border-rose-200 rounded-md shadow-2xl">
-        <h1>Login</h1>
+        <h1 className="text-primary text-2xl font-semibold">Login</h1>
         <p className="inline-flex flex-wrap gap-1 text-muted-foreground">
           <span>New customers?</span>
           <Link to={`/signup`} className="hover-opacity font-bold">
