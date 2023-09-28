@@ -59,7 +59,7 @@ export default function Route() {
           </section>
         )}
 
-        {count > 0 && !query && (
+        {count > 0 && (
           <section className="space-y-2 min-h-screen">
             <h1 className="text-2xl font-bold">All Products</h1>
             {query && (
