@@ -32,7 +32,7 @@ const adminSideBarItems = [
 
 const userSideBarItems = [
   {
-    to: "/user/profile",
+    to: "/user/dashboard/profile",
     text: "Profile",
   },
 ];
