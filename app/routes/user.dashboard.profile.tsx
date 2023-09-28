@@ -79,14 +79,14 @@ export default function Route() {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell className="text-left w-36">Adrress</TableCell>
+                <TableCell className="text-left w-36">Username</TableCell>
                 <TableCell className="text-left w-4">:</TableCell>
                 <TableCell className="text-left w-96">
                   {user?.username}
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell className="text-left w-36">Street Detail</TableCell>
+                <TableCell className="text-left w-36">Email</TableCell>
                 <TableCell className="text-left w-4">:</TableCell>
                 <TableCell className="text-left w-96">{user?.email}</TableCell>
               </TableRow>
