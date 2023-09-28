@@ -24,7 +24,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 export default function Route() {
   return (
     <div className="w-full lg:grid flex flex-col-reverse lg:flex-col items-center justify-center max-w-none md:grid-cols-4">
-      <section className="space-y-6 mx-auto flex w-full max-w-md flex-col p-8 md:col-span-2">
+      <section className="space-y-6 mx-auto flex w-full max-w-md flex-col p-8 md:col-span-2 border border-rose-200 rounded-md shadow-2xl">
         <h1>Sign Up</h1>
         <p className="inline-flex flex-wrap gap-1 text-muted-foreground">
           <span>Already a Consneakers user? </span>
