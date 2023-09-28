@@ -41,7 +41,9 @@ export function ProductCard({ product }: Props) {
           <TooltipTrigger asChild>
             <CardContent>
               <CardTitle>{product.name}</CardTitle>
-              <CardDescription>{product.description}</CardDescription>
+              <CardDescription className="line-clamp-1">
+                {product.description}
+              </CardDescription>
               <CardFooter>
                 <span>{formatValueToCurrency(product.price)}</span>
                 <div className="text-yellow-400 flex items-center justify-start gap-1">
