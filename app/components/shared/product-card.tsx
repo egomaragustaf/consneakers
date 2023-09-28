@@ -1,4 +1,5 @@
 import type { Product } from "@prisma/client";
+import { AiFillStar } from "react-icons/ai";
 
 import {
   Card,
@@ -20,7 +21,7 @@ interface Props {
     imageURL: string;
     name: string;
     price: number;
-    soldQuantity: number | null;
+    soldQuantity: number;
     description: string;
   };
 }
@@ -47,7 +48,21 @@ export function ProductCard({ product }: Props) {
           </Tooltip>
         </TooltipProvider>
         <CardDescription>{product.description}</CardDescription>
-        <CardFooter>{formatValueToCurrency(product.price)}</CardFooter>
+        <CardFooter>
+          <span>{formatValueToCurrency(product.price)}</span>
+          <div className="text-yellow-400 flex items-center justify-start gap-1">
+            <AiFillStar className="text-xl" />
+            {product.soldQuantity > 30 && (
+              <p className="text-sm text-black font-normal">5</p>
+            )}
+            {product.soldQuantity <= 30 && (
+              <p className="text-sm text-black font-normal">3</p>
+            )}
+            <span className="text-sm text-black font-normal">
+              ({product.soldQuantity} sold)
+            </span>
+          </div>
+        </CardFooter>
       </CardContent>
     </Card>
   );
