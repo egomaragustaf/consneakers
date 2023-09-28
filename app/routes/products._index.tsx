@@ -53,7 +53,13 @@ export default function Route() {
   return (
     <Layout>
       <div className="w-full flex flex-col gap-4 justify-center items-center">
-        {count > 0 && (
+        {count <= 0 && query && (
+          <section className="min-h-screen">
+            <p>No result found for keyword "{query}"</p>
+          </section>
+        )}
+
+        {count > 0 && !query && (
           <section className="space-y-2 min-h-screen">
             <h1 className="text-2xl font-bold">All Products</h1>
             {query && (
