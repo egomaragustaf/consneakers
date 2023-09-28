@@ -99,7 +99,7 @@ export default function FormRoute() {
           <img
             src="/images/login.png"
             alt="login"
-            className="w-72 lg:w-full lg:max-w-xl rounded-md"
+            className="w-fit rounded-md"
           />
         </section>
       </div>

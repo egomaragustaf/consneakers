@@ -38,9 +38,9 @@ export default function Route() {
 
         <section className="h-full flex justify-center items-center">
           <img
-            src="/images/login.png"
+            src="/images/signup.png"
             alt="login"
-            className="w-72 lg:w-full lg:max-w-xl rounded-md"
+            className="w-fit rounded-md"
           />
         </section>
       </div>
