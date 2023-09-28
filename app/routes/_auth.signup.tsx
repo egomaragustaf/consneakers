@@ -2,7 +2,7 @@ import { parse } from "@conform-to/zod";
 import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { Layout, UserAuthSignUpForm } from "~/components";
+import { UserAuthSignUpForm } from "~/components";
 import { model } from "~/models";
 import { authenticator } from "~/services";
 import { schemaUserSignUp } from "~/schemas";
@@ -23,28 +23,27 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function Route() {
   return (
-    <Layout>
-      <div className="w-full lg:grid flex flex-col-reverse lg:flex-col items-center justify-center max-w-none grid-cols-2">
-        <section className="space-y-6 mx-auto flex w-full max-w-md flex-col p-8">
-          <h1>Sign Up</h1>
-          <p className="inline-flex flex-wrap gap-1 text-muted-foreground">
-            <span>Already a Consneakers user? </span>
-            <Link to={`/login`} className="hover-opacity font-bold">
-              Login
-            </Link>
-          </p>
-          <UserAuthSignUpForm />
-        </section>
+    <div className="w-full lg:grid flex flex-col-reverse lg:flex-col items-center justify-center max-w-none md:grid-cols-4">
+      <section className="space-y-6 mx-auto flex w-full max-w-md flex-col p-8 md:col-span-2">
+        <h1>Sign Up</h1>
+        <p className="inline-flex flex-wrap gap-1 text-muted-foreground">
+          <span>Already a Consneakers user? </span>
+          <Link to={`/login`} className="hover-opacity font-bold">
+            Login
+          </Link>
+        </p>
+        <UserAuthSignUpForm />
+      </section>
 
-        <section className="h-full flex justify-center items-center">
-          <img
-            src="/images/signup.png"
-            alt="login"
-            className="w-fit rounded-md"
-          />
-        </section>
-      </div>
-    </Layout>
+      <section className="h-full flex justify-center items-center md:col-span-2">
+        <img
+          // https://unsplash.com/photos/rniFdQKztF8
+          src="/images/signup.png"
+          alt="login"
+          className="w-fit"
+        />
+      </section>
+    </div>
   );
 }
 
