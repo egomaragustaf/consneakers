@@ -36,34 +36,34 @@ export function ProductCard({ product }: Props) {
           className="rounded-t-lg h-auto w-auto object-fit"
         />
       </CardHeader>
-      <CardContent>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <CardContent>
               <CardTitle>{product.name}</CardTitle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{product.name}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <CardDescription>{product.description}</CardDescription>
-        <CardFooter>
-          <span>{formatValueToCurrency(product.price)}</span>
-          <div className="text-yellow-400 flex items-center justify-start gap-1">
-            <AiFillStar className="text-xl" />
-            {product.soldQuantity > 30 && (
-              <p className="text-sm text-black font-normal">5</p>
-            )}
-            {product.soldQuantity <= 30 && (
-              <p className="text-sm text-black font-normal">3</p>
-            )}
-            <span className="text-sm text-black font-normal">
-              ({product.soldQuantity} sold)
-            </span>
-          </div>
-        </CardFooter>
-      </CardContent>
+              <CardDescription>{product.description}</CardDescription>
+              <CardFooter>
+                <span>{formatValueToCurrency(product.price)}</span>
+                <div className="text-yellow-400 flex items-center justify-start gap-1">
+                  <AiFillStar className="text-xl" />
+                  {product.soldQuantity > 30 && (
+                    <p className="text-sm text-black font-normal">5</p>
+                  )}
+                  {product.soldQuantity <= 30 && (
+                    <p className="text-sm text-black font-normal">3</p>
+                  )}
+                  <span className="text-sm text-black font-normal">
+                    ({product.soldQuantity} sold)
+                  </span>
+                </div>
+              </CardFooter>
+            </CardContent>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{product.name}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </Card>
   );
 }
