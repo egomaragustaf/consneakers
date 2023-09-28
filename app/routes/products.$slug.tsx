@@ -62,7 +62,7 @@ export default function Route() {
               <h2 className="text-xl font-bold text-rose-700">
                 {formatValueToCurrency(product.price)}
               </h2>
-              <p>{product.description}</p>
+              <p className="leading-relaxed">{product.description}</p>
               <span className="font-semibold">
                 Sold: {product.soldQuantity}
               </span>
