@@ -46,7 +46,7 @@ export default function Route() {
 
   return (
     <Layout>
-      <main className="w-full max-w-7xl flex gap-8 justify-center items-start min-h-screen">
+      <main className="w-full max-w-7xl flex flex-col gap-8 justify-start items-center min-h-screen">
         <article className="flex lg:flex-row flex-col gap-8 w-full max-w-4xl">
           <img
             src={product.imageURL!}
@@ -62,7 +62,6 @@ export default function Route() {
               <h2 className="text-xl font-bold text-rose-700">
                 {formatValueToCurrency(product.price)}
               </h2>
-              <p className="leading-relaxed">{product.description}</p>
               <span className="font-semibold">
                 Sold: {product.soldQuantity}
               </span>
@@ -97,6 +96,13 @@ export default function Route() {
             )}
           </div>
         </article>
+
+        <div className="max-w-4xl text-justify leading-relaxed font-normal indent-3 flex flex-col gap-4">
+          <h1 className="font-semibold text-lg">Description</h1>
+          <blockquote className="p-4 my-2 border-l-4 border-rose-500 bg-gray-50 dark:border-gray-500 dark:bg-zinc-800">
+            <p>{product.description}</p>
+          </blockquote>
+        </div>
       </main>
     </Layout>
   );
