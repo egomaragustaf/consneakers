@@ -30,7 +30,6 @@
     "@uploadcare/blocks": "0.25.1",
     "@vercel/node": "^2.10.3",
     "@vercel/remix": "^1.18.1",
-    "array-shuffle": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

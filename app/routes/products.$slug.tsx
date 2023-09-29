@@ -3,7 +3,7 @@ import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData, useNavigation } from "@remix-run/react";
 
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "~/services";
 import { prisma } from "~/db.server";
 import { Layout, ButtonLoading, Button, ProductCard } from "~/components";
 import { useRootLoaderData } from "~/hooks";
@@ -23,8 +23,14 @@ export async function loader({ params }: LoaderArgs) {
     },
   });
 
+  const productsCount = await prisma.product.count();
+  const skip = Math.floor(Math.random() * productsCount);
   const relatedProducts = await prisma.product.findMany({
-    take: 5,
+    take: 4,
+    skip: skip,
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return json({ product, relatedProducts });
@@ -108,7 +114,7 @@ export default function Route() {
 
         <div className="w-full max-w-4xl justify-center items-start flex flex-col gap-4">
           <h1 className="font-semibold text-lg">You Might Also Like</h1>
-          <ul className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+          <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {relatedProducts.map((product) => {
               return (
                 <li key={product.id}>
