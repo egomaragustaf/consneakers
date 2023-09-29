@@ -3,9 +3,9 @@ import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData, useNavigation } from "@remix-run/react";
 
-import { authenticator } from "~/services";
+import { authenticator } from "~/services/auth.server";
 import { prisma } from "~/db.server";
-import { Layout, ButtonLoading, Button, ProductCard } from "~/components";
+import { Layout, ButtonLoading, Button } from "~/components";
 import { useRootLoaderData } from "~/hooks";
 import { formatValueToCurrency } from "~/utils";
 
@@ -17,28 +17,24 @@ export const meta: V2_MetaFunction = () => {
 };
 
 export async function loader({ params }: LoaderArgs) {
+  if (!params.slug) {
+    return json({ product: null });
+  }
+
   const product = await prisma.product.findUnique({
     where: {
       slug: params.slug,
     },
   });
 
-  const productsCount = await prisma.product.count();
-  const skip = Math.floor(Math.random() * productsCount);
-  const relatedProducts = await prisma.product.findMany({
-    take: 4,
-    skip: skip,
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const relatedProducts = await prisma.product.findMany();
 
   return json({ product, relatedProducts });
 }
 
 export default function Route() {
   const { userSession } = useRootLoaderData();
-  const { product, relatedProducts } = useLoaderData<typeof loader>();
+  const { product } = useLoaderData<typeof loader>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -110,21 +106,6 @@ export default function Route() {
           <blockquote className="p-4 my-2 border-l-4 border-rose-500 bg-gray-50 dark:border-gray-500 dark:bg-zinc-800">
             <p>{product.description}</p>
           </blockquote>
-        </div>
-
-        <div className="w-full max-w-4xl justify-center items-start flex flex-col gap-4">
-          <h1 className="font-semibold text-lg">You Might Also Like</h1>
-          <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {relatedProducts.map((product) => {
-              return (
-                <li key={product.id}>
-                  <Link to={`/products/${product.slug}`}>
-                    <ProductCard product={product as any} />
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
         </div>
       </main>
     </Layout>
