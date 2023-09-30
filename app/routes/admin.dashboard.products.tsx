@@ -58,10 +58,11 @@ export default function Route() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Image</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Price</TableHead>
+                <TableHead className="text-center">Image</TableHead>
+                <TableHead className="text-center">Name</TableHead>
+                <TableHead className="text-center">Sold Quantity</TableHead>
+                <TableHead className="text-center">Stock Quantity</TableHead>
+                <TableHead className="text-center">Price</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -76,7 +77,12 @@ export default function Route() {
                       />
                     </TableCell>
                     <TableCell>{product.name}</TableCell>
-                    <TableCell>{product.description}</TableCell>
+                    <TableCell className="text-center">
+                      {product.soldQuantity}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {product.stockQuantity}
+                    </TableCell>
                     <TableCell>
                       {formatValueToCurrency(product.price)}
                     </TableCell>
