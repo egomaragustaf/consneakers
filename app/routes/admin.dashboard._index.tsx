@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardContent,
   CardDescription,
+  Separator,
 } from "~/components";
 import { useRootLoaderData } from "~/hooks";
 import { formatValueToCurrency } from "~/utils";
@@ -33,11 +34,16 @@ export const loader = async ({ request }: LoaderArgs) => {
   });
   if (!user) return redirect("/logout");
 
-  return json({ user });
+  const cart = await prisma.cart.findFirst({
+    where: { userId: userSession.id },
+    include: { cartItems: { include: { product: true } } },
+  });
+
+  return json({ user, cartItems: cart?.cartItems });
 };
 
 export default function Route() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user, cartItems } = useLoaderData<typeof loader>();
   const { cart } = useRootLoaderData();
   const isAdmin = user?.username === "admin";
 
@@ -71,7 +77,7 @@ export default function Route() {
               </CardHeader>
               <CardContent>
                 {cart && cart?.totalQuantity > 0 ? (
-                  <CardDescription className="text-4xl font-bold text-start">
+                  <CardDescription className="text-2xl font-bold text-start">
                     {cart?.totalQuantity}
                   </CardDescription>
                 ) : (
@@ -97,6 +103,40 @@ export default function Route() {
               </CardContent>
             </Card>
           </div>
+
+          <h2>Your Cart</h2>
+          {cartItems?.map((cartItem) => {
+            return (
+              <div className="flex flex-col" key={cartItem?.id}>
+                <div className="flex">
+                  <Link to={`/products/${cartItem?.product?.slug}`}>
+                    <img
+                      className="w-20 rounded border-slate-200 shadow-md"
+                      src={cartItem?.product?.imageURL || ""}
+                      alt={cartItem?.product?.name}
+                    />
+                  </Link>
+
+                  <Separator orientation="vertical" className="mx-2" />
+
+                  <div className="flex flex-col items-start justify-center">
+                    <Link to={`/products/${cartItem?.product?.slug}`}>
+                      <h3 className="font-medium">{cartItem?.product.name}</h3>
+                    </Link>
+                    <p>
+                      <span>{cartItem?.quantity}</span> x{" "}
+                      {formatValueToCurrency(cartItem.product.price)}
+                    </p>
+                    <h2 className="text-base font-medium">
+                      {formatValueToCurrency(cartItem.totalPrice)}
+                    </h2>
+                  </div>
+                </div>
+
+                <Separator className="my-2" />
+              </div>
+            );
+          })}
         </div>
       </main>
     </Layout>
