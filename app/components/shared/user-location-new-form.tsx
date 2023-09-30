@@ -75,8 +75,8 @@ export function AddNewUserLocationForm({
           });
           setOpen(false);
         }}
-        className="flex space-x-8">
-        <div className="grid gap-4 py-4 w-1/2">
+        className="lg:flex lg:flex-row flex-col space-x-8">
+        <div className="grid gap-4 py-4 lg:w-1/2">
           <div className="grid grid-cols-4 items-center gap-4">
             <label htmlFor="label" className="text-right">
               Label
@@ -210,26 +210,32 @@ export function AddNewUserLocationForm({
           </div>
         </div>
 
-        <div className="space-y-1 w-1/2">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="latitude">Latitude</label>
+        <div className="flex flex-col gap-4 lg:w-1/2">
+          <div className="grid grid-cols-4 items-center">
+            <label htmlFor="latitude" className="text-left">
+              Latitude
+            </label>
             <Input
               {...conform.input(fields.latitude)}
               hidden
               type="number"
               name="latitude"
               value={coordinate.latitude}
+              className="col-span-3 border text-primary"
               readOnly
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="longitude">Longitude</label>
+          <div className="grid grid-cols-4 items-center">
+            <label htmlFor="longitude" className="text-left">
+              Longitude
+            </label>
             <Input
               {...conform.input(fields.longitude)}
               hidden
               type="number"
               name="longitude"
               value={coordinate.longitude}
+              className="col-span-3 border text-primary"
               readOnly
             />
           </div>
