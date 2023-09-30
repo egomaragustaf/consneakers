@@ -31,7 +31,7 @@ export default function FormRoute() {
   return (
     <Layout>
       <main className="w-full flex justify-start items-start ">
-        <div className="w-60 flex">
+        <div className="lg:w-60 flex">
           <Sidebar />
         </div>
 

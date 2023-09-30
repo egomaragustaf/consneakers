@@ -42,7 +42,7 @@ export function Sidebar({ className }: SidebarProps) {
   const isAdmin = userData?.username === "admin";
 
   return (
-    <div className={cn("pb-4 rounded fixed", className)}>
+    <div className={cn("pb-4 rounded hidden lg:fixed lg:block", className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <NavLink
