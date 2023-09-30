@@ -19,8 +19,7 @@ export function UserDropdownMenu({
 }: {
   align?: "center" | "start" | "end" | undefined;
 }) {
-  const { userData } = useRootLoaderData();
-  const isAdmin = userData?.username === "admin";
+  const { userData, isAdmin } = useRootLoaderData();
 
   if (!userData) {
     return null;
@@ -49,9 +48,11 @@ export function UserDropdownMenu({
 
         {isAdmin && (
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <span>Profile</span>
-            </DropdownMenuItem>
+            <Link to={"/admin/dashboard/profile"}>
+              <DropdownMenuItem>
+                <span>Profile</span>
+              </DropdownMenuItem>
+            </Link>
             <Link to={`/admin/dashboard`}>
               <DropdownMenuItem>
                 <span>Dashboard</span>
@@ -65,9 +66,11 @@ export function UserDropdownMenu({
 
         {!isAdmin && (
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <span>Profile</span>
-            </DropdownMenuItem>
+            <Link to={"/user/dashboard/profile"}>
+              <DropdownMenuItem>
+                <span>Profile</span>
+              </DropdownMenuItem>
+            </Link>
             <Link to={`/user/dashboard`}>
               <DropdownMenuItem>
                 <span>Dashboard</span>
