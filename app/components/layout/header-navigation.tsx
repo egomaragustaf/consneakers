@@ -107,7 +107,7 @@ export function Navigation() {
                           : "text-white hover:text-rose-400"
                       }>
                       {navAuthenticatedItem.icon}
-                      {cart && cart?.totalQuantity > 0 && (
+                      {cart && cart?.totalQuantity >= 0 && (
                         <div className="-ml-2 flex h-5 w-5 items-center justify-center rounded-full text-zinc-800 bg-white">
                           {cart?.totalQuantity}
                         </div>
