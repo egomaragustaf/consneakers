@@ -27,9 +27,7 @@ export async function loader({ params }: LoaderArgs) {
     },
   });
 
-  const relatedProducts = await prisma.product.findMany();
-
-  return json({ product, relatedProducts });
+  return json({ product });
 }
 
 export default function Route() {
@@ -75,13 +73,11 @@ export default function Route() {
             </section>
 
             {!userSession?.id && (
-              <section>
-                <Button className="w-full">
-                  <Link to={`/login?redirectTo=/products/${product.slug}`}>
-                    + Add to Cart
-                  </Link>
-                </Button>
-              </section>
+              <Button className="w-full" asChild>
+                <Link to={`/login?redirectTo=/products/${product.slug}`}>
+                  + Add to Cart
+                </Link>
+              </Button>
             )}
 
             {userSession?.id && (
