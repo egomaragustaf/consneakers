@@ -20,10 +20,12 @@ import { useEffect } from "react";
 import { model } from "~/models";
 import { prisma } from "./db.server";
 import mapboxGLStyles from "mapbox-gl/dist/mapbox-gl.css";
+import { fontLinks } from "~/components/config/fonts";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
   { rel: "stylesheet", href: mapboxGLStyles },
+  ...fontLinks,
 ];
 
 export default function App() {
