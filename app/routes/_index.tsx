@@ -3,14 +3,13 @@ import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 
 import { Link, useLoaderData } from "@remix-run/react";
 import {
-  BannerCarousel,
   ProductCard,
   Layout,
   getPaginationConfigs,
   getPaginationOptions,
   PaginationNavigation,
 } from "~/components";
-import { CarouselDemo } from "~/components/shared/example-carousel";
+import { BannerCarousel } from "~/components/shared/banner-carousel";
 import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {
@@ -57,7 +56,7 @@ export default function Index() {
 export function LandingHero() {
   return (
     <article className="w-full flex flex-col gap-4 justify-center items-center">
-      <CarouselDemo />
+      <BannerCarousel />
     </article>
   );
 }
