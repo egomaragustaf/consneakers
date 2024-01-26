@@ -34,6 +34,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "currency.js": "^2.0.4",
+    "embla-carousel-autoplay": "8.0.0-rc19",
+    "embla-carousel-react": "8.0.0-rc19",
     "isbot": "^3.6.8",
     "lucide-react": "^0.263.1",
     "mapbox-gl": "^2.15.0",

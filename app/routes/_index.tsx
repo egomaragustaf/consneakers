@@ -10,6 +10,7 @@ import {
   getPaginationOptions,
   PaginationNavigation,
 } from "~/components";
+import { CarouselDemo } from "~/components/shared/example-carousel";
 import { prisma } from "~/db.server";
 
 export const meta: V2_MetaFunction = () => {
@@ -56,7 +57,7 @@ export default function Index() {
 export function LandingHero() {
   return (
     <article className="w-full flex flex-col gap-4 justify-center items-center">
-      <BannerCarousel />
+      <CarouselDemo />
     </article>
   );
 }
