@@ -32,7 +32,7 @@ export function BannerCarousel() {
   );
 
   return (
-    <div className="p-6 space-y-6 container max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto">
       <Carousel
         plugins={[plugin.current]}
         onMouseEnter={plugin.current.stop}
@@ -50,8 +50,8 @@ export function BannerCarousel() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="flex items-center justify-center bg-black/20 text-white absolute top-1/2 -translate-y-1/2 z-[5] shadow-md left-4" />
-          <CarouselNext className="flex items-center justify-center bg-black/20 text-white absolute top-1/2 -translate-y-1/2 z-[5] shadow-md right-4" />
+          <CarouselPrevious className="flex items-center justify-center bg-black/10 text-slate-300 absolute top-1/2 -translate-y-1/2 z-[5] shadow-md left-4" />
+          <CarouselNext className="flex items-center justify-center bg-black/10 text-slate-300 absolute top-1/2 -translate-y-1/2 z-[5] shadow-md right-4" />
         </div>
       </Carousel>
     </div>
