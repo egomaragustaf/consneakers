@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useMatches } from "@remix-run/react";
+import { useMatches } from "react-router";
 
 import type { UserData, UserSession } from "~/services";
 import type { Cart } from "@prisma/client";
@@ -23,7 +23,7 @@ export function useMatchesData(
     () => matchingRoutes.find((route) => route.id === routeId),
     [matchingRoutes, routeId]
   );
-  return route?.data;
+  return route?.data as Record<string, unknown> | RootLoaderData;
 }
 
 export function useRootLoaderData() {

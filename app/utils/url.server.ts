@@ -1,4 +1,4 @@
-import type { LoaderArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "react-router";
 
 export function getRedirectTo(request: Request) {
   const url = new URL(request.url)
@@ -6,7 +6,7 @@ export function getRedirectTo(request: Request) {
   return redirectTo
 }
 
-export function getSearchQuery({ request }: Pick<LoaderArgs, "request">) {
+export function getSearchQuery({ request }: Pick<LoaderFunctionArgs, "request">) {
     const url = new URL(request.url)
     const q = url.searchParams.get("q") || ""
     return { q }
