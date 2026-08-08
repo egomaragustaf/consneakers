@@ -1,19 +1,19 @@
-import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { redirect } from "react-router";
 
 import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 import { Sidebar, Layout } from "~/components";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "User Dashboard" },
     { name: "description", content: "User Dahsboard" },
   ];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userSession = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
@@ -24,7 +24,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   });
   if (!user) return redirect("/logout");
 
-  return json({ user });
+  return { user };
 };
 
 export default function Route() {

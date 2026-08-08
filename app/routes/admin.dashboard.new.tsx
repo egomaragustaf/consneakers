@@ -1,6 +1,6 @@
 import { parse } from "@conform-to/zod";
-import { json, redirect } from "@remix-run/node";
-import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
+import { data, redirect } from "react-router";
+import type { ActionFunctionArgs, MetaFunction } from "react-router";
 
 import { prisma } from "~/db.server";
 import { slugify } from "~/utils";
@@ -8,7 +8,7 @@ import { AddNewProductForm, Layout, Sidebar } from "~/components";
 import { schemaAddNewProduct } from "~/schemas";
 import { useRootLoaderData } from "~/hooks";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Add New Product" },
     { name: "description", content: "Add New Product" },
@@ -49,12 +49,12 @@ export default function FormRoute() {
   );
 }
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const submission = parse(formData, { schema: schemaAddNewProduct });
 
   if (!submission.value || submission.intent !== "submit") {
-    return json(submission, { status: 400 });
+    return data(submission, { status: 400 });
   }
 
   const slug = slugify(submission.value.name);
@@ -64,7 +64,7 @@ export async function action({ request }: ActionArgs) {
   });
 
   if (!newProduct) {
-    return json(submission, { status: 500 });
+    return data(submission, { status: 500 });
   }
 
   return redirect(`/admin/dashboard/products`);

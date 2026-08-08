@@ -1,7 +1,11 @@
 import { parse } from "@conform-to/zod";
-import { useLoaderData } from "@remix-run/react";
-import { json, redirect } from "@remix-run/node";
-import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "react-router";
+import { data, redirect } from "react-router";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "react-router";
 
 import { prisma } from "~/db.server";
 import { EditProductForm, Layout, Sidebar } from "~/components";
@@ -9,16 +13,16 @@ import { schemaUpdateProduct } from "~/schemas";
 import { useRootLoaderData } from "~/hooks";
 import { slugify } from "~/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Edit Product" },
     { name: "description", content: "Edit Product" },
   ];
 };
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   if (!params.slug) {
-    return json({ product: null });
+    return { product: null };
   }
 
   const product = await prisma.product.findUnique({
@@ -27,7 +31,7 @@ export async function loader({ params }: LoaderArgs) {
     },
   });
 
-  return json({ product });
+  return { product };
 }
 
 export default function Route() {
@@ -65,12 +69,12 @@ export default function Route() {
   );
 }
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const submission = parse(formData, { schema: schemaUpdateProduct });
 
   if (!submission.value || submission.intent !== "submit") {
-    return json(submission, { status: 400 });
+    return data(submission, { status: 400 });
   }
 
   const slug = submission.value.slug;
@@ -81,7 +85,7 @@ export async function action({ request }: ActionArgs) {
   });
 
   if (!updateProduct) {
-    return json(submission, { status: 500 });
+    return data(submission, { status: 500 });
   }
   return redirect("/admin/dashboard/edit");
 }

@@ -1,6 +1,6 @@
-import type { ActionArgs, V2_MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import type { ActionFunctionArgs, MetaFunction } from "react-router";
+import { data, redirect } from "react-router";
+import { Form, Link, useLoaderData } from "react-router";
 
 import { prisma } from "~/db.server";
 import {
@@ -17,7 +17,7 @@ import {
 import { formatValueToCurrency } from "~/utils";
 import { useRootLoaderData } from "~/hooks";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Edit Products" },
     { name: "description", content: "Edit Products" },
@@ -27,7 +27,7 @@ export const meta: V2_MetaFunction = () => {
 export async function loader() {
   const products = await prisma.product.findMany();
 
-  return json({ products });
+  return { products };
 }
 
 export default function Route() {
@@ -103,7 +103,7 @@ export default function Route() {
   );
 }
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const deleteProductId = formData.get("delete") as string | undefined;
 
@@ -118,9 +118,9 @@ export const action = async ({ request }: ActionArgs) => {
       return redirect("/admin/dashboard/edit");
     } catch (error) {
       console.error("Error deleting product");
-      return json({ error: "Failed to delete the product" }, { status: 500 });
+      return data({ error: "Failed to delete the product" }, { status: 500 });
     }
   }
 
-  return json({ error: "Invalid request" }, { status: 400 });
+  return data({ error: "Invalid request" }, { status: 400 });
 };

@@ -1,10 +1,10 @@
 import type {
-  ActionArgs,
-  V2_MetaFunction,
+  ActionFunctionArgs,
+  MetaFunction,
   LoaderFunction,
-} from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+} from "react-router";
+import { data } from "react-router";
+import { Link, useLoaderData } from "react-router";
 
 import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
@@ -20,7 +20,7 @@ import {
 import type { getShoppingCart } from "~/models/cart.server";
 import { formatValueToCurrency } from "~/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Cart" }, { name: "description", content: "Cart" }];
 };
 
@@ -33,7 +33,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     failureRedirect: "/login",
   });
 
-  if (!userSession.id) return null;
+  if (!userSession?.id) return null;
 
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
@@ -49,7 +49,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       },
       include: { cartItems: { include: { product: true } } },
     });
-    return json({ cart: newCart });
+    return { cart: newCart };
   }
 
   const totalQuantity = existingCart.cartItems.reduce(
@@ -70,7 +70,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     },
   });
 
-  return json({ cart: { ...existingCart, totalQuantity, grandTotalPrice } });
+  return { cart: { ...existingCart, totalQuantity, grandTotalPrice } };
 };
 
 export default function Route() {
@@ -149,7 +149,7 @@ export default function Route() {
   );
 }
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const cartItemId = formData.get("cartItemId")?.toString();
   const action = formData.get("_action");
@@ -200,12 +200,12 @@ export const action = async ({ request }: ActionArgs) => {
         }
 
         default:
-          return json({ message: "Invalid action" }, { status: 400 });
+          return data({ message: "Invalid action" }, { status: 400 });
       }
     } catch (error) {
-      return json({ error: "Error" }, { status: 500 });
+      return data({ error: "Error" }, { status: 500 });
     }
   }
 
-  return json({ message: "Invalid request" }, { status: 400 });
+  return data({ message: "Invalid request" }, { status: 400 });
 };
