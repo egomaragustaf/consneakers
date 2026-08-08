@@ -1,32 +1,21 @@
 import {
-  type LoaderArgs,
-  json,
-  type LinksFunction,
-  redirect,
-} from "@remix-run/node";
-import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
   useNavigation,
-} from "@remix-run/react";
-import styles from "./tailwind.css";
+} from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
+import "./tailwind.css";
+import "mapbox-gl/dist/mapbox-gl.css";
+import "~/config/fonts";
 import { authenticator } from "./services";
 import NProgress from "nprogress";
 import { useEffect } from "react";
 import { model } from "~/models";
 import { prisma } from "./db.server";
-import mapboxGLStyles from "mapbox-gl/dist/mapbox-gl.css";
-import { fontLinks } from "~/config/fonts";
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
-  { rel: "stylesheet", href: mapboxGLStyles },
-  ...fontLinks,
-];
 
 export default function App() {
   const navigation = useNavigation();
@@ -48,13 +37,12 @@ export default function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
 }
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userSession = await authenticator.isAuthenticated(request);
   const userData = await model.user.query.getForSession({
     id: String(userSession?.id),
@@ -70,11 +58,11 @@ export const loader = async ({ request }: LoaderArgs) => {
     include: { cartItems: { include: { product: true } } },
   });
 
-  return json({
+  return {
     userSession,
     userData,
     cart,
     isAdmin,
     env: { MAPBOX_PUBLIC_TOKEN: String(process.env.MAPBOX_PUBLIC_TOKEN) },
-  });
+  };
 };
