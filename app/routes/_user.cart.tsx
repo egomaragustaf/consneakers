@@ -39,7 +39,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
-    include: { cartItems: { include: { product: true } } },
+    include: {
+      cartItems: {
+        include: { product: true },
+        orderBy: { createdAt: "asc" },
+      },
+    },
   });
 
   if (!existingCart) {
@@ -49,7 +54,12 @@ export const loader: LoaderFunction = async ({ request }) => {
         totalQuantity: 0,
         grandTotalPrice: 0,
       },
-      include: { cartItems: { include: { product: true } } },
+      include: {
+        cartItems: {
+          include: { product: true },
+          orderBy: { createdAt: "asc" },
+        },
+      },
     });
     return { cart: newCart };
   }

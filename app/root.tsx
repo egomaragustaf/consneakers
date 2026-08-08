@@ -56,7 +56,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const cart = await prisma.cart.findFirst({
     where: { userId: userSession?.id },
-    include: { cartItems: { include: { product: true } } },
+    include: {
+      cartItems: {
+        include: { product: true },
+        orderBy: { createdAt: "asc" },
+      },
+    },
   });
 
   return {
