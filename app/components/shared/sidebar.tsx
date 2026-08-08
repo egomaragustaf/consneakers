@@ -1,6 +1,6 @@
 import { cn } from "~/utils";
 import { buttonVariants } from "~/components";
-import { NavLink } from "@remix-run/react";
+import { NavLink } from "react-router";
 import { useRootLoaderData } from "~/hooks";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {

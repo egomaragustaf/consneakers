@@ -9,7 +9,7 @@ import { z } from "zod";
 import { model } from "~/models";
 import { authenticator } from "~/services";
 import { ButtonLoading, Input, InputPassword, Layout } from "~/components";
-import { getRedirectTo } from "~/utils";
+import { getRedirectTo } from "~/utils/url.server";
 
 export const meta: MetaFunction = () => {
   return [

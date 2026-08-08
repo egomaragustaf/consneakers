@@ -1,4 +1,4 @@
-import { Link, NavLink } from "@remix-run/react";
+import { Link, NavLink } from "react-router";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { UserDropdownMenu, SearchForm } from "~/components";

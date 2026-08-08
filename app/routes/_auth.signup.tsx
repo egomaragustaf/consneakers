@@ -6,7 +6,7 @@ import { Layout, UserAuthSignUpForm } from "~/components";
 import { model } from "~/models";
 import { authenticator } from "~/services";
 import { schemaUserSignUp } from "~/schemas";
-import { getRedirectTo } from "~/utils";
+import { getRedirectTo } from "~/utils/url.server";
 
 export const meta: MetaFunction = () => {
   return [

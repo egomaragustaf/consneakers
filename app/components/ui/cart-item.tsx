@@ -1,4 +1,4 @@
-import { Link, useFetcher } from "@remix-run/react";
+import { Link, useFetcher } from "react-router";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import { formatValueToCurrency } from "~/utils";
@@ -33,8 +33,8 @@ export function CartItem({
   let cartItemQuantity = quantity;
   let cartItemDeleting = false;
 
-  if (cartItemFetcher.submission) {
-    const values = Object(cartItemFetcher.submission.formData);
+  if (cartItemFetcher.formData) {
+    const values = Object(cartItemFetcher.formData);
     if (values._action === "increment-item-in-cart") {
       cartItemQuantity = Number(values.quantity) + 1;
     }

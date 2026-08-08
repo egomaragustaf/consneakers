@@ -1,42 +1,42 @@
 # Consneakers
 
-> **Warning**  
-> The `@remix-run/vercel` runtime adapter has been deprecated in favor of out of
-> the box Vercel functionality and will be removed in Remix v2.  
-> This means you don't have to use the Vercel template & can just use the Remix
-> template instead.
+A sneaker e-commerce demo built with React Router v7 (framework mode), Remix v2-style flat routes, Prisma, and Tailwind CSS.
 
-# Welcome to Remix!
+## Stack
 
-- [Remix Docs](https://remix.run/docs)
+- [React Router v7](https://reactrouter.com) (framework mode, SSR)
+- React 18
+- Prisma (PostgreSQL)
+- Tailwind CSS
+- Radix UI primitives, conform-to (forms + zod validation)
+- pnpm
+
+## Getting Started
+
+```sh
+pnpm install
+pnpm db:push   # push Prisma schema to the database
+pnpm db:seed   # seed products and the test user
+pnpm dev       # Vite dev server with HMR
+```
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Start the Vite dev server |
+| `pnpm build` | Production build (`build/client` + `build/server`) |
+| `pnpm start` | Serve the production build with `react-router-serve` |
+| `pnpm typecheck` | Run `tsc` |
+| `pnpm db:gen` | Generate Prisma client |
+| `pnpm db:push` | Push the schema to the database |
+| `pnpm db:seed` | Seed the database (products + `app/data/users-credentials.json`) |
+| `pnpm db:studio` | Open Prisma Studio |
+
+## Environment
+
+Copy `.env.example` to `.env` and fill in `DATABASE_URL` and `SESSION_SECRET`.
 
 ## Deployment
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
-
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
-
-```sh
-npm i -g vercel
-vercel
-```
-
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
-
-## Development
-
-To run your Remix app locally, make sure your project's local dependencies are installed:
-
-```sh
-npm install
-```
-
-Afterwards, start the Remix development server like so:
-
-```sh
-npm run dev
-```
-
-Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
-
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+Zero-config on Vercel: the React Router builder runs `react-router build` and deploys `build/server` automatically.

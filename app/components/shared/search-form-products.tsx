@@ -1,4 +1,4 @@
-import { useSearchParams } from "@remix-run/react";
+import { useSearchParams } from "react-router";
 import { FaSearch } from "react-icons/fa";
 import { Input } from "~/components";
 

@@ -5,7 +5,7 @@ import {
   useActionData,
   useLoaderData,
   useNavigation,
-} from "@remix-run/react";
+} from "react-router";
 
 import type {
   loader as loaderEditProduct,
