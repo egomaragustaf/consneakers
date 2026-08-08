@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import { redirect } from "react-router";
 import { prisma } from "~/db.server";
 import type { model } from "~/models";
@@ -10,7 +9,7 @@ export interface UserSession {
 
 export interface UserData
   extends NonNullable<
-    Prisma.PromiseReturnType<typeof model.user.query.getForSession>
+    Awaited<ReturnType<typeof model.user.query.getForSession>>
   > {}
 
 // Same storage key and shape remix-auth v3 used, so existing session cookies stay valid

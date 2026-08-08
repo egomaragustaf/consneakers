@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PassThrough } from "node:stream";
 
 import type { AppLoadContext, EntryContext } from "react-router";

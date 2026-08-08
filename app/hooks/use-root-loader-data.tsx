@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useMatches } from "react-router";
 
 import type { UserData, UserSession } from "~/services";
-import type { Cart } from "@prisma/client";
+import type { Cart } from "@prisma-generated/client";
 
 export type RootLoaderData = {
   isDevelopment: boolean;

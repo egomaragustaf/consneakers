@@ -1,6 +1,6 @@
 import { prisma } from "~/db.server";
 
-export type { Product } from "@prisma/client";
+export type { Product } from "@prisma-generated/client";
 
 export async function getAllProducts() {
   return prisma.product.findMany();

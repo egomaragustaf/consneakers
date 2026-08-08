@@ -16,7 +16,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@prisma-generated/*": ["./prisma/generated/prisma/*"]
     },
     "noEmit": true
   }

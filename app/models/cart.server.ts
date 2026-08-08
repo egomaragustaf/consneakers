@@ -1,6 +1,6 @@
 import { prisma } from "~/db.server";
 
-export type { Cart, CartItem, Product } from "@prisma/client";
+export type { Cart, CartItem, Product } from "@prisma-generated/client";
 
 export async function getShoppingCart(userId: string) {
     return prisma.cart.findFirst({
