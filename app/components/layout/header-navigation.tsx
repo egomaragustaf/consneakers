@@ -1,9 +1,8 @@
-import { useMemo } from "react";
-import { Link, NavLink, useFetchers } from "react-router";
+import { Link, NavLink } from "react-router";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { UserDropdownMenu, SearchForm } from "~/components";
-import { useRootLoaderData } from "~/hooks";
+import { useOptimisticCart, useRootLoaderData } from "~/hooks";
 
 const navPublicItems = [
   { to: "/", text: "Home" },
@@ -33,54 +32,9 @@ const navAuthenticatedItems = [
   },
 ];
 
-const CART_ACTIONS = [
-  "increment-item-in-cart",
-  "decrement-item-in-cart",
-  "delete-item-in-cart",
-];
-
 export function Navigation() {
   const { userSession, cart, userData } = useRootLoaderData();
-  const fetchers = useFetchers();
-
-  // Optimistic cart total: committed totalQuantity plus deltas from in-flight
-  // cart fetchers (the submitted "quantity" is the item's new target quantity).
-  const optimisticQuantity = useMemo(() => {
-    if (!cart) return 0;
-
-    const newQuantities = new Map<string, number>();
-    for (const fetcher of fetchers) {
-      const formData = fetcher.formData;
-      if (!formData) continue;
-
-      const action = String(formData.get("_action") ?? "");
-      if (!CART_ACTIONS.includes(action)) continue;
-
-      const cartItemId = String(formData.get("cartItemId") ?? "");
-      if (!cartItemId) continue;
-
-      if (action === "delete-item-in-cart") {
-        newQuantities.set(cartItemId, 0);
-        continue;
-      }
-
-      const quantity = Number(formData.get("quantity"));
-      if (Number.isFinite(quantity)) {
-        newQuantities.set(cartItemId, quantity);
-      }
-    }
-
-    if (newQuantities.size === 0) return cart.totalQuantity;
-
-    let total = cart.totalQuantity;
-    for (const item of cart.cartItems) {
-      const newQuantity = newQuantities.get(item.id);
-      if (newQuantity !== undefined) {
-        total += newQuantity - item.quantity;
-      }
-    }
-    return total;
-  }, [cart, fetchers]);
+  const { totalQuantity: optimisticQuantity } = useOptimisticCart(cart);
 
   return (
     <header className="z-10 sticky backdrop-blur top-0 flex items-center justify-center gap-6 px-4 lg:px-20 bg-zinc-900/95 text-white">
