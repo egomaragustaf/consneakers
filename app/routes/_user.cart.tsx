@@ -57,7 +57,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     0
   );
   const grandTotalPrice = existingCart.cartItems.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
+    (acc, item) => acc + (item.product?.price ?? 0) * item.quantity,
     0
   );
 
