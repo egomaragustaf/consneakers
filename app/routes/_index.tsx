@@ -1,7 +1,6 @@
-import { json } from "@remix-run/node";
-import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "react-router";
 import {
   ProductCard,
   Layout,
@@ -12,14 +11,14 @@ import {
 import { BannerCarousel } from "~/components/shared/banner-carousel";
 import { prisma } from "~/db.server";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Consneakers" },
     { name: "description", content: "Welcome to Consneakers!" },
   ];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const config = getPaginationConfigs({ request, defaultLimit: 10 });
 
   const where = !config.queryParam
@@ -36,11 +35,11 @@ export const loader = async ({ request }: LoaderArgs) => {
   ]);
   const popularProducts = await prisma.product.findMany();
 
-  return json({
+  return {
     ...getPaginationOptions({ request, totalItems }),
     items,
     popularProducts,
-  });
+  };
 };
 
 export default function Index() {

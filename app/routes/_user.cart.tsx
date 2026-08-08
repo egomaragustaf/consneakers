@@ -1,13 +1,14 @@
 import type {
-  ActionArgs,
-  V2_MetaFunction,
+  ActionFunctionArgs,
+  MetaFunction,
   LoaderFunction,
-} from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+} from "react-router";
+import { data } from "react-router";
+import { Link, useLoaderData } from "react-router";
 
 import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
+import { useOptimisticCart } from "~/hooks";
 import {
   Button,
   CartItem,
@@ -18,9 +19,10 @@ import {
   TableRow,
 } from "~/components";
 import type { getShoppingCart } from "~/models/cart.server";
+import { computeCartTotals } from "~/models/cart.server";
 import { formatValueToCurrency } from "~/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Cart" }, { name: "description", content: "Cart" }];
 };
 
@@ -33,11 +35,16 @@ export const loader: LoaderFunction = async ({ request }) => {
     failureRedirect: "/login",
   });
 
-  if (!userSession.id) return null;
+  if (!userSession?.id) return null;
 
   const existingCart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
-    include: { cartItems: { include: { product: true } } },
+    include: {
+      cartItems: {
+        include: { product: true },
+        orderBy: { createdAt: "asc" },
+      },
+    },
   });
 
   if (!existingCart) {
@@ -47,18 +54,18 @@ export const loader: LoaderFunction = async ({ request }) => {
         totalQuantity: 0,
         grandTotalPrice: 0,
       },
-      include: { cartItems: { include: { product: true } } },
+      include: {
+        cartItems: {
+          include: { product: true },
+          orderBy: { createdAt: "asc" },
+        },
+      },
     });
-    return json({ cart: newCart });
+    return { cart: newCart };
   }
 
-  const totalQuantity = existingCart.cartItems.reduce(
-    (acc, item) => acc + item.quantity,
-    0
-  );
-  const grandTotalPrice = existingCart.cartItems.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
-    0
+  const { totalQuantity, grandTotalPrice } = computeCartTotals(
+    existingCart.cartItems
   );
 
   // Update the existing cart with the calculated values
@@ -70,11 +77,12 @@ export const loader: LoaderFunction = async ({ request }) => {
     },
   });
 
-  return json({ cart: { ...existingCart, totalQuantity, grandTotalPrice } });
+  return { cart: { ...existingCart, totalQuantity, grandTotalPrice } };
 };
 
 export default function Route() {
   const { cart } = useLoaderData<LoaderData>();
+  const { totalQuantity, grandTotalPrice } = useOptimisticCart(cart);
 
   return (
     <Layout>
@@ -125,12 +133,12 @@ export default function Route() {
                 <TableBody>
                   <TableRow>
                     <TableCell>Total Product:</TableCell>
-                    <TableCell>{cart.totalQuantity}</TableCell>
+                    <TableCell>{totalQuantity}</TableCell>
                   </TableRow>
                   <TableRow className="text-lg font-bold text-zinc-800">
                     <TableCell>Total Price:</TableCell>
                     <TableCell>
-                      {formatValueToCurrency(cart.grandTotalPrice)}
+                      {formatValueToCurrency(grandTotalPrice)}
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -149,7 +157,38 @@ export default function Route() {
   );
 }
 
-export const action = async ({ request }: ActionArgs) => {
+// The UI submits the item's new target quantity as an absolute value, so the
+// committed state matches what the user saw optimistically; clamp server-side.
+function resolveTargetQuantity(
+  submitted: FormDataEntryValue | null,
+  fallback: number,
+  min: number,
+  max: number
+) {
+  const parsed = Number(submitted);
+  if (!Number.isFinite(parsed)) {
+    return Math.min(Math.max(fallback, min), max);
+  }
+  return Math.min(Math.max(parsed, min), max);
+}
+
+// Keep the cached totalQuantity/grandTotalPrice columns on Cart truthful after
+// every mutation, so readers that still use them never see stale totals.
+function applyCartTotalDelta(
+  cartId: string,
+  quantityDelta: number,
+  unitPrice: number
+) {
+  return prisma.cart.update({
+    where: { id: cartId },
+    data: {
+      totalQuantity: { increment: quantityDelta },
+      grandTotalPrice: { increment: quantityDelta * unitPrice },
+    },
+  });
+}
+
+export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const cartItemId = formData.get("cartItemId")?.toString();
   const action = formData.get("_action");
@@ -167,7 +206,14 @@ export const action = async ({ request }: ActionArgs) => {
 
       switch (action) {
         case "increment-item-in-cart": {
-          const newQuantity = cartItem.quantity + 1;
+          const newQuantity = resolveTargetQuantity(
+            formData.get("quantity"),
+            cartItem.quantity + 1,
+            1,
+            cartItem.product.stockQuantity
+          );
+          const delta = newQuantity - cartItem.quantity;
+          await applyCartTotalDelta(cartItem.cartId, delta, cartItem.product.price);
           const newTotalPrice = cartItem.product.price * newQuantity;
           return await prisma.cartItem.update({
             where: { id: cartItem.id },
@@ -180,32 +226,44 @@ export const action = async ({ request }: ActionArgs) => {
         }
 
         case "decrement-item-in-cart": {
-          const newQuantity = cartItem.quantity - 1;
-          const newTotalPrice = cartItem.product.price * newQuantity;
-          if (cartItem.quantity > 1) {
-            return await prisma.cartItem.update({
-              where: { id: cartItem.id },
-              data: {
-                quantity: newQuantity,
-                totalPrice: newTotalPrice,
-              },
-              include: { product: true },
-            });
+          const newQuantity = resolveTargetQuantity(
+            formData.get("quantity"),
+            cartItem.quantity - 1,
+            0,
+            cartItem.product.stockQuantity
+          );
+          const delta = newQuantity - cartItem.quantity;
+          await applyCartTotalDelta(cartItem.cartId, delta, cartItem.product.price);
+          if (newQuantity <= 0) {
+            return await prisma.cartItem.delete({ where: { id: cartItem.id } });
           }
-          return await prisma.cartItem.delete({ where: { id: cartItem.id } });
+          const newTotalPrice = cartItem.product.price * newQuantity;
+          return await prisma.cartItem.update({
+            where: { id: cartItem.id },
+            data: {
+              quantity: newQuantity,
+              totalPrice: newTotalPrice,
+            },
+            include: { product: true },
+          });
         }
 
         case "delete-item-in-cart": {
+          await applyCartTotalDelta(
+            cartItem.cartId,
+            -cartItem.quantity,
+            cartItem.product.price
+          );
           return await prisma.cartItem.delete({ where: { id: cartItem.id } });
         }
 
         default:
-          return json({ message: "Invalid action" }, { status: 400 });
+          return data({ message: "Invalid action" }, { status: 400 });
       }
     } catch (error) {
-      return json({ error: "Error" }, { status: 500 });
+      return data({ error: "Error" }, { status: 500 });
     }
   }
 
-  return json({ message: "Invalid request" }, { status: 400 });
+  return data({ message: "Invalid request" }, { status: 400 });
 };

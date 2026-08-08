@@ -1,7 +1,11 @@
 import { parse } from "@conform-to/zod";
-import type { ActionArgs, V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "react-router";
+import { data, redirect } from "react-router";
+import { Link, useLoaderData } from "react-router";
 
 import {
   AddNewUserLocationForm,
@@ -16,22 +20,23 @@ import {
   TableRow,
 } from "~/components";
 import { prisma } from "~/db.server";
+import { computeCartTotals } from "~/models/cart.server";
 import { authenticator } from "~/services";
 import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
 import { useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [{ title: "Checkout" }, { name: "description", content: "Checkout" }];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userSession = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
 
-  if (!userSession.id) return redirect("/login");
+  if (!userSession?.id) return redirect("/login");
 
   const user = await prisma.user.findFirst({
     where: { id: userSession.id },
@@ -40,10 +45,19 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   const cart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
-    include: { cartItems: { include: { product: true } } },
+    include: {
+      cartItems: {
+        include: { product: true },
+        orderBy: { createdAt: "asc" },
+      },
+    },
   });
 
-  return json({ user, cart, cartItems: cart?.cartItems });
+  return {
+    user,
+    cart: cart ? { ...cart, ...computeCartTotals(cart.cartItems) } : null,
+    cartItems: cart?.cartItems,
+  };
 };
 
 export default function Route() {
@@ -141,7 +155,7 @@ export default function Route() {
                           </TableCell>
                           <TableCell className="text-left w-4">:</TableCell>
                           <TableCell className="text-left w-96">
-                            {location.latitude}, {location.longitude}
+                            {String(location.latitude)}, {String(location.longitude)}
                           </TableCell>
                         </TableRow>
                       </TableBody>
@@ -190,17 +204,17 @@ export default function Route() {
   );
 }
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const submission = parse(formData, { schema: schemaAddNewUserLocation });
 
   if (!submission.value || submission.intent !== "submit") {
-    return json(submission, { status: 400 });
+    return data(submission, { status: 400 });
   }
 
   const userSession = await authenticator.isAuthenticated(request);
   if (!userSession?.id) {
-    return json(submission, { status: 401 });
+    return data(submission, { status: 401 });
   }
 
   try {
@@ -209,10 +223,10 @@ export const action = async ({ request }: ActionArgs) => {
     });
 
     if (!newUserLocation) {
-      return json(submission, { status: 500 });
+      return data(submission, { status: 500 });
     }
-    return json(submission, { status: 200 });
+    return data(submission, { status: 200 });
   } catch (error) {
-    return json(submission, { status: 500 });
+    return data(submission, { status: 500 });
   }
 };

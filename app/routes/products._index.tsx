@@ -1,17 +1,16 @@
-import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { Layout, ProductCard } from "~/components";
 import { prisma } from "~/db.server";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Search Products" },
     { name: "description", content: "Search Products" },
   ];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const query = url.searchParams.get("q");
 
@@ -20,7 +19,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       take: 50,
     });
 
-    return json({ query, count: products.length, products });
+    return { query, count: products.length, products };
   }
 
   const [products] = await prisma.$transaction([
@@ -44,7 +43,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     }),
   ]);
 
-  return json({ query, count: products.length, products });
+  return { query, count: products.length, products };
 };
 
 export default function Route() {

@@ -1,7 +1,7 @@
 import { parse } from "@conform-to/react";
-import type { ActionArgs, LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { Form, Link, useLoaderData, useNavigation } from "@remix-run/react";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "react-router";
+import { redirect } from "react-router";
+import { Form, Link, useLoaderData, useNavigation } from "react-router";
 
 import { authenticator } from "~/services/auth.server";
 import { prisma } from "~/db.server";
@@ -9,16 +9,16 @@ import { Layout, ButtonLoading, Button } from "~/components";
 import { useRootLoaderData } from "~/hooks";
 import { formatValueToCurrency } from "~/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Detail Product" },
     { name: "description", content: "Detail Product" },
   ];
 };
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   if (!params.slug) {
-    return json({ product: null });
+    return { product: null };
   }
 
   const product = await prisma.product.findUnique({
@@ -27,7 +27,7 @@ export async function loader({ params }: LoaderArgs) {
     },
   });
 
-  return json({ product });
+  return { product };
 }
 
 export default function Route() {
@@ -108,11 +108,11 @@ export default function Route() {
   );
 }
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const userSession = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
-  if (!userSession.id) return null;
+  if (!userSession?.id) return null;
 
   const formData = await request.formData();
   const submission = parse(formData);

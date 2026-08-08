@@ -1,9 +1,9 @@
-import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { redirect } from "react-router";
 
 import { prisma } from "~/db.server";
 import { authenticator } from "~/services";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "react-router";
 import {
   Sidebar,
   Layout,
@@ -16,14 +16,14 @@ import {
 import { useRootLoaderData } from "~/hooks";
 import { formatValueToCurrency } from "~/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Admin Dashboard" },
     { name: "description", content: "Admin Dahsboard" },
   ];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userSession = await authenticator.isAuthenticated(request, {
     failureRedirect: "/login",
   });
@@ -36,10 +36,15 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   const cart = await prisma.cart.findFirst({
     where: { userId: userSession.id },
-    include: { cartItems: { include: { product: true } } },
+    include: {
+      cartItems: {
+        include: { product: true },
+        orderBy: { createdAt: "asc" },
+      },
+    },
   });
 
-  return json({ user, cartItems: cart?.cartItems });
+  return { user, cartItems: cart?.cartItems };
 };
 
 export default function Route() {

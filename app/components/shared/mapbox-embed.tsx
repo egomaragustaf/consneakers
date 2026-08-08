@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MapPin } from "lucide-react";
 import type { MarkerDragEvent, MapEvent } from "react-map-gl";
-import type { UserLocation } from "@prisma/client";
+import type { UserLocation } from "@prisma-generated/client";
 import MapboxGL, {
   FullscreenControl,
   GeolocateControl,

@@ -1,22 +1,24 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "target": "ES2022",
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@prisma-generated/*": ["./prisma/generated/prisma/*"]
     },
-
-    // Remix takes care of building everything in `remix build`.
     "noEmit": true
   }
 }

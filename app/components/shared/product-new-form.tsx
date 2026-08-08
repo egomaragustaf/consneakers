@@ -1,6 +1,6 @@
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import { Form, useActionData, useNavigation } from "react-router";
 
 import type { action as actionAddNewProduct } from "~/routes/admin.dashboard.edit.$slug";
 import { ButtonLoading } from "~/components";

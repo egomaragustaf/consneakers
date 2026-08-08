@@ -1,6 +1,7 @@
 import { useId } from "react";
 import { conform, useForm } from "@conform-to/react";
-import { Form, useActionData, useNavigation } from "@remix-run/react";
+import type { Submission } from "@conform-to/react";
+import { Form, useActionData, useNavigation } from "react-router";
 import { parse } from "@conform-to/zod";
 import { useRedirectTo } from "~/hooks";
 import type { action as actionSignUp } from "~/routes/_auth.signup";
@@ -11,7 +12,9 @@ export function UserAuthSignUpForm({
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
   const { redirectTo } = useRedirectTo();
-  const lastSubmission = useActionData<typeof actionSignUp>();
+  const lastSubmission = useActionData<typeof actionSignUp>() as
+    | Submission
+    | undefined;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 

@@ -1,8 +1,8 @@
-import type { User } from "@prisma/client"
+import type { User } from "@prisma-generated/client"
 import { prisma } from "~/db.server"
 import bcrypt from "bcryptjs"
 
-export type { User } from "@prisma/client"
+export type { User } from "@prisma-generated/client"
 
 export const query = {
   count() {

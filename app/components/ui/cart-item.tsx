@@ -1,4 +1,4 @@
-import { Link, useFetcher } from "@remix-run/react";
+import { Link, useFetcher } from "react-router";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineDelete } from "react-icons/md";
 import { formatValueToCurrency } from "~/utils";
@@ -33,17 +33,15 @@ export function CartItem({
   let cartItemQuantity = quantity;
   let cartItemDeleting = false;
 
-  if (cartItemFetcher.submission) {
-    const values = Object(cartItemFetcher.submission.formData);
-    if (values._action === "increment-item-in-cart") {
-      cartItemQuantity = Number(values.quantity) + 1;
-    }
-    if (values._action === "decrement-item-in-cart") {
-      cartItemQuantity = Number(values.quantity) - 1;
-    }
-    if (values._action === "delete-item-in-cart") {
-      cartItemDeleting = true;
-    }
+  const activeAction = cartItemFetcher.formData?.get("_action");
+  if (
+    activeAction === "increment-item-in-cart" ||
+    activeAction === "decrement-item-in-cart"
+  ) {
+    cartItemQuantity = Number(cartItemFetcher.formData?.get("quantity"));
+  }
+  if (activeAction === "delete-item-in-cart") {
+    cartItemDeleting = true;
   }
 
   const isMoreThanMax = Boolean(Number(cartItemQuantity) + min >= max + min);
@@ -67,7 +65,7 @@ export function CartItem({
             <h3 className="font-semibold">{cartItem?.product.name}</h3>
           </Link>
           <p>
-            <span>{cartItem?.quantity}</span> x{" "}
+            <span>{cartItemQuantity}</span> x{" "}
             {formatValueToCurrency(cartItem.product.price)}
           </p>
           <h2 className="text-xl font-semibold">
