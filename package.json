@@ -71,7 +71,7 @@
     "typescript": "^5.0.4"
   },
   "engines": {
-    "node": "20.x"
+    "node": ">=24.0.0"
   },
   "pnpm": {
     "neverBuiltDependencies": [
