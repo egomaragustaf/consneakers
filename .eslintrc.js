@@ -1,4 +1,7 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
-  extends: ["@remix-run/eslint-config", "@remix-run/eslint-config/node"],
+  root: true,
+  env: { browser: true, es2022: true, node: true },
+  parserOptions: { ecmaVersion: "latest", sourceType: "module" },
+  extends: ["eslint:recommended"],
 };
