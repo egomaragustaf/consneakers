@@ -20,6 +20,7 @@ import {
   TableRow,
 } from "~/components";
 import { prisma } from "~/db.server";
+import { computeCartTotals } from "~/models/cart.server";
 import { authenticator } from "~/services";
 import { schemaAddNewUserLocation } from "~/schemas";
 import { formatValueToCurrency } from "~/utils";
@@ -47,7 +48,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     include: { cartItems: { include: { product: true } } },
   });
 
-  return { user, cart, cartItems: cart?.cartItems };
+  return {
+    user,
+    cart: cart ? { ...cart, ...computeCartTotals(cart.cartItems) } : null,
+    cartItems: cart?.cartItems,
+  };
 };
 
 export default function Route() {

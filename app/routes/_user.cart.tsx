@@ -19,6 +19,7 @@ import {
   TableRow,
 } from "~/components";
 import type { getShoppingCart } from "~/models/cart.server";
+import { computeCartTotals } from "~/models/cart.server";
 import { formatValueToCurrency } from "~/utils";
 
 export const meta: MetaFunction = () => {
@@ -53,13 +54,8 @@ export const loader: LoaderFunction = async ({ request }) => {
     return { cart: newCart };
   }
 
-  const totalQuantity = existingCart.cartItems.reduce(
-    (acc, item) => acc + item.quantity,
-    0
-  );
-  const grandTotalPrice = existingCart.cartItems.reduce(
-    (acc, item) => acc + (item.product?.price ?? 0) * item.quantity,
-    0
+  const { totalQuantity, grandTotalPrice } = computeCartTotals(
+    existingCart.cartItems
   );
 
   // Update the existing cart with the calculated values
@@ -166,6 +162,22 @@ function resolveTargetQuantity(
   return Math.min(Math.max(parsed, min), max);
 }
 
+// Keep the cached totalQuantity/grandTotalPrice columns on Cart truthful after
+// every mutation, so readers that still use them never see stale totals.
+function applyCartTotalDelta(
+  cartId: string,
+  quantityDelta: number,
+  unitPrice: number
+) {
+  return prisma.cart.update({
+    where: { id: cartId },
+    data: {
+      totalQuantity: { increment: quantityDelta },
+      grandTotalPrice: { increment: quantityDelta * unitPrice },
+    },
+  });
+}
+
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const cartItemId = formData.get("cartItemId")?.toString();
@@ -190,6 +202,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             1,
             cartItem.product.stockQuantity
           );
+          const delta = newQuantity - cartItem.quantity;
+          await applyCartTotalDelta(cartItem.cartId, delta, cartItem.product.price);
           const newTotalPrice = cartItem.product.price * newQuantity;
           return await prisma.cartItem.update({
             where: { id: cartItem.id },
@@ -208,6 +222,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             0,
             cartItem.product.stockQuantity
           );
+          const delta = newQuantity - cartItem.quantity;
+          await applyCartTotalDelta(cartItem.cartId, delta, cartItem.product.price);
           if (newQuantity <= 0) {
             return await prisma.cartItem.delete({ where: { id: cartItem.id } });
           }
@@ -223,6 +239,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         }
 
         case "delete-item-in-cart": {
+          await applyCartTotalDelta(
+            cartItem.cartId,
+            -cartItem.quantity,
+            cartItem.product.price
+          );
           return await prisma.cartItem.delete({ where: { id: cartItem.id } });
         }
 

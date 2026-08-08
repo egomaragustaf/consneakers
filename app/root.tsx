@@ -15,6 +15,7 @@ import { authenticator } from "./services";
 import NProgress from "nprogress";
 import { useEffect } from "react";
 import { model } from "~/models";
+import { computeCartTotals } from "~/models/cart.server";
 import { prisma } from "./db.server";
 
 export default function App() {
@@ -61,7 +62,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return {
     userSession,
     userData,
-    cart,
+    cart: cart
+      ? { ...cart, ...computeCartTotals(cart.cartItems) }
+      : null,
     isAdmin,
     env: { MAPBOX_PUBLIC_TOKEN: String(process.env.MAPBOX_PUBLIC_TOKEN) },
   };
