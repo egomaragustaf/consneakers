@@ -1,21 +1,21 @@
 import { parse } from "@conform-to/zod";
-import type { V2_MetaFunction, LoaderArgs, ActionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "react-router";
+import { data } from "react-router";
+import { Link } from "react-router";
 import { Layout, UserAuthSignUpForm } from "~/components";
 import { model } from "~/models";
 import { authenticator } from "~/services";
 import { schemaUserSignUp } from "~/schemas";
 import { getRedirectTo } from "~/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Sign Up to Consneakers" },
     { name: "description", content: "Sign Up to Consneakers" },
   ];
 };
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   return await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard",
   });
@@ -49,18 +49,18 @@ export default function Route() {
   );
 }
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const clonedRequest = request.clone();
   const formData = await clonedRequest.formData();
   const submission = parse(formData, { schema: schemaUserSignUp });
 
   if (!submission.value || submission.intent !== "submit") {
-    return json(submission, { status: 400 });
+    return data(submission, { status: 400 });
   }
 
   const result = await model.user.mutation.signup(submission.value);
   if (result.error) {
-    return json({ ...submission, error: result.error });
+    return { ...submission, error: result.error };
   }
 
   return authenticator.authenticate("user-pass", request, {

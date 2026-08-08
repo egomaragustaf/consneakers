@@ -1,8 +1,9 @@
-import type { LoaderArgs, ActionArgs, V2_MetaFunction } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from "react-router";
+import type { Submission } from "@conform-to/react";
 import { conform, useForm } from "@conform-to/react";
 import { parse } from "@conform-to/zod";
-import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import { Form, Link, useActionData, useNavigation } from "react-router";
+import { data } from "react-router";
 import { z } from "zod";
 
 import { model } from "~/models";
@@ -10,7 +11,7 @@ import { authenticator } from "~/services";
 import { ButtonLoading, Input, InputPassword, Layout } from "~/components";
 import { getRedirectTo } from "~/utils";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   return [
     { title: "Login to Consneakers" },
     { name: "description", content: "Login to Consneakers" },
@@ -22,14 +23,14 @@ const schema = z.object({
   password: z.string(),
 });
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   return await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard",
   });
 };
 
 export default function FormRoute() {
-  const lastSubmission = useActionData<typeof action>();
+  const lastSubmission = useActionData<typeof action>() as Submission | undefined;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -108,19 +109,19 @@ export default function FormRoute() {
   );
 }
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const clonedRequest = request.clone();
 
   const formData = await clonedRequest.formData();
   const submission = parse(formData, { schema });
 
   if (!submission.value || submission.intent !== "submit") {
-    return json(submission, { status: 400 });
+    return data(submission, { status: 400 });
   }
 
   const result = await model.user.mutation.login(submission.value);
   if (result.error) {
-    return json({ ...submission, error: result.error });
+    return { ...submission, error: result.error };
   }
 
   const isAdmin = result.user.username === "admin";

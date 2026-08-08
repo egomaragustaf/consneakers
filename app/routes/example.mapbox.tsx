@@ -1,13 +1,12 @@
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "react-router";
 
 import { MapboxEmbed } from "~/components";
 import { prisma } from "~/db.server";
 
 export async function loader() {
-  return json({
+  return {
     address: await prisma.userLocation.findFirst(),
-  });
+  };
 }
 
 export default function ExamplesMapboxRoute() {
